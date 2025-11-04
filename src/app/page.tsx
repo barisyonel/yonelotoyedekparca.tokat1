@@ -413,12 +413,12 @@ export default async function Home() {
             <p className="text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-5xl mx-auto font-medium mb-4">
               <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus), <strong>Fiat Ducato</strong> (2.3, 3.0), 
               <strong> Foton Traktör</strong>, <strong>Karataş Traktör</strong> yedek parçaları ve <strong>Mutlu Akü</strong> 
-              satışında Türkiye'nin güvenilir adresi. <strong>Tüm Türkiye'ye online yedek parça satışı</strong> ve hızlı teslimat. 50+ yıllık tecrübe ile orijinal ve kaliteli yan sanayi ürünleri.
+              satışında Türkiye&apos;nin güvenilir adresi. <strong>Tüm Türkiye&apos;ye online yedek parça satışı</strong> ve hızlı teslimat. 50+ yıllık tecrübe ile orijinal ve kaliteli yan sanayi ürünleri.
             </p>
             
             {/* SEO Keywords as H2 */}
             <h2 className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-5xl mx-auto font-semibold mb-2">
-              Tüm Türkiye'ye Online Yedek Parça Satışı | Foton Traktör, Karataş Traktör ve Mutlu Akü
+              Tüm Türkiye&apos;ye Online Yedek Parça Satışı | Foton Traktör, Karataş Traktör ve Mutlu Akü
             </h2>
 
           </div>
@@ -986,7 +986,7 @@ export default async function Home() {
                 OTO YEDEK PARÇADA ONLİNE ALIŞVERİŞ
               </h2>
               <p className="text-xl text-gray-600">
-                İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parçalarında Türkiye'nin Güvenilir Adresi
+                İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parçalarında Türkiye&apos;nin Güvenilir Adresi
               </p>
             </div>
 
@@ -1172,7 +1172,7 @@ export default async function Home() {
               </h3>
               <div className="prose prose-lg max-w-none">
                 <p className="text-gray-700 leading-relaxed mb-6">
-                  <strong>Karataş Traktör</strong>, Türkiye'nin yerli üretim traktör markalarından biridir. 
+                  <strong>Karataş Traktör</strong>, Türkiye&apos;nin yerli üretim traktör markalarından biridir. 
                   Karataş traktörleriniz için orijinal ve yan sanayi yedek parçalarında uzman kadromuz 
                   ve geniş stoklarımızla hizmetinizdeyiz. Tarla çalışmalarınızda kesintisiz üretim için 
                   ihtiyaç duyduğunuz tüm yedek parçaları hızlı ve güvenilir şekilde tedarik ediyoruz.
@@ -1296,7 +1296,7 @@ export default async function Home() {
                 <p className="text-gray-700 leading-relaxed mb-4">
                   <strong>Mutlu Akü</strong> yetkili satıcısı olarak, otomobil, hafif ticari, 
                   ağır vasıta ve traktör aküsü çeşitlerinde en uygun fiyatları sunuyoruz. 
-                  45 Ah'dan 200 Ah'a kadar farklı kapasitelerde Mutlu akü stoğumuz mevcuttur. 
+                  45 Ah&apos;dan 200 Ah&apos;a kadar farklı kapasitelerde Mutlu akü stoğumuz mevcuttur. 
                   Mutlu akü fiyatları ve kampanyalarımız için bizi arayabilirsiniz.
                 </p>
               </div>

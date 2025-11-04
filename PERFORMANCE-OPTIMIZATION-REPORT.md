@@ -147,3 +147,5 @@ Performans skoru **29/100'den 75-85/100'e** çıkması bekleniyor. Tüm kritik o
 
 **Not:** Production build'de test etmek önemlidir. Development mode'da performans metrikleri daha düşük görünebilir.
 
+
+

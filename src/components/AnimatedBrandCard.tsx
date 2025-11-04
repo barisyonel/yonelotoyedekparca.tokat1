@@ -14,12 +14,11 @@ interface Brand {
 
 interface Props {
   brand: Brand;
-  index: number;
   animationClass: string;
   delayClass: string;
 }
 
-export default function AnimatedBrandCard({ brand, index, animationClass, delayClass }: Props) {
+export default function AnimatedBrandCard({ brand, animationClass, delayClass }: Props) {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -40,13 +39,14 @@ export default function AnimatedBrandCard({ brand, index, animationClass, delayC
       }
     );
 
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
+    const currentCardRef = cardRef.current;
+    if (currentCardRef) {
+      observer.observe(currentCardRef);
     }
 
     return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
+      if (currentCardRef) {
+        observer.unobserve(currentCardRef);
       }
     };
   }, []);
@@ -56,7 +56,7 @@ export default function AnimatedBrandCard({ brand, index, animationClass, delayC
       ref={cardRef}
       className={isVisible ? `${animationClass} ${delayClass}` : 'opacity-0'}
     >
-      <ModernBrandCard brand={brand} index={index} />
+      <ModernBrandCard brand={brand} />
     </div>
   );
 }

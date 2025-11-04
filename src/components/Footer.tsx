@@ -75,7 +75,7 @@ export default function Footer() {
               }}
             >
               50+ yıllık tecrübe ile Foton traktör, Iveco Daily, Karataş traktör yedek parçaları
-              ve Mutlu akü satışında Türkiye'nin güvenilir adresi.
+              ve Mutlu akü satışında Türkiye&apos;nin güvenilir adresi.
             </Typography>
 
             {/* Social Media */}

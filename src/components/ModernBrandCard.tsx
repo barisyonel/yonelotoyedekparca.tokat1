@@ -14,10 +14,9 @@ interface Brand {
 
 interface Props {
   brand: Brand;
-  index: number;
 }
 
-export default function ModernBrandCard({ brand, index }: Props) {
+export default function ModernBrandCard({ brand }: Props) {
   return (
     <Link href={brand.link} className="block group h-full">
       <div

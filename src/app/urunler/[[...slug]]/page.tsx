@@ -1,6 +1,5 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import nextDynamic from 'next/dynamic';
 import ProductsRepository from '@/lib/repositories/ProductsRepository';
 import CategoriesRepository from '@/lib/repositories/CategoriesRepository';

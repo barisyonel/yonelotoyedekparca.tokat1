@@ -41,7 +41,7 @@ export default function KVKKPage() {
             1. Veri Sorumlusu
           </Typography>
           <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.8 }}>
-            <strong>Yönel Oto Yedek Parça</strong> olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında veri sorumlusu sıfatıyla, 
+            <strong>Yönel Oto Yedek Parça</strong> olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu (&quot;KVKK&quot;) kapsamında veri sorumlusu sıfatıyla, 
             kişisel verilerinizin işlenmesi ve korunması konusunda aşağıdaki bilgilendirmeyi yapmaktayız.
           </Typography>
           <Typography variant="body1" sx={{ lineHeight: 1.8 }}>
@@ -94,7 +94,7 @@ export default function KVKKPage() {
             4. Kişisel Verilerin İşlenme Hukuki Sebepleri
           </Typography>
           <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.8 }}>
-            Kişisel verileriniz KVKK'nın 5. ve 6. maddelerinde belirtilen aşağıdaki hukuki sebeplere dayanarak işlenmektedir:
+            Kişisel verileriniz KVKK&apos;nın 5. ve 6. maddelerinde belirtilen aşağıdaki hukuki sebeplere dayanarak işlenmektedir:
           </Typography>
           <Box component="ul" sx={{ pl: 3, mb: 2 }}>
             <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>Açık rızanız</Typography></li>
@@ -144,7 +144,7 @@ export default function KVKKPage() {
             7. KVKK Kapsamındaki Haklarınız
           </Typography>
           <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.8 }}>
-            KVKK'nın 11. maddesi uyarınca, kişisel verilerinizle ilgili olarak aşağıdaki haklara sahipsiniz:
+            KVKK&apos;nın 11. maddesi uyarınca, kişisel verilerinizle ilgili olarak aşağıdaki haklara sahipsiniz:
           </Typography>
           <Box component="ul" sx={{ pl: 3, mb: 2 }}>
             <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>Kişisel verilerinizin işlenip işlenmediğini öğrenme</Typography></li>
@@ -152,7 +152,7 @@ export default function KVKKPage() {
             <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme</Typography></li>
             <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>Yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme</Typography></li>
             <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>Eksik veya yanlış işlenmişse düzeltilmesini isteme</Typography></li>
-            <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>KVKK'da öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme</Typography></li>
+            <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>KVKK&apos;da öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme</Typography></li>
             <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>Düzeltme, silme veya yok edilme işlemlerinin aktarıldığı üçüncü kişilere bildirilmesini isteme</Typography></li>
             <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>İşlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme</Typography></li>
             <li><Typography variant="body1" sx={{ lineHeight: 1.8 }}>Kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız halinde zararın giderilmesini talep etme</Typography></li>
@@ -196,4 +196,6 @@ export default function KVKKPage() {
     </Container>
   );
 }
+
+
 

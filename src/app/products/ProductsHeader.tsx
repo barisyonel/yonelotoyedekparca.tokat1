@@ -52,7 +52,7 @@ export default function ProductsHeader() {
             fontSize: { xs: '0.9375rem', md: '1rem' },
           }}
         >
-          "{search}" için arama sonuçları
+          &quot;{search}&quot; için arama sonuçları
         </Typography>
       )}
     </Box>
