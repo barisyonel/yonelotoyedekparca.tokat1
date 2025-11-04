@@ -98,7 +98,7 @@ export async function deleteSliderImage(id: number) {
     }
     return { 
       success: false, 
-      error: `Slider görseli silinemedi: ${error?.message || 'Bilinmeyen hata'}` 
+      error: `Slider görseli silinemedi: ${error instanceof Error ? error.message : 'Bilinmeyen hata'}` 
     };
   }
 }
