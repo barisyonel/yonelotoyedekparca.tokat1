@@ -90,7 +90,7 @@ export default function ModernHeroSlider() {
 
   // Animation variants - Komatsu style (Fade + Zoom)
   const slideVariants = {
-    enter: (direction: number) => ({
+    enter: () => ({
       opacity: 0,
       scale: 1.1,
     }),

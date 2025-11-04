@@ -89,10 +89,12 @@ export async function deleteSliderImage(id: number) {
     revalidatePath('/');
 
     return { success: true, message: 'Slider görseli başarıyla silindi!' };
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (process.env.NODE_ENV === 'development') {
       console.error('Slider görseli silme hatası:', error);
-      console.error('Hata detayı:', error?.message, error?.stack);
+      if (error instanceof Error) {
+        console.error('Hata detayı:', error.message, error.stack);
+      }
     }
     return { 
       success: false, 

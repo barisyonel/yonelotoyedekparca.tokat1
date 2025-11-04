@@ -178,7 +178,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
   };
 
   // Product Schema for SEO - Enhanced with model information
-  const productSchema: any = {
+  const productSchema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.Name,

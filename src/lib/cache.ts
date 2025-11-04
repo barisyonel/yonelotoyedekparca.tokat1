@@ -22,7 +22,7 @@ export const CACHE_REVALIDATE = {
 /**
  * Wrapper for unstable_cache with default configurations
  */
-export function createCache<T extends (...args: any[]) => Promise<any>>(
+export function createCache<T extends (...args: unknown[]) => Promise<unknown>>(
   fn: T,
   {
     tags,
@@ -41,7 +41,7 @@ export function createCache<T extends (...args: any[]) => Promise<any>>(
 /**
  * Generate cache key from parameters
  */
-export function generateCacheKey(prefix: string, params: Record<string, any>): string {
+export function generateCacheKey(prefix: string, params: Record<string, unknown>): string {
   const sortedParams = Object.keys(params)
     .sort()
     .map((key) => `${key}=${params[key]}`)

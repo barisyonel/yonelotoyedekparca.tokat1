@@ -126,7 +126,7 @@ export default function ProductsInfoCards() {
               fontSize: { xs: '1.5rem', md: '2rem' }
             }}
           >
-            Yönel Oto Yedek Parça - Türkiye'nin Güvenilir Tedarikçisi
+            Yönel Oto Yedek Parça - Türkiye&apos;nin Güvenilir Tedarikçisi
           </Typography>
           
           <Typography 

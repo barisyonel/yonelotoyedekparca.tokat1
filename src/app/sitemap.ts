@@ -64,7 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const categories = await CategoriesRepository.findAll();
 
     // Helper function to find parent category
-    const findParentCategory = (categoryId: number): any | null => {
+    const findParentCategory = (categoryId: number): { Id: number; Name: string; SubCategories?: Array<{ Id: number; Name: string }> } | null => {
       for (const cat of categories) {
         if (cat.SubCategories) {
           for (const sub of cat.SubCategories) {
@@ -78,7 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
 
     // Generate category URLs
-    const allCategories: any[] = [];
+    const allCategories: Array<{ Id: number; Name: string; SubCategories?: Array<{ Id: number; Name: string }> }> = [];
     categories.forEach((cat) => {
       allCategories.push(cat);
       if (cat.SubCategories) {

@@ -169,16 +169,6 @@ const blogPosts: BlogPost[] = [
   },
 ];
 
-const categories = [
-  { name: 'Tümü', slug: 'all', count: blogPosts.length },
-  { name: 'İveco Daily', slug: 'iveco-daily', count: blogPosts.filter(p => p.category === 'İveco Daily').length },
-  { name: 'Fiat Ducato', slug: 'fiat-ducato', count: blogPosts.filter(p => p.category === 'Fiat Ducato').length },
-  { name: 'Foton Traktör', slug: 'foton-traktor', count: blogPosts.filter(p => p.category === 'Foton Traktör').length },
-  { name: 'Karataş Traktör', slug: 'karatas-traktor', count: blogPosts.filter(p => p.category === 'Karataş Traktör').length },
-  { name: 'Mutlu Akü', slug: 'mutlu-aku', count: blogPosts.filter(p => p.category === 'Mutlu Akü').length },
-  { name: 'Genel', slug: 'genel', count: blogPosts.filter(p => p.category === 'Genel').length },
-];
-
 export default function BlogPage() {
   const featuredPosts = blogPosts.filter(post => post.featured);
   const regularPosts = blogPosts.filter(post => !post.featured);
