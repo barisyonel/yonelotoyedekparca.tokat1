@@ -102,7 +102,7 @@ export default function AboutPage() {
               <p className="text-xl md:text-2xl text-red-50 leading-relaxed max-w-4xl mx-auto">
                 1970 yılından bu yana <strong className="text-white">İveco Daily</strong>, <strong className="text-white">Fiat Ducato</strong>, 
                 <strong className="text-white"> Foton</strong>, <strong className="text-white">Karataş Traktör</strong> ve <strong className="text-white">Mutlu Akü</strong> yedek parça 
-                sektöründe Türkiye'nin önde gelen firmalarından biriyiz.
+                sektöründe Türkiye&apos;nin önde gelen firmalarından biriyiz.
               </p>
             </div>
 
@@ -195,7 +195,7 @@ export default function AboutPage() {
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">Hızlı Teslimat</h3>
                   <p className="text-gray-600 leading-relaxed mb-4">
-                    Türkiye'nin 81 iline aynı gün kargo ile maksimum 48 saat teslimat.
+                    Türkiye&apos;nin 81 iline aynı gün kargo ile maksimum 48 saat teslimat.
                   </p>
                   <ul className="space-y-2 text-sm text-gray-700">
                     <li className="flex items-center gap-2">
@@ -264,7 +264,7 @@ export default function AboutPage() {
                 Yarım Asrı Aşkın Tecrübe
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                1970'den bugüne, üç nesil boyunca süren başarı hikayemiz
+                1970&apos;den bugüne, üç nesil boyunca süren başarı hikayemiz
               </p>
             </div>
 
@@ -282,7 +282,7 @@ export default function AboutPage() {
                     </div>
                   </div>
                   <p className="text-lg text-gray-700 leading-relaxed">
-                    <strong className="text-primary">Yönel Oto Yedek Parça</strong>, 1970 yılında Tokat'ta kurulmuş, 
+                    <strong className="text-primary">Yönel Oto Yedek Parça</strong>, 1970 yılında Tokat&apos;ta kurulmuş, 
                     otomotiv ve tarım makinaları yedek parça sektöründe <strong>54 yıllık</strong> tecrübesiyle 
                     bölgenin en köklü firmalarından biridir.
                   </p>
@@ -418,7 +418,7 @@ export default function AboutPage() {
                 </div>
                 <div className="pb-12">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">Kuruluş</h3>
-                  <p className="text-gray-600">Tokat'ta oto yedek parça ticaretine başladık</p>
+                  <p className="text-gray-600">Tokat&apos;ta oto yedek parça ticaretine başladık</p>
                 </div>
               </div>
 
@@ -545,7 +545,7 @@ export default function AboutPage() {
                 <div className="text-5xl mb-4">🏆</div>
                 <h3 className="text-2xl font-bold mb-3">50+ Yıllık Tecrübe</h3>
                 <p className="text-red-50">
-                  1970'den beri sektörde, kuşaktan kuşağa aktarılan bilgi birikimi
+                  1970&apos;den beri sektörde, kuşaktan kuşağa aktarılan bilgi birikimi
                 </p>
               </div>
 
