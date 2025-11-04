@@ -9,6 +9,9 @@ import ProductsHeader from '@/app/products/ProductsHeader';
 import { Metadata } from 'next';
 import { slugify } from '@/lib/utils/slugify';
 import { notFound } from 'next/navigation';
+import { SliderImage } from '@/lib/models/SliderImage';
+import { Category } from '@/lib/models/Category';
+import { Product } from '@/lib/models/Product';
 
 // Dynamic imports for better code splitting
 const ProductCard = nextDynamic(() => import('@/app/products/ProductCard'), {
@@ -142,7 +145,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   const limit = parseInt(searchParams.limit as string || '12');
 
   // Fetch categories with error handling (hydration fix)
-  let categories: Array<{ Id: number; Name: string; SubCategories?: Array<{ Id: number; Name: string }> }> = [];
+  let categories: Category[] = [];
   try {
     categories = await CategoriesRepository.findAll();
   } catch (error) {
@@ -199,7 +202,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   }
 
   // Fetch data with error handling
-  let products: Array<{ Id: number; Name: string; Description?: string; ImageUrl?: string; CategoryName?: string; SubCategoryName?: string }> = [];
+  let products: Product[] = [];
   let total = 0;
   try {
     const result = await ProductsRepository.findAll({
@@ -218,7 +221,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   }
 
   // Fetch sliders with error handling
-  let sliders: Array<{ Id: number; ImageUrl?: string; Title?: string }> = [];
+  let sliders: SliderImage[] = [];
   try {
     sliders = await SliderImagesRepository.findAll();
   } catch (error) {

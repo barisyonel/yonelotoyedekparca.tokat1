@@ -238,7 +238,7 @@ export default function CategoriesTable({ categories }: Props) {
                     <Button
                       size="small"
                       startIcon={<AddIcon />}
-                      onClick={() => handleAddSubCategory(category.Id, category.Name)}
+                      onClick={() => handleAddSubCategory(category.Id)}
                       disabled={loading}
                       sx={{
                         color: '#dc2626',

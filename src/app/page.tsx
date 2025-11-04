@@ -467,7 +467,6 @@ export default async function Home() {
                 <AnimatedBrandCard
                   key={brand.name}
                   brand={brandWithLink}
-                  index={index}
                   animationClass={animationClass}
                   delayClass={delayClass}
                 />

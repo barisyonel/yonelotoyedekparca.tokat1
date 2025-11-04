@@ -256,28 +256,28 @@ export default async function ProductDetailPage({ params }: PageProps) {
   if (product.CategoryName) {
     const categoryLower = product.CategoryName.toLowerCase();
     if (categoryLower.includes('iveco')) {
-      productSchema.additionalProperty.push({
+      (productSchema.additionalProperty as Array<{ '@type': string; name: string; value: string }>).push({
         '@type': 'PropertyValue',
         name: 'Uyumlu Modeller',
         value: 'İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus',
       });
     }
     if (categoryLower.includes('ducato') || categoryLower.includes('fiat')) {
-      productSchema.additionalProperty.push({
+      (productSchema.additionalProperty as Array<{ '@type': string; name: string; value: string }>).push({
         '@type': 'PropertyValue',
         name: 'Uyumlu Modeller',
         value: 'Fiat Ducato 2.3, Fiat Ducato 3.0',
       });
     }
     if (categoryLower.includes('foton')) {
-      productSchema.additionalProperty.push({
+      (productSchema.additionalProperty as Array<{ '@type': string; name: string; value: string }>).push({
         '@type': 'PropertyValue',
         name: 'Uyumlu Modeller',
         value: 'Foton Traktör',
       });
     }
     if (categoryLower.includes('karataş')) {
-      productSchema.additionalProperty.push({
+      (productSchema.additionalProperty as Array<{ '@type': string; name: string; value: string }>).push({
         '@type': 'PropertyValue',
         name: 'Uyumlu Modeller',
         value: 'Karataş Traktör',

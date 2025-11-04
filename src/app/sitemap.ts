@@ -97,7 +97,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       return {
         url,
-        lastModified: category.CreatedAt || currentDate,
+        lastModified: currentDate,
         changeFrequency: 'daily' as const,
         priority: parentCat ? 0.9 : 0.85,
       };
