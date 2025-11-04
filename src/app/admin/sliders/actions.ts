@@ -2,6 +2,57 @@
 
 import SliderImagesRepository from '@/lib/repositories/SliderImagesRepository';
 import { revalidatePath } from 'next/cache';
+import crypto from 'crypto';
+
+// Cloudinary'den görsel silme fonksiyonu
+async function deleteFromCloudinary(publicId: string): Promise<void> {
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+  if (!cloudName || !apiKey || !apiSecret) {
+    console.warn('Cloudinary credentials eksik, görsel Cloudinary\'den silinemedi');
+    return;
+  }
+
+  if (!publicId) {
+    return;
+  }
+
+  try {
+    // Cloudinary destroy API'sini kullanarak görseli sil
+    const timestamp = Math.round(new Date().getTime() / 1000);
+    const signature = crypto
+      .createHash('sha1')
+      .update(`public_id=${publicId}&timestamp=${timestamp}${apiSecret}`)
+      .digest('hex');
+
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          public_id: publicId,
+          timestamp,
+          api_key: apiKey,
+          signature,
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    if (result.result !== 'ok') {
+      console.warn('Cloudinary silme uyarısı:', result);
+    }
+  } catch (error) {
+    // Cloudinary silme hatası kritik değil, sadece logla
+    console.warn('Cloudinary\'den görsel silinirken hata:', error);
+  }
+}
 
 // GET - All slider images
 export async function getSliderImages() {
@@ -70,18 +121,17 @@ export async function deleteSliderImage(id: number) {
     // Önce slider'ı bulalım
     const slider = await SliderImagesRepository.findById(id);
     if (!slider) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Slider bulunamadı:', id);
-      }
       return { success: false, error: 'Slider görseli bulunamadı' };
+    }
+
+    // Cloudinary'den görseli sil (publicId varsa)
+    if (slider.CloudinaryPublicId) {
+      await deleteFromCloudinary(slider.CloudinaryPublicId);
     }
 
     // Veritabanından sil
     const success = await SliderImagesRepository.delete(id);
     if (!success) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Veritabanından silme başarısız:', id);
-      }
       return { success: false, error: 'Slider görseli veritabanından silinemedi' };
     }
 
@@ -90,15 +140,20 @@ export async function deleteSliderImage(id: number) {
 
     return { success: true, message: 'Slider görseli başarıyla silindi!' };
   } catch (error: unknown) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Slider görseli silme hatası:', error);
-      if (error instanceof Error) {
-        console.error('Hata detayı:', error.message, error.stack);
-      }
+    const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
+    console.error('Slider görseli silme hatası:', errorMessage);
+    
+    // Veritabanı bağlantı hatası kontrolü
+    if (errorMessage.includes('connection') || errorMessage.includes('timeout') || errorMessage.includes('ECONNREFUSED')) {
+      return { 
+        success: false, 
+        error: 'Veritabanı bağlantı hatası. Lütfen daha sonra tekrar deneyin.' 
+      };
     }
+
     return { 
       success: false, 
-      error: `Slider görseli silinemedi: ${error instanceof Error ? error.message : 'Bilinmeyen hata'}` 
+      error: `Slider görseli silinemedi: ${errorMessage}` 
     };
   }
 }
