@@ -469,7 +469,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
 
         {/* Header with title - H1 for SEO */}
         <Box sx={{ mb: { xs: '1.5rem', md: '2rem' } }}>
-          <ProductsHeader activeCategory={activeCategory} parentCategory={parentCategory} />
+          <ProductsHeader activeCategory={activeCategory} />
         </Box>
 
         {/* Products Carousel - Admin tarafından eklenen slider görselleri */}

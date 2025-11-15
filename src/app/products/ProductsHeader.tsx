@@ -6,10 +6,9 @@ import { useSearchParams } from 'next/navigation';
 
 interface Props {
   activeCategory?: { Name: string } | null;
-  parentCategory?: { Name: string } | null;
 }
 
-export default function ProductsHeader({ activeCategory, parentCategory }: Props) {
+export default function ProductsHeader({ activeCategory }: Props) {
   const searchParams = useSearchParams();
   const search = searchParams.get('search');
   
