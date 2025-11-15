@@ -39,6 +39,11 @@
       ],
       "destination": "https://yonelotoyedekparca.com",
       "permanent": true
+    },
+    {
+      "source": "/products",
+      "destination": "/urunler",
+      "permanent": true
     }
   ]
 }

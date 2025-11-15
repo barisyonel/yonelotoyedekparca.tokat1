@@ -50,7 +50,7 @@ export default function Footer() {
       >
         <Grid container spacing={{ xs: 4, md: 6 }}>
           {/* Company Info */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Typography
               variant="h5"
               gutterBottom
@@ -153,8 +153,6 @@ export default function Footer() {
                 { href: '/blog', label: 'Blog' },
                 { href: '/hakkimizda', label: 'Hakkımızda' },
                 { href: '/iletisim', label: 'İletişim' },
-                { href: '/kvkk', label: 'KVKK' },
-                { href: '/gizlilik-politikasi', label: 'Gizlilik Politikası' },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -185,7 +183,7 @@ export default function Footer() {
           </Grid>
 
           {/* Product Categories */}
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <Typography
               variant="h6"
               gutterBottom
@@ -211,11 +209,11 @@ export default function Footer() {
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 3 }}>
               {[
-                { href: '/urunler?search=iveco', label: 'İveco Daily' },
-                { href: '/urunler?search=ducato', label: 'Fiat Ducato' },
-                { href: '/urunler?search=foton', label: 'Foton Traktör' },
-                { href: '/urunler?search=karataş', label: 'Karataş Traktör' },
-                { href: '/urunler?search=mutlu', label: 'Mutlu Akü' },
+                { href: '/urunler/iveco/daily', label: 'İveco Daily' },
+                { href: '/urunler/fiat/ducato', label: 'Fiat Ducato' },
+                { href: '/urunler/foton', label: 'Foton Traktör' },
+                { href: '/urunler/karatas', label: 'Karataş Traktör' },
+                { href: '/urunler/mutlu/aku', label: 'Mutlu Akü' },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -246,7 +244,7 @@ export default function Footer() {
           </Grid>
 
           {/* Contact Info */}
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={2}>
             <Typography
               variant="h6"
               gutterBottom
@@ -392,6 +390,150 @@ export default function Footer() {
                   Tokat, Türkiye
                 </Typography>
               </Box>
+            </Box>
+          </Grid>
+
+          {/* Yasal Metinler / Legal Documents */}
+          <Grid item xs={12} md={3}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                fontWeight: 700,
+                fontSize: { xs: '1.125rem', md: '1.25rem' },
+                mb: 2.5,
+                color: 'white',
+                position: 'relative',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  bottom: -8,
+                  left: 0,
+                  width: '3rem',
+                  height: '3px',
+                  background: 'linear-gradient(90deg, #ffd700, #ffed4e)',
+                  borderRadius: '2px',
+                },
+              }}
+            >
+              Yasal Metinler
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 3 }}>
+              <Link
+                href="/kvkk"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.9375rem',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#ffd700';
+                  e.currentTarget.style.transform = 'translateX(5px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.85)';
+                  e.currentTarget.style.transform = 'translateX(0)';
+                }}
+              >
+                <ArrowForwardIcon sx={{ fontSize: '0.875rem', opacity: 0.7 }} />
+                KVKK Aydınlatma Metni
+              </Link>
+              <Link
+                href="/gizlilik-politikasi"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.9375rem',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#ffd700';
+                  e.currentTarget.style.transform = 'translateX(5px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.85)';
+                  e.currentTarget.style.transform = 'translateX(0)';
+                }}
+              >
+                <ArrowForwardIcon sx={{ fontSize: '0.875rem', opacity: 0.7 }} />
+                Gizlilik Politikası
+              </Link>
+              <Link
+                href="/kullanim-kosullari"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.9375rem',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#ffd700';
+                  e.currentTarget.style.transform = 'translateX(5px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.85)';
+                  e.currentTarget.style.transform = 'translateX(0)';
+                }}
+              >
+                <ArrowForwardIcon sx={{ fontSize: '0.875rem', opacity: 0.7 }} />
+                Kullanım Koşulları
+              </Link>
+              <Link
+                href="/mesafeli-satis-sozlesmesi"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.9375rem',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#ffd700';
+                  e.currentTarget.style.transform = 'translateX(5px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.85)';
+                  e.currentTarget.style.transform = 'translateX(0)';
+                }}
+              >
+                <ArrowForwardIcon sx={{ fontSize: '0.875rem', opacity: 0.7 }} />
+                Mesafeli Satış Sözleşmesi
+              </Link>
+              <Link
+                href="/iade-ve-degisim"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.9375rem',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#ffd700';
+                  e.currentTarget.style.transform = 'translateX(5px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.85)';
+                  e.currentTarget.style.transform = 'translateX(0)';
+                }}
+              >
+                <ArrowForwardIcon sx={{ fontSize: '0.875rem', opacity: 0.7 }} />
+                İade ve Değişim
+              </Link>
             </Box>
           </Grid>
         </Grid>

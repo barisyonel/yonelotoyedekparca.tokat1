@@ -46,10 +46,10 @@ interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-// Metadata for SEO
+// Metadata for SEO - Optimized lengths (Title: max 580px ≈ 55-60 chars, Description: max 1000px ≈ 155 chars)
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  let title = 'İveco Daily ve Fiat Ducato Yedek Parçaları | Foton ve Karataş Traktör | Mutlu Akü | Yönel Oto';
-  let description = 'İveco Daily (120-14, 85-12, 65-9, 50NC, Eurobus), Fiat Ducato (2.3, 3.0), Foton Traktör, Karataş Traktör yedek parçaları ve Mutlu Akü. Tüm Türkiye\'ye online yedek parça satışı. Orijinal yedek parça, fren balata, motor parçaları, filtre. 50+ yıl tecrübe.';
+  let title = 'Yedek Parça Kataloğu - İveco, Ducato, Foton, Karataş - Yönel Oto';
+  let description = 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal parça, hızlı teslimat.';
   let keywords = 'iveco daily 120-14 yedek parça, iveco 85-12, iveco 65-9, iveco 50nc, iveco eurobus, fiat ducato 2.3, fiat ducato 3.0, foton traktör, karataş traktör, mutlu akü, orijinal yedek parça, online yedek parça, türkiye geneli yedek parça, tüm türkiye yedek parça';
   let canonicalUrl = 'https://yonelotoyedekparca.com/urunler';
 
@@ -64,8 +64,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           // Alt kategori varsa
           for (const sub of cat.SubCategories) {
             if (slugify(sub.Name) === subSlug) {
-              title = `${cat.Name} ${sub.Name} Yedek Parçaları | Tüm Türkiye'ye Online Satış | Yönel Oto Yedek Parça`;
-              description = `${cat.Name} ${sub.Name} yedek parça ürünleri. Tüm Türkiye'ye online yedek parça satışı ve hızlı teslimat. Orijinal ve kaliteli yedek parçalar. 50+ yıl tecrübe.`;
+              // Optimize title length (max 580px ≈ 55-60 chars)
+              const categoryTitle = `${cat.Name} ${sub.Name}`;
+              title = categoryTitle.length > 40 
+                ? `${categoryTitle.substring(0, 40)}... Yedek Parça - Yönel Oto`
+                : `${categoryTitle} Yedek Parçaları - Yönel Oto`;
+              // Optimize description length (max 1000px ≈ 155 chars)
+              description = `${cat.Name} ${sub.Name} yedek parça. Orijinal parça, hızlı teslimat.`;
               keywords = `${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()} yedek parça, ${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()} orijinal parça, ${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()} online, türkiye geneli ${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()}, tüm türkiye ${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()} yedek parça`;
               canonicalUrl = `https://yonelotoyedekparca.com/urunler/${parentSlug}/${subSlug}`;
               break;
@@ -74,30 +79,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         } else {
           // Sadece ana kategori
           const categoryName = cat.Name;
-          // İveco için özel title
+          // İveco için özel title - Optimized length
           if (categoryName.toLowerCase().includes('iveco')) {
-            title = `İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus Yedek Parçaları | Tüm Türkiye'ye Online Satış | Yönel Oto`;
-            description = `İveco Daily (120-14, 85-12, 65-9, 50NC, Eurobus) yedek parçaları. Tüm Türkiye'ye online yedek parça satışı ve hızlı teslimat. Orijinal İveco yedek parça, fren balata, motor parçaları, filtre. Türkiye geneli servis.`;
+            title = `İveco Daily Yedek Parçaları - 120-14, 85-12, 50NC - Yönel Oto`;
+            description = `İveco Daily 120-14, 85-12, 65-9, 50NC modelleri için orijinal yedek parça. Hızlı teslimat, Türkiye geneli servis.`;
             keywords = 'iveco daily 120-14 yedek parça, iveco 85-12 yedek parça, iveco 65-9 yedek parça, iveco 50nc yedek parça, iveco eurobus yedek parça, iveco daily fren balata, iveco motor parçaları, iveco daily online, türkiye geneli iveco daily, tüm türkiye iveco yedek parça';
           } else if (categoryName.toLowerCase().includes('ducato') || categoryName.toLowerCase().includes('fiat')) {
-            title = `Fiat Ducato 2.3 ve 3.0 Yedek Parçaları | Tüm Türkiye'ye Online Satış | Yönel Oto`;
-            description = `Fiat Ducato 2.3 ve 3.0 motor yedek parçaları. Tüm Türkiye'ye online yedek parça satışı ve hızlı teslimat. Orijinal Ducato yedek parça, fren balata, motor parçaları, filtre. Türkiye geneli servis.`;
+            title = `Fiat Ducato 2.3 ve 3.0 Yedek Parçaları - Yönel Oto`;
+            description = `Fiat Ducato 2.3 ve 3.0 motor yedek parçaları. Orijinal Ducato parça, hızlı teslimat.`;
             keywords = 'fiat ducato 2.3 yedek parça, fiat ducato 3.0 yedek parça, ducato yedek parça, ducato fren balata, ducato motor parçaları, ducato online, türkiye geneli ducato, tüm türkiye ducato yedek parça';
           } else if (categoryName.toLowerCase().includes('foton')) {
-            title = `Foton Traktör Yedek Parçaları | Tüm Türkiye'ye Online Satış | Yönel Oto`;
-            description = `Foton Traktör yedek parçaları. Tüm Türkiye'ye online yedek parça satışı ve hızlı teslimat. Orijinal Foton traktör parçaları, hidrolik sistemler, motor parçaları. Türkiye geneli servis.`;
+            title = `Foton Traktör Yedek Parçaları - Yönel Oto`;
+            description = `Foton Traktör yedek parçaları. Orijinal Foton traktör parçaları, hızlı teslimat. Türkiye geneli servis.`;
             keywords = 'foton traktör yedek parça, foton traktör parçaları, foton traktör aksesuar, foton traktör online, türkiye geneli foton traktör, tüm türkiye foton traktör yedek parça';
           } else if (categoryName.toLowerCase().includes('karataş')) {
-            title = `Karataş Traktör Yedek Parçaları | Tüm Türkiye'ye Online Satış | Yönel Oto`;
-            description = `Karataş Traktör yedek parçaları. Tüm Türkiye'ye online yedek parça satışı ve hızlı teslimat. Orijinal Karataş traktör parçaları, hidrolik sistemler, motor parçaları. Türkiye geneli servis.`;
+            title = `Karataş Traktör Yedek Parçaları - Yönel Oto`;
+            description = `Karataş Traktör yedek parçaları. Orijinal Karataş traktör parçaları, hızlı teslimat.`;
             keywords = 'karataş traktör yedek parça, karataş traktör parçaları, karataş traktör aksesuar, karataş traktör online, türkiye geneli karataş traktör, tüm türkiye karataş traktör yedek parça';
           } else if (categoryName.toLowerCase().includes('mutlu')) {
-            title = `Mutlu Akü Çeşitleri | Tüm Türkiye'ye Online Satış | Yönel Oto`;
-            description = `Mutlu Akü çeşitleri. Tüm Türkiye'ye online akü satışı ve hızlı teslimat. Araç ve traktör aküleri. Türkiye geneli servis.`;
+            title = `Mutlu Akü Çeşitleri - Yönel Oto`;
+            description = `Mutlu Akü çeşitleri. Online akü satışı, hızlı teslimat. Araç ve traktör aküleri.`;
             keywords = 'mutlu akü, mutlu akü fiyat, mutlu akü çeşitleri, mutlu akü online, türkiye geneli mutlu akü, tüm türkiye mutlu akü';
           } else {
-            title = `${categoryName} Yedek Parçaları | Tüm Türkiye'ye Online Satış | Yönel Oto Yedek Parça`;
-            description = `${categoryName} yedek parça ürünleri. Tüm Türkiye'ye online yedek parça satışı ve hızlı teslimat. Orijinal ve kaliteli yedek parçalar. 50+ yıl tecrübe.`;
+            // Optimize title length for other categories
+            const categoryTitle = categoryName.length > 40 
+              ? `${categoryName.substring(0, 40)}...`
+              : categoryName;
+            title = `${categoryTitle} Yedek Parçaları - Yönel Oto`;
+            description = `${categoryName} yedek parça ürünleri. Orijinal parça, hızlı teslimat.`;
             keywords = `${categoryName.toLowerCase()} yedek parça, ${categoryName.toLowerCase()} orijinal parça, ${categoryName.toLowerCase()} online, türkiye geneli ${categoryName.toLowerCase()}, tüm türkiye ${categoryName.toLowerCase()} yedek parça`;
           }
           canonicalUrl = `https://yonelotoyedekparca.com/urunler/${parentSlug}`;
@@ -163,10 +172,26 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
     const parentSlug = params.slug[0]; // İlk segment ana kategori slug'ı
     const subSlug = params.slug[1]; // İkinci segment alt kategori slug'ı (varsa)
     
-    // Önce ana kategoriyi bul
+    // Debug: Log all categories and their slugs
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔍 Looking for slug:', parentSlug);
+      console.log('📋 Available categories:');
+      categories.forEach(cat => {
+        console.log(`  - "${cat.Name}" → slug: "${slugify(cat.Name)}"`);
+        if (cat.SubCategories) {
+          cat.SubCategories.forEach(sub => {
+            console.log(`    └─ "${sub.Name}" → slug: "${slugify(sub.Name)}"`);
+          });
+        }
+      });
+    }
+    
+    // Önce ana kategoriyi bul - case-insensitive ve fuzzy matching
     for (const cat of categories) {
       const catSlug = slugify(cat.Name);
+      const catNameLower = cat.Name.toLowerCase();
       
+      // Exact match
       if (catSlug === parentSlug) {
         parentCategory = cat;
         
@@ -184,6 +209,9 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
           
           // Alt kategori bulunamadıysa 404
           if (!activeCategory) {
+            if (process.env.NODE_ENV === 'development') {
+              console.error('❌ Sub-category not found for slug:', subSlug);
+            }
             notFound();
           }
         } else {
@@ -193,10 +221,121 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
         }
         break;
       }
+      
+      // Fuzzy match: Check if category name contains the slug keywords
+      // e.g., "iveco-daily" matches "İveco Daily" or "Iveco Daily Yedek Parçaları"
+      const slugKeywords = parentSlug.split('-').filter(k => k.length > 2);
+      const allKeywordsMatch = slugKeywords.every(keyword => 
+        catNameLower.includes(keyword) || catSlug.includes(keyword)
+      );
+      
+      if (allKeywordsMatch && slugKeywords.length > 0) {
+        // Special cases for known brands - URL format: /urunler/parent/sub (e.g., /urunler/iveco/daily)
+        // For single-word slugs (foton, karatas), match directly
+        // For multi-word slugs, parentSlug should match parent category (e.g., "iveco" for /urunler/iveco/daily)
+        if (parentSlug === 'iveco' && subSlug === 'daily' && (catNameLower.includes('iveco'))) {
+          // Look for "Daily" subcategory under "Iveco" parent
+          if (cat.SubCategories) {
+            for (const sub of cat.SubCategories) {
+              const subCatSlug = slugify(sub.Name);
+              if (subCatSlug === 'daily' || sub.Name.toLowerCase().includes('daily')) {
+                parentCategory = cat;
+                categoryId = sub.Id;
+                activeCategory = sub;
+                if (process.env.NODE_ENV === 'development') {
+                  console.log('✅ Matched via fuzzy match:', cat.Name, '→', sub.Name);
+                }
+                break;
+              }
+            }
+            if (activeCategory) break;
+          }
+          // If no subcategory found, use parent category
+          if (!activeCategory && catNameLower.includes('iveco')) {
+            parentCategory = cat;
+            categoryId = cat.Id;
+            activeCategory = cat;
+            if (process.env.NODE_ENV === 'development') {
+              console.log('✅ Matched via fuzzy match (parent only):', cat.Name);
+            }
+            break;
+          }
+        } else if (parentSlug === 'fiat' && subSlug === 'ducato' && (catNameLower.includes('fiat') || catNameLower.includes('ducato'))) {
+          if (cat.SubCategories) {
+            for (const sub of cat.SubCategories) {
+              const subCatSlug = slugify(sub.Name);
+              if (subCatSlug === 'ducato' || sub.Name.toLowerCase().includes('ducato')) {
+                parentCategory = cat;
+                categoryId = sub.Id;
+                activeCategory = sub;
+                if (process.env.NODE_ENV === 'development') {
+                  console.log('✅ Matched via fuzzy match:', cat.Name, '→', sub.Name);
+                }
+                break;
+              }
+            }
+            if (activeCategory) break;
+          }
+          if (!activeCategory && (catNameLower.includes('fiat') || catNameLower.includes('ducato'))) {
+            parentCategory = cat;
+            categoryId = cat.Id;
+            activeCategory = cat;
+            if (process.env.NODE_ENV === 'development') {
+              console.log('✅ Matched via fuzzy match (parent only):', cat.Name);
+            }
+            break;
+          }
+        } else if (parentSlug === 'foton' && catNameLower.includes('foton')) {
+          parentCategory = cat;
+          categoryId = cat.Id;
+          activeCategory = cat;
+          if (process.env.NODE_ENV === 'development') {
+            console.log('✅ Matched via fuzzy match:', cat.Name);
+          }
+          break;
+        } else if (parentSlug === 'karatas' && (catNameLower.includes('karataş') || catNameLower.includes('karatas'))) {
+          parentCategory = cat;
+          categoryId = cat.Id;
+          activeCategory = cat;
+          if (process.env.NODE_ENV === 'development') {
+            console.log('✅ Matched via fuzzy match:', cat.Name);
+          }
+          break;
+        } else if (parentSlug === 'mutlu' && subSlug === 'aku' && (catNameLower.includes('mutlu'))) {
+          if (cat.SubCategories) {
+            for (const sub of cat.SubCategories) {
+              const subCatSlug = slugify(sub.Name);
+              if (subCatSlug === 'aku' || sub.Name.toLowerCase().includes('akü') || sub.Name.toLowerCase().includes('aku')) {
+                parentCategory = cat;
+                categoryId = sub.Id;
+                activeCategory = sub;
+                if (process.env.NODE_ENV === 'development') {
+                  console.log('✅ Matched via fuzzy match:', cat.Name, '→', sub.Name);
+                }
+                break;
+              }
+            }
+            if (activeCategory) break;
+          }
+          if (!activeCategory && catNameLower.includes('mutlu')) {
+            parentCategory = cat;
+            categoryId = cat.Id;
+            activeCategory = cat;
+            if (process.env.NODE_ENV === 'development') {
+              console.log('✅ Matched via fuzzy match (parent only):', cat.Name);
+            }
+            break;
+          }
+        }
+      }
     }
     
     // Ana kategori bulunamadıysa 404
     if (!parentCategory) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('❌ Category not found for slug:', parentSlug);
+        console.error('Available slugs:', categories.map(c => slugify(c.Name)));
+      }
       notFound();
     }
   }
@@ -328,9 +467,9 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
           />
         </Box>
 
-        {/* Header with title */}
+        {/* Header with title - H1 for SEO */}
         <Box sx={{ mb: { xs: '1.5rem', md: '2rem' } }}>
-          <ProductsHeader />
+          <ProductsHeader activeCategory={activeCategory} parentCategory={parentCategory} />
         </Box>
 
         {/* Products Carousel - Admin tarafından eklenen slider görselleri */}
@@ -441,6 +580,131 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
                 )}
               </>
             )}
+          </Box>
+        </Box>
+
+        {/* SEO Content Section - 250+ words for better SEO */}
+        <Box 
+          sx={{ 
+            mt: { xs: '3rem', md: '4rem' },
+            mb: { xs: '2rem', md: '3rem' },
+            bgcolor: '#f9fafb',
+            borderRadius: 3,
+            p: { xs: '1.5rem', md: '2.5rem', lg: '3rem' },
+          }}
+        >
+          <Typography 
+            variant="h2" 
+            component="h2"
+            sx={{ 
+              fontSize: { xs: '1.5rem', md: '2rem', lg: '2.25rem' },
+              fontWeight: 700,
+              color: '#1a1a1a',
+              mb: { xs: '1.5rem', md: '2rem' },
+            }}
+          >
+            {activeCategory 
+              ? `${activeCategory.Name} Yedek Parçaları Hakkında`
+              : 'Yedek Parça Kataloğumuz Hakkında'}
+          </Typography>
+          
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: { xs: '1.5rem', md: '2rem' },
+            }}
+          >
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                fontSize: { xs: '1rem', md: '1.125rem' },
+                lineHeight: 1.8,
+                color: '#4a4a4a',
+              }}
+            >
+              {activeCategory && activeCategory.Name.toLowerCase().includes('iveco') ? (
+                <>
+                  <strong>İveco Daily</strong> araç sahipleri için en kapsamlı yedek parça stoğuna sahibiz. 
+                  <strong> İveco Daily 120-14, 85-12, 65-9, 50NC</strong> ve <strong>Eurobus</strong> modelleri için motor aksamı, 
+                  şanzıman, diferansiyel, fren sistemi, elektrik parçaları ve kaporta ürünlerinde hem orijinal hem de kaliteli muadil ürünler sunmaktayız. 
+                  İveco Daily yedek parça kategorisinde; debriyaj ve volant, fren balata ve diski, yağ ve hava filtresi, yakıt filtresi, alternatör, 
+                  marş motoru, şarj dinamosu, su pompası, termostat gibi tüm bakım ürünleri depolarımızda mevcuttur. 
+                  50+ yıllık tecrübemizle, maksimum 2 iş günü içerisinde adresinize teslim ediyoruz.
+                </>
+              ) : activeCategory && (activeCategory.Name.toLowerCase().includes('ducato') || activeCategory.Name.toLowerCase().includes('fiat')) ? (
+                <>
+                  <strong>Fiat Ducato</strong> ticari araçlarınız için en kaliteli yedek parçaları sunuyoruz. 
+                  <strong> Fiat Ducato 2.3 MultiJet</strong> ve <strong>Fiat Ducato 3.0 MultiJet</strong> motor modellerine özel 
+                  orijinal ve yan sanayi yedek parçalarımız bulunmaktadır. Ducato fren balata, motor yağ filtresi, hava filtresi, 
+                  polen filtresi, su pompası, debriyaj seti, alternatör ve marş motoru gibi kritik parçalarda güvenle alışveriş yapabilirsiniz. 
+                  Tüm Türkiye&apos;ye online satış ve hızlı teslimat garantisi ile hizmetinizdeyiz. Orijinal Ducato yedek parça tercihinizde 
+                  profesyonel destek ve kalite garantisi sunuyoruz.
+                </>
+              ) : activeCategory && activeCategory.Name.toLowerCase().includes('foton') ? (
+                <>
+                  <strong>Foton Traktör</strong> sahipleri için en kapsamlı yedek parça stoğunu sunuyoruz. 
+                  Tarımda güvenilirlik ve dayanıklılığıyla öne çıkan Foton traktörleriniz için motor parçaları, hidrolik sistem elemanları, 
+                  şanzıman aksam, fren grubu ve elektrik sistemleri başta olmak üzere tüm yedek parça kategorilerinde hizmet veriyoruz. 
+                  Foton traktör yedek parça kategorisinde; piston ve piston segmanları, silindir kapağı ve contaları, enjektör ve yakıt pompaları, 
+                  hidrolik pompa ve motorlar, hidrolik silindir ve pistonlar, debriyaj balata ve baskı, şanzıman dişli takımları gibi tüm kritik 
+                  parçalar stoklarımızda mevcuttur. Tarımda kesintisiz üretim için güvenilir parçalar.
+                </>
+              ) : activeCategory && activeCategory.Name.toLowerCase().includes('karataş') ? (
+                <>
+                  <strong>Karataş Traktör</strong>, Türkiye&apos;nin yerli üretim traktör markalarından biridir. 
+                  Karataş traktörleriniz için orijinal ve yan sanayi yedek parçalarında uzman kadromuz ve geniş stoklarımızla hizmetinizdeyiz. 
+                  Tarla çalışmalarınızda kesintisiz üretim için ihtiyaç duyduğunuz tüm yedek parçaları hızlı ve güvenilir şekilde tedarik ediyoruz. 
+                  Karataş traktör yedek parça kategorisinde; motor revizyonu, şanzıman tamiri, hidrolik sistem bakımı, fren sistemi yenileme ve elektrik 
+                  tesisatı onarımı için ihtiyaç duyacağınız tüm parçalar stoklarımızda mevcuttur. Yerli üretimin gücüyle, uygun fiyat avantajı ve hızlı teslimat garantisi sunuyoruz.
+                </>
+              ) : activeCategory && activeCategory.Name.toLowerCase().includes('mutlu') ? (
+                <>
+                  <strong>Mutlu Akü</strong> yetkili satıcısı olarak, otomobil, hafif ticari, ağır vasıta ve traktör aküsü çeşitlerinde 
+                  en uygun fiyatları sunuyoruz. 45 Ah&apos;dan 200 Ah&apos;a kadar farklı kapasitelerde Mutlu akü stoğumuz mevcuttur. 
+                  Araç ve traktörleriniz için güvenilir enerji çözümleri sunan Mutlu akü, uzun ömürlü ve yüksek performanslı akü teknolojisi ile 
+                  öne çıkmaktadır. Tüm Türkiye&apos;ye online akü satışı ve hızlı teslimat ile hizmetinizdeyiz. 
+                  Mutlu akü fiyatları ve kampanyalarımız için bizi arayabilirsiniz. Orijinal Mutlu akü garantisi ile güvenle alışveriş yapabilirsiniz.
+                </>
+              ) : (
+                <>
+                  <strong>Yönel Oto Yedek Parça</strong> olarak, <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus), 
+                  <strong> Fiat Ducato</strong> (2.3, 3.0), <strong>Foton Traktör</strong>, <strong>Karataş Traktör</strong> yedek parçaları ve 
+                  <strong> Mutlu Akü</strong> satışında Türkiye&apos;nin güvenilir adresiyiz. 50+ yıllık tecrübemizle, 
+                  orijinal ve kaliteli yan sanayi ürünlerini tüm Türkiye&apos;ye hızlı teslimat ile sunuyoruz. 
+                  Yedek parça katalogumuzda; fren sistemleri, motor yedek parçaları, filtre grubu, elektrik sistemleri, yağlar ve balata kampana 
+                  gibi tüm kategori seçeneklerinde geniş ürün yelpazesi bulunmaktadır. Orijinal ürün garantisi, aynı gün kargo ve uzman destek 
+                  garantisi ile hizmetinizdeyiz. Online yedek parça satışı konusunda Türkiye&apos;nin önde gelen firmalarından biri olarak, 
+                  müşteri memnuniyetini ön planda tutuyoruz.
+                </>
+              )}
+            </Typography>
+
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                fontSize: { xs: '1rem', md: '1.125rem' },
+                lineHeight: 1.8,
+                color: '#4a4a4a',
+              }}
+            >
+              {activeCategory ? (
+                <>
+                  Kategorimizdeki ürünlerimiz, <strong>orijinal ürün garantisi</strong> ile satılmaktadır. 
+                  Tüm Türkiye&apos;ye <strong>aynı gün kargo</strong> hizmeti sunuyoruz. 
+                  Ürünlerimiz hakkında detaylı bilgi almak için WhatsApp hattımızdan veya telefon numaramızdan iletişime geçebilirsiniz. 
+                  <strong> 50+ yıllık tecrübemiz</strong> ile, aradığınız yedek parçayı en doğru şekilde bulmanıza yardımcı oluyoruz.
+                </>
+              ) : (
+                <>
+                  Katalogumuzdaki tüm ürünler, <strong>orijinal ürün garantisi</strong> ile satılmaktadır. 
+                  <strong> İveco Daily</strong>, <strong>Fiat Ducato</strong>, <strong>Foton</strong> ve <strong>Karataş Traktör</strong> yedek parçaları 
+                  için Türkiye&apos;nin en geniş stoklarına sahibiz. Tüm Türkiye&apos;ye <strong>aynı gün kargo</strong> hizmeti sunuyoruz. 
+                  Ürünlerimiz hakkında detaylı bilgi almak için WhatsApp hattımızdan veya telefon numaramızdan iletişime geçebilirsiniz. 
+                  <strong> 50+ yıllık tecrübemiz</strong> ile, aradığınız yedek parçayı en doğru şekilde bulmanıza yardımcı oluyoruz.
+                </>
+              )}
+            </Typography>
           </Box>
         </Box>
 

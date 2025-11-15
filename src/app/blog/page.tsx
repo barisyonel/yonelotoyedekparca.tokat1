@@ -219,13 +219,12 @@ export default function BlogPage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-tight mt-4">
-              Uzman Tavsiyeleri ve<br />
-              <span className="text-yellow-300">Bakım Rehberleri</span>
+              İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parça Bakım Rehberleri
             </h1>
             <p className="text-xl md:text-2xl text-gray-900 max-w-3xl mx-auto leading-relaxed font-medium">
-              İveco Daily, Fiat Ducato, Foton, Karataş Traktör ve Mutlu Akü için 
+              <strong className="text-gray-900">İveco Daily, Fiat Ducato, Foton, Karataş Traktör</strong> ve <strong>Mutlu Akü</strong> için 
               <strong className="text-gray-900"> 50+ yıllık tecrübemizle </strong> 
-              hazırladığımız profesyonel içerikler
+              hazırladığımız profesyonel bakım rehberleri ve uzman tavsiyeleri
             </p>
           </div>
         </div>
@@ -361,6 +360,127 @@ export default function BlogPage() {
                   </div>
                 </Link>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SEO Content Section - 800+ words for better SEO */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="prose prose-lg max-w-none">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parça Bakım Rehberleri
+              </h2>
+              
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                <strong>Yönel Oto Yedek Parça</strong> olarak, <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus), 
+                <strong> Fiat Ducato</strong> (2.3, 3.0), <strong>Foton Traktör</strong>, <strong>Karataş Traktör</strong> yedek parçaları ve 
+                <strong> Mutlu Akü</strong> konusunda 50+ yıllık tecrübemizle, araç sahipleri için kapsamlı <strong>bakım rehberleri</strong> ve 
+                <strong> uzman tavsiyeleri</strong> hazırlıyoruz. Blog sayfamızda, yedek parça seçimi, periyodik bakım, onarım teknikleri ve 
+                bakım ipuçları hakkında detaylı bilgiler bulabilirsiniz.
+              </p>
+
+              <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+                İveco Daily Yedek Parça Bakım Rehberleri
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                <strong>İveco Daily</strong> araçlarınız için <Link href="/urunler/iveco/daily" className="text-primary hover:underline font-semibold">yedek parça kataloğumuz</Link> kapsamında, 
+                motor aksamı, şanzıman, diferansiyel, fren sistemi, elektrik parçaları ve kaporta ürünleri hakkında detaylı rehberler sunuyoruz. 
+                <strong> İveco Daily 120-14, 85-12, 65-9, 50NC</strong> ve <strong>Eurobus</strong> modelleri için özel bakım tavsiyeleri, 
+                yedek parça seçimi, orijinal ve yan sanayi parça farkları hakkında blog yazılarımızda kapsamlı bilgiler bulabilirsiniz. 
+                İveco Daily bakım rehberleri sayesinde, araçlarınızın performansını maksimum seviyede tutabilir ve beklenmedik arızaları önleyebilirsiniz.
+              </p>
+
+              <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+                Fiat Ducato Motor Bakımı ve Yedek Parça
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                <strong>Fiat Ducato</strong> ticari araçlarınız için <Link href="/urunler/fiat/ducato" className="text-primary hover:underline font-semibold">Ducato yedek parça ürünlerimiz</Link> ile, 
+                <strong> 2.3 MultiJet</strong> ve <strong>3.0 HDI</strong> motorlarının uzun ömürlü olması için gerekli periyodik bakımlar hakkında detaylı rehberler hazırladık. 
+                Ducato motor bakımı, fren sistemi bakımı, filtre değişimleri, ön takım parçaları (salıncak, rotil, bijon) ve diğer kritik yedek parçalar hakkında 
+                blog yazılarımızda profesyonel tavsiyeler bulabilirsiniz. Ducato bakım rehberleri, ticari araçlarınızın verimliliğini artırmanıza yardımcı olacaktır.
+              </p>
+
+              <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+                Foton ve Karataş Traktör Yedek Parça Bakım İpuçları
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                <strong>Foton Traktör</strong> ve <strong>Karataş Traktör</strong> sahipleri için <Link href="/urunler/foton" className="text-primary hover:underline font-semibold">Foton yedek parça kataloğumuz</Link> ve 
+                <Link href="/urunler/karatas" className="text-primary hover:underline font-semibold">Karataş yedek parça ürünlerimiz</Link> kapsamında, 
+                tarımda kesintisiz üretim için gerekli bakım rehberleri hazırladık. Foton ve Karataş traktör bakım rehberlerinde; 
+                hidrolik sistem bakımı, filtre değişim aralıkları (hava, yağ, yakıt, hidrolik), motor parçaları bakımı, şanzıman bakımı ve 
+                elektrik sistemleri hakkında detaylı bilgiler bulabilirsiniz. Traktör yedek parça bakımı, tarımsal üretimde verimliliği doğrudan etkiler.
+              </p>
+
+              <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+                Mutlu Akü Bakımı ve Seçimi
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                <strong>Mutlu Akü</strong> çeşitlerimiz için <Link href="/urunler/mutlu/aku" className="text-primary hover:underline font-semibold">Mutlu akü kataloğumuz</Link> kapsamında, 
+                akü bakımı, şarj durumu kontrolü, kış aylarında dikkat edilmesi gerekenler ve akü seçimi hakkında rehberler hazırladık. 
+                Otomobil, hafif ticari, ağır vasıta ve traktör aküleri için farklı bakım önerileri, uzun ömürlü kullanım ipuçları ve 
+                doğru akü seçimi konularında blog yazılarımızda detaylı bilgiler bulabilirsiniz. Mutlu akü bakım rehberleri sayesinde, 
+                araçlarınızın elektrik sisteminin sorunsuz çalışmasını sağlayabilirsiniz.
+              </p>
+
+              <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+                Orijinal ve Yan Sanayi Yedek Parça Seçimi
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                Yedek parça seçiminde <strong>orijinal parça</strong> mı yoksa <strong>kaliteli yan sanayi</strong> parça mı tercih edilmeli? 
+                Hangi parçalarda orijinal şart, hangi parçalarda yan sanayi kullanılabilir? Fiyat-performans dengesini nasıl kurarsınız? 
+                Blog yazılarımızda, orijinal ve yan sanayi yedek parça farkları, kalite standartları, garanti kapsamı ve 
+                hangi durumlarda hangi seçeneğin daha uygun olduğu konularında detaylı açıklamalar bulabilirsiniz. 
+                <Link href="/urunler" className="text-primary hover:underline font-semibold">Yedek parça kataloğumuz</Link> kapsamında, 
+                hem orijinal hem de kaliteli yan sanayi ürünleri sunuyoruz.
+              </p>
+
+              <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+                Periyodik Bakım ve Onarım Tavsiyeleri
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                <strong>İveco Daily, Fiat Ducato, Foton ve Karataş Traktör</strong> yedek parça bakımında, periyodik bakımın önemi büyüktür. 
+                Motor bakımı, fren sistemi kontrolleri, filtre değişimleri, yağ kontrolleri ve elektrik sistemleri bakımı konularında 
+                blog yazılarımızda uzman tavsiyeleri bulabilirsiniz. Düzenli bakım yaparak, araçlarınızın ömrünü uzatabilir, 
+                beklenmedik arızaları önleyebilir ve yakıt tüketimini optimize edebilirsiniz. 50+ yıllık tecrübemizle, 
+                yedek parça bakımı konusunda profesyonel destek sunuyoruz.
+              </p>
+
+              <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+                Yedek Parça Temini ve Hızlı Teslimat
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                <strong>Yönel Oto Yedek Parça</strong> olarak, tüm Türkiye&apos;ye <strong>aynı gün kargo</strong> hizmeti sunuyoruz. 
+                İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları için geniş stoklarımızla, 
+                ihtiyacınız olan parçayı hızlı bir şekilde tedarik edebiliriz. <Link href="/urunler" className="text-primary hover:underline font-semibold">Online yedek parça kataloğumuz</Link> üzerinden, 
+                aradığınız ürünü kolayca bulabilir ve sipariş verebilirsiniz. <strong>Orijinal ürün garantisi</strong>, 
+                profesyonel destek ve hızlı teslimat ile hizmetinizdeyiz.
+              </p>
+
+              <div className="bg-gray-50 rounded-2xl p-8 mt-8 border-2 border-gray-200">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  Blog Yazılarımızdan Faydalanın
+                </h3>
+                <p className="text-lg text-gray-700 leading-relaxed mb-4">
+                  Blog sayfamızda, <strong>İveco Daily</strong> fren sistemi bakımı, <strong>Fiat Ducato</strong> motor bakımı, 
+                  <strong> Foton ve Karataş Traktör</strong> hidrolik sistem bakımı, <strong>Mutlu Akü</strong> bakımı ve 
+                  orijinal-yan sanayi yedek parça seçimi gibi konularda detaylı rehberler bulabilirsiniz. 
+                  Her blog yazısı, 50+ yıllık tecrübemizle hazırlanmış uzman tavsiyeleri içermektedir.
+                </p>
+                <div className="flex flex-wrap gap-3 mt-4">
+                  {blogPosts.slice(0, 6).map((post) => (
+                    <Link
+                      key={post.slug}
+                      href={`/blog/${post.slug}`}
+                      className="text-primary hover:underline font-semibold text-base"
+                    >
+                      → {post.title.length > 60 ? `${post.title.substring(0, 60)}...` : post.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -4,20 +4,47 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useSearchParams } from 'next/navigation';
 
-export default function ProductsHeader() {
+interface Props {
+  activeCategory?: { Name: string } | null;
+  parentCategory?: { Name: string } | null;
+}
+
+export default function ProductsHeader({ activeCategory, parentCategory }: Props) {
   const searchParams = useSearchParams();
   const search = searchParams.get('search');
   
-  // SEO için dinamik H1
+  // SEO için dinamik H1 - Optimized length (max 580 pixels ≈ 55-60 characters)
   let h1Text = 'Yedek Parça Kataloğu';
   
-  if (search) {
+  // Önce kategoriye göre belirle
+  if (activeCategory) {
+    const categoryName = activeCategory.Name.toLowerCase();
+    if (categoryName.includes('iveco')) {
+      h1Text = 'İveco Daily Yedek Parçaları';
+    } else if (categoryName.includes('ducato') || categoryName.includes('fiat')) {
+      h1Text = 'Fiat Ducato Yedek Parçaları';
+    } else if (categoryName.includes('foton')) {
+      h1Text = 'Foton Traktör Yedek Parçaları';
+    } else if (categoryName.includes('karataş')) {
+      h1Text = 'Karataş Traktör Yedek Parçaları';
+    } else if (categoryName.includes('mutlu')) {
+      h1Text = 'Mutlu Akü Çeşitleri';
+    } else {
+      // Kategori adını kullan ama uzunsa kısalt
+      h1Text = `${activeCategory.Name} Yedek Parçaları`;
+      if (h1Text.length > 60) {
+        h1Text = activeCategory.Name.length > 45 
+          ? `${activeCategory.Name.substring(0, 45)}... Yedek Parça`
+          : `${activeCategory.Name} Yedek Parça`;
+      }
+    }
+  } else if (search) {
     // Arama terimi varsa özelleştir
     const searchLower = search.toLowerCase();
     if (searchLower.includes('iveco')) {
-      h1Text = 'İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus Yedek Parçaları';
+      h1Text = 'İveco Daily Yedek Parçaları';
     } else if (searchLower.includes('ducato') || searchLower.includes('fiat')) {
-      h1Text = 'Fiat Ducato 2.3 ve 3.0 Yedek Parçaları';
+      h1Text = 'Fiat Ducato Yedek Parçaları';
     } else if (searchLower.includes('foton')) {
       h1Text = 'Foton Traktör Yedek Parçaları';
     } else if (searchLower.includes('karataş')) {
@@ -25,7 +52,9 @@ export default function ProductsHeader() {
     } else if (searchLower.includes('mutlu')) {
       h1Text = 'Mutlu Akü Çeşitleri';
     } else {
-      h1Text = `${search} Yedek Parçaları`;
+      // Arama terimini kullan ama uzunsa kısalt
+      const searchText = search.length > 40 ? `${search.substring(0, 40)}...` : search;
+      h1Text = `${searchText} Yedek Parçaları`;
     }
   }
 

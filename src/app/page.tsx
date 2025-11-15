@@ -29,8 +29,8 @@ const Testimonials = dynamic(() => import('@/components/Testimonials'), {
 
   // Advanced SEO Optimized Metadata
 export const metadata: Metadata = {
-  title: 'İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus Yedek Parça | Fiat Ducato 2.3, 3.0 | Foton, Karataş Traktör | Mutlu Akü - Yönel Oto',
-  description: 'İveco Daily (120-14, 85-12, 65-9, 50NC, Eurobus), Fiat Ducato (2.3, 3.0), Foton Traktör, Karataş Traktör yedek parçaları ve Mutlu Akü. Orijinal yedek parça, fren balata, motor parçaları, filtre. Tüm Türkiye\'ye hızlı teslimat, 50+ yıl tecrübe. Online yedek parça satışı.',
+  title: 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parçaları | Mutlu Akü - Yönel Oto',
+  description: 'İveco Daily (120-14, 85-12, 65-9, 50NC), Fiat Ducato (2.3, 3.0), Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal yedek parça, hızlı teslimat. 50+ yıl tecrübe.',
   keywords: 'iveco daily 120-14 yedek parça, iveco 85-12 yedek parça, iveco 65-9 yedek parça, iveco 50nc yedek parça, iveco eurobus yedek parça, fiat ducato 2.3 yedek parça, fiat ducato 3.0 yedek parça, foton traktör yedek parça, karataş traktör yedek parça, mutlu akü, orijinal yedek parça, online yedek parça, türkiye geneli yedek parça, tüm türkiye yedek parça, türkiye yedek parça satışı, iveco daily fren balata, iveco motor parçaları, ducato filtre',
   alternates: {
     canonical: 'https://yonelotoyedekparca.com',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus Yedek Parça | Fiat Ducato 2.3, 3.0 | Foton, Karataş Traktör',
-    description: 'İveco Daily (120-14, 85-12, 65-9, 50NC, Eurobus), Fiat Ducato (2.3, 3.0), Foton Traktör, Karataş Traktör yedek parçaları ve Mutlu Akü. Orijinal yedek parça, tüm Türkiye\'ye hızlı teslimat, 50+ yıl tecrübe.',
+    description: 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal yedek parça, hızlı teslimat. 50+ yıl tecrübe.',
     url: 'https://yonelotoyedekparca.com',
     siteName: 'Yönel Oto Yedek Parça',
     locale: 'tr_TR',
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus | Fiat Ducato 2.3, 3.0 | Foton, Karataş Traktör Yedek Parça',
-    description: 'İveco Daily (120-14, 85-12, 65-9, 50NC, Eurobus), Fiat Ducato (2.3, 3.0), Foton Traktör, Karataş Traktör yedek parçaları ve Mutlu Akü. Orijinal yedek parça, hızlı teslimat.',
+    description: 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal yedek parça, hızlı teslimat.',
     images: ['/twitter-image.jpg'],
   },
 };
@@ -89,7 +89,8 @@ export default async function Home() {
     }
   }
 
-  // Kategori ID'den slug'a mapping (sabit değerler - hydration hatası önleme)
+  // Kategori ID'den slug'a mapping (sabit değerler - hydration hatası önleme ve performans optimizasyonu)
+  // Static slugs are used instead of database queries for better performance
   const categorySlugMap: Record<number, string> = {
     17: 'iveco-daily',
     22: 'iveco-120-14',
@@ -107,7 +108,8 @@ export default async function Home() {
     return categorySlugMap[id] || '';
   };
 
-  // Brand categories with models
+  // Brand categories with models - using static slug mapping for better performance
+  // URL format: /urunler/parent-slug/sub-slug (e.g., /urunler/iveco/daily)
   const brands = [
     {
       name: 'İveco Daily',
@@ -115,7 +117,7 @@ export default async function Home() {
       icon: '🚐',
       image: '/assets/dailly.png',
       description: 'İveco Daily serisi için orijinal yedek parçalar',
-      slug: 'iveco-daily',
+      slug: 'iveco/daily', // Parent/Sub category format
     },
     {
       name: 'Fiat Ducato',
@@ -123,7 +125,7 @@ export default async function Home() {
       icon: '🚚',
       image: '/assets/d.png',
       description: 'Fiat Ducato ticari araç yedek parçaları',
-      slug: 'fiat-ducato',
+      slug: 'fiat/ducato', // Parent/Sub category format
     },
     {
       name: 'Karataş Traktör',
@@ -131,7 +133,7 @@ export default async function Home() {
       icon: '🚜',
       image: '/assets/karat.png',
       description: 'Karataş traktör yedek parça ve aksesuar çeşitleri',
-      slug: 'karatas',
+      slug: 'karatas', // Single category (no subcategory)
     },
     {
       name: 'Foton Traktör',
@@ -139,7 +141,7 @@ export default async function Home() {
       icon: '🚜',
       image: '/assets/foton.png',
       description: 'Foton traktör yedek parçaları ve bakım ürünleri',
-      slug: 'foton',
+      slug: 'foton', // Single category (no subcategory)
     },
     {
       name: 'Mutlu Akü',
@@ -147,45 +149,45 @@ export default async function Home() {
       icon: '🔋',
       image: '/images/60aku.png',
       description: 'Mutlu akü çeşitleri, güvenilir enerji çözümleri',
-      slug: 'mutlu-aku',
+      slug: 'mutlu/aku', // Parent/Sub category format
     },
   ];
 
-  // Product categories with SEO data
+  // Product categories with SEO data - Using canonical URLs without query parameters
   const productCategories = [
     { 
       name: 'Fren Sistemleri', 
-      link: '/urunler?search=fren',
+      link: '/urunler',
       description: 'Fren balata, disk ve hidrolik parçaları',
       color: 'from-red-500 to-red-700',
     },
     { 
       name: 'Motor Yedek Parça', 
-      link: '/urunler?search=motor',
+      link: '/urunler',
       description: 'Motor revizyonu ve motor parçaları',
       color: 'from-blue-500 to-blue-700',
     },
     { 
       name: 'Filtre Grubu', 
-      link: '/urunler?search=filtre',
+      link: '/urunler',
       description: 'Yağ, hava, yakıt ve polen filtreleri',
       color: 'from-green-500 to-green-700',
     },
     { 
       name: 'Elektrik Sistemleri', 
-      link: '/urunler?search=elektrik',
+      link: '/urunler',
       description: 'Alternatör, marş ve elektrik aksam',
       color: 'from-yellow-500 to-orange-600',
     },
     { 
       name: 'Yağlar', 
-      link: '/urunler?search=yağ',
+      link: '/urunler',
       description: 'Motor, şanzıman ve hidrolik yağları',
       color: 'from-purple-500 to-purple-700',
     },
     { 
       name: 'Balata & Kampana', 
-      link: '/urunler?search=balata',
+      link: '/urunler',
       description: 'Fren balata, kampana ve baskı',
       color: 'from-gray-600 to-gray-800',
     },
@@ -404,9 +406,9 @@ export default async function Home() {
       <section className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto text-center">
-            {/* Main Heading - H1 for SEO */}
+            {/* Main Heading - Single H1 for SEO (optimized length) */}
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-primary mb-6 leading-tight">
-              İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus ve Fiat Ducato 2.3, 3.0 Yedek Parçaları
+              İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parçaları
             </h1>
             
             {/* Description - SEO Optimized */}
@@ -1296,8 +1298,42 @@ export default async function Home() {
                   <strong>Mutlu Akü</strong> yetkili satıcısı olarak, otomobil, hafif ticari, 
                   ağır vasıta ve traktör aküsü çeşitlerinde en uygun fiyatları sunuyoruz. 
                   45 Ah&apos;dan 200 Ah&apos;a kadar farklı kapasitelerde Mutlu akü stoğumuz mevcuttur. 
-                  Mutlu akü fiyatları ve kampanyalarımız için bizi arayabilirsiniz.
+                  Mutlu akü fiyatları ve kampanyalarımız için bizi arayabilirsiniz. 
+                  Mutlu akü bakımı ve kullanım ömrü hakkında detaylı bilgiler için 
+                  <Link href="/blog" className="text-primary hover:underline font-semibold"> blog sayfamızı</Link> ziyaret edebilirsiniz.
                 </p>
+              </div>
+            </div>
+
+            {/* Blog Link Section - Internal Link for SEO */}
+            <div className="mb-12 bg-gradient-to-br from-primary/10 to-red-50 rounded-2xl shadow-lg p-8 border-2 border-primary/20">
+              <h3 className="text-3xl font-bold text-gray-900 mb-6 border-b-4 border-primary pb-4">
+                Yedek Parça Bakım Rehberleri ve Uzman Tavsiyeleri
+              </h3>
+              <div className="prose prose-lg max-w-none">
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  50+ yıllık tecrübemizle, <strong>İveco Daily, Fiat Ducato, Foton ve Karataş Traktör</strong> yedek parça bakımı, 
+                  periyodik bakım, onarım teknikleri ve bakım ipuçları hakkında kapsamlı rehberler hazırlıyoruz. 
+                  Blog sayfamızda, yedek parça seçimi, orijinal ve yan sanayi parça farkları, 
+                  motor bakımı, fren sistemi bakımı, filtre değişimleri ve daha fazlası hakkında detaylı içerikler bulabilirsiniz.
+                </p>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  <strong>Blog yazılarımız</strong> arasında; İveco Daily yedek parça seçimi rehberi, 
+                  Fiat Ducato motor bakımı ipuçları, Foton traktör yedek parça temini, 
+                  Karataş traktör hidrolik sistem bakımı, Mutlu akü bakımı ve orijinal-yan sanayi yedek parça farkları gibi 
+                  konularda uzman tavsiyeleri bulabilirsiniz.
+                </p>
+                <div className="mt-6">
+                  <Link 
+                    href="/blog" 
+                    className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-red-700 transition-all shadow-lg hover:scale-105"
+                  >
+                    📚 Blog Yazılarımızı İnceleyin
+                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </Link>
+                </div>
               </div>
             </div>
 

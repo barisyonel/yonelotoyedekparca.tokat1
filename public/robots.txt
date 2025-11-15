@@ -64,9 +64,16 @@ Allow: /products/*
 # Avoid duplicate content from query parameters
 Disallow: /urunler?*
 Disallow: /products?*
-Disallow: /*?page=
-Disallow: /*?limit=
-Disallow: /*?sort=
+Disallow: /*?page=*
+Disallow: /*?limit=*
+Disallow: /*?sort=*
+Disallow: /*?search=*
+Disallow: /*?categoryId=*
+Disallow: /*?subCategory=*
+
+# Allow canonical URLs only (no query parameters)
+Allow: /urunler$
+Allow: /products/
 
 # ==============================================
 # GOOGLE BOT SPECIFIC

@@ -72,30 +72,30 @@ export default function NotFound() {
           </Link>
         </div>
 
-        {/* Suggestions */}
+        {/* Suggestions - Using SEO-friendly slugs instead of query parameters */}
         <div className="mt-12 pt-8 border-t border-gray-200">
           <p className="text-sm text-gray-500 mb-4">Popüler Sayfalar:</p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link
-              href="/urunler?categoryId=17"
+              href="/urunler/iveco/daily"
               className="text-sm bg-gray-50 hover:bg-primary hover:text-white text-gray-700 px-4 py-2 rounded-full transition-all"
             >
               İveco Daily
             </Link>
             <Link
-              href="/urunler?categoryId=55"
+              href="/urunler/fiat/ducato"
               className="text-sm bg-gray-50 hover:bg-primary hover:text-white text-gray-700 px-4 py-2 rounded-full transition-all"
             >
               Fiat Ducato
             </Link>
             <Link
-              href="/urunler?categoryId=34"
+              href="/urunler/foton"
               className="text-sm bg-gray-50 hover:bg-primary hover:text-white text-gray-700 px-4 py-2 rounded-full transition-all"
             >
               Foton Traktör
             </Link>
             <Link
-              href="/urunler?categoryId=45"
+              href="/urunler/karatas"
               className="text-sm bg-gray-50 hover:bg-primary hover:text-white text-gray-700 px-4 py-2 rounded-full transition-all"
             >
               Karataş Traktör
