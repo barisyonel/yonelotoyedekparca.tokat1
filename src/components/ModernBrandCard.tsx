@@ -39,9 +39,9 @@ export default function ModernBrandCard({ brand }: Props) {
 
           {/* Content */}
           <div className="p-6">
-            <h3 className="text-xl font-bold text-center mb-3 text-gray-900 group-hover:text-primary transition-colors duration-300">
+            <p className="text-xl font-bold text-center mb-3 text-gray-900 group-hover:text-primary transition-colors duration-300">
               {brand.name}
-            </h3>
+            </p>
 
             {/* Models */}
             <div className="flex flex-wrap gap-2 justify-center mb-4">

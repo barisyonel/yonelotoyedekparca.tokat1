@@ -12,7 +12,7 @@ const slides = [
     description: 'Orijinal ve yan sanayi yedek parçaları stoklarımızda',
     image: '/assets/slider1.png',
     buttonText: 'İveco Ürünleri',
-    buttonLink: '/urunler?search=iveco',
+    buttonLink: '/urunler/iveco/daily',
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const slides = [
     description: 'Fren, motor, filtre sistemlerinde uzman çözümler',
     image: '/assets/slider2.png',
     buttonText: 'Ducato Ürünleri',
-    buttonLink: '/urunler?search=ducato',
+    buttonLink: '/urunler/fiat/ducato',
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ const slides = [
     description: 'Tarımda kesintisiz üretim için güvenilir parçalar',
     image: '/assets/slider3.png',
     buttonText: 'Traktör Parçaları',
-    buttonLink: '/urunler?search=traktör',
+    buttonLink: '/urunler/karatas',
   },
   {
     id: 4,

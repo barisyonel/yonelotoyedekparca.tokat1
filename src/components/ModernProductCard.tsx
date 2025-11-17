@@ -58,9 +58,9 @@ export default function ModernProductCard({ product }: Props) {
       <div className="p-5 flex flex-col flex-grow">
         {/* Başlık */}
         <Link href={productUrl}>
-          <h3 className="text-lg font-bold mb-2 text-gray-900 group-hover:text-primary transition-colors duration-300 line-clamp-2 h-14">
+          <p className="text-lg font-bold mb-2 text-gray-900 group-hover:text-primary transition-colors duration-300 line-clamp-2 h-14">
             {product.Name}
-          </h3>
+          </p>
         </Link>
 
         {/* Açıklama */}

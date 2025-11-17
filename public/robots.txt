@@ -54,8 +54,8 @@ Allow: /urunler/mutlu-aku/
 Allow: /urunler/*/*
 
 # Product detail pages
-Allow: /products/
-Allow: /products/*
+Allow: /urunler/urun/
+Allow: /urunler/urun/*
 
 # ==============================================
 # DISALLOW - UTILITY PAGES
@@ -73,7 +73,6 @@ Disallow: /*?subCategory=*
 
 # Allow canonical URLs only (no query parameters)
 Allow: /urunler$
-Allow: /products/
 
 # ==============================================
 # GOOGLE BOT SPECIFIC

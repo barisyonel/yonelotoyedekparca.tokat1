@@ -12,6 +12,7 @@ import { notFound } from 'next/navigation';
 import { SliderImage } from '@/lib/models/SliderImage';
 import { Category } from '@/lib/models/Category';
 import { Product } from '@/lib/models/Product';
+import ClientOnly from '@/components/ClientOnly';
 
 // Dynamic imports for better code splitting
 const ProductCard = nextDynamic(() => import('@/app/products/ProductCard'), {
@@ -433,7 +434,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   };
 
   return (
-    <div suppressHydrationWarning>
+    <div>
       {/* Breadcrumb Schema for Google */}
       <script
         type="application/ld+json"
@@ -454,7 +455,6 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
           px: { xs: '2%', sm: '3%', md: '2%', lg: '1.5%', xl: '1%' },
           py: { xs: '2rem', sm: '2.5rem', md: '3rem' },
         }}
-        suppressHydrationWarning
       >
         {/* Breadcrumb */}
         <Box sx={{ mb: { xs: '1.5rem', md: '2rem' } }}>
@@ -473,8 +473,10 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
         </Box>
 
         {/* Products Carousel - Admin tarafından eklenen slider görselleri */}
-        <Box sx={{ mb: { xs: '2rem', md: '2.5rem' } }} suppressHydrationWarning>
-          <ProductsCarousel sliders={sliders} />
+        <Box sx={{ mb: { xs: '2rem', md: '2.5rem' } }}>
+          <ClientOnly>
+            <ProductsCarousel sliders={sliders} />
+          </ClientOnly>
         </Box>
         
         <Box
@@ -484,7 +486,6 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
             gap: { xs: '2rem', md: '2.5%', lg: '2%', xl: '1.5%' },
             width: '100%',
           }}
-          suppressHydrationWarning
         >
           {/* Sidebar - Filters (Desktop) */}
           <Box
@@ -493,9 +494,10 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
               flexShrink: 0,
               display: { xs: 'none', md: 'block' },
             }}
-            suppressHydrationWarning
           >
-            <ProductsFilter categories={categories} activeCategory={activeCategory} />
+            <ClientOnly>
+              <ProductsFilter categories={categories} activeCategory={activeCategory} />
+            </ClientOnly>
           </Box>
 
           {/* Main Content */}
@@ -505,7 +507,6 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
               flexGrow: 1,
               minWidth: 0,
             }}
-            suppressHydrationWarning
           >
             {/* Toolbar - Sort & Limit Controls + Mobile Filter Button */}
             <Box sx={{ mb: { xs: '1.5rem', md: '2rem' } }}>
@@ -547,10 +548,9 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
                     gap: { xs: '1.5rem', sm: '1.8rem', md: '1.8rem', lg: '2rem', xl: '2rem' },
                     width: '100%',
                   }}
-                  suppressHydrationWarning
                 >
                   {products.map((product) => (
-                    <Box key={product.Id} suppressHydrationWarning>
+                    <Box key={product.Id}>
                       <ProductCard product={product} />
                     </Box>
                   ))}
@@ -710,11 +710,15 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
 
         {/* Info Cards - Alt bilgi kartları */}
         <Box sx={{ mt: { xs: '3rem', md: '4rem' } }}>
-          <ProductsInfoCards />
+          <ClientOnly>
+            <ProductsInfoCards />
+          </ClientOnly>
         </Box>
 
         {/* Scroll to Top Button */}
-        <ScrollToTop />
+        <ClientOnly>
+          <ScrollToTop />
+        </ClientOnly>
       </Box>
     </div>
   );

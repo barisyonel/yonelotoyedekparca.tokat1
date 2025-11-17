@@ -47,9 +47,9 @@ export default function HomeProductCard({ product }: Props) {
       <div className="p-6 flex flex-col flex-grow">
         {/* Başlık - 2 Satır Limit */}
         <Link href={productUrl}>
-          <h3 className="text-xl font-bold mb-2 text-gray-900 group-hover:text-primary transition-colors line-clamp-2 h-14">
+          <p className="text-xl font-bold mb-2 text-gray-900 group-hover:text-primary transition-colors line-clamp-2 h-14">
             {product.Name}
-          </h3>
+          </p>
         </Link>
 
         {/* Açıklama - 2 Satır Limit */}

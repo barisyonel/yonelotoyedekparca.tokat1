@@ -179,7 +179,7 @@ export default function ProductCard({ product }: Props) {
           component={Link}
           href={productUrl}
           gutterBottom 
-          variant="h6"
+          variant="subtitle1"
           sx={{ 
             fontWeight: 700,
             fontSize: { xs: '0.9375rem', sm: '1rem', md: '1.05rem', lg: '1.0625rem' },

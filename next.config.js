@@ -80,7 +80,7 @@ const nextConfig = {
   // Experimental optimizations
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['@mui/material', '@mui/icons-material', 'framer-motion'],
+    optimizePackageImports: ['@mui/material', '@mui/icons-material'],
     // Ensure heavy server-only packages (MSSQL/Tedious) stay external in RSC bundler
     serverComponentsExternalPackages: ['mssql', 'tedious'],
   },
