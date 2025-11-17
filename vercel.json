@@ -38,7 +38,12 @@
           "value": "http"
         }
       ],
-      "destination": "https://yonelotoyedekparca.com",
+      "destination": "https://www.yonelotoyedekparca.com",
+      "permanent": true
+    },
+    {
+      "source": "/products/:path*",
+      "destination": "/urunler/urun/:path*",
       "permanent": true
     },
     {

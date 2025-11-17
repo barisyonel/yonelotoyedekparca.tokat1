@@ -7,7 +7,7 @@ import SliderImagesRepository from '@/lib/repositories/SliderImagesRepository';
 import Breadcrumb from '@/components/Breadcrumb';
 import ProductsHeader from '@/app/products/ProductsHeader';
 import { Metadata } from 'next';
-import { slugify } from '@/lib/utils/slugify';
+import { slugify, generateProductUrl } from '@/lib/utils/slugify';
 import { notFound } from 'next/navigation';
 import { SliderImage } from '@/lib/models/SliderImage';
 import { Category } from '@/lib/models/Category';
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   let title = 'Yedek Parça Kataloğu - İveco, Ducato, Foton, Karataş - Yönel Oto';
   let description = 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal parça, hızlı teslimat.';
   let keywords = 'iveco daily 120-14 yedek parça, iveco 85-12, iveco 65-9, iveco 50nc, iveco eurobus, fiat ducato 2.3, fiat ducato 3.0, foton traktör, karataş traktör, mutlu akü, orijinal yedek parça, online yedek parça, türkiye geneli yedek parça, tüm türkiye yedek parça';
-  let canonicalUrl = 'https://yonelotoyedekparca.com/urunler';
+  let canonicalUrl = 'https://www.yonelotoyedekparca.com/urunler';
 
   if (params.slug && params.slug.length > 0) {
     const parentSlug = params.slug[0];
@@ -72,7 +72,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
               // Optimize description length (max 1000px ≈ 155 chars)
               description = `${cat.Name} ${sub.Name} yedek parça. Orijinal parça, hızlı teslimat.`;
               keywords = `${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()} yedek parça, ${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()} orijinal parça, ${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()} online, türkiye geneli ${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()}, tüm türkiye ${cat.Name.toLowerCase()} ${sub.Name.toLowerCase()} yedek parça`;
-              canonicalUrl = `https://yonelotoyedekparca.com/urunler/${parentSlug}/${subSlug}`;
+              canonicalUrl = `https://www.yonelotoyedekparca.com/urunler/${parentSlug}/${subSlug}`;
               break;
             }
           }
@@ -109,7 +109,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             description = `${categoryName} yedek parça ürünleri. Orijinal parça, hızlı teslimat.`;
             keywords = `${categoryName.toLowerCase()} yedek parça, ${categoryName.toLowerCase()} orijinal parça, ${categoryName.toLowerCase()} online, türkiye geneli ${categoryName.toLowerCase()}, tüm türkiye ${categoryName.toLowerCase()} yedek parça`;
           }
-          canonicalUrl = `https://yonelotoyedekparca.com/urunler/${parentSlug}`;
+          canonicalUrl = `https://www.yonelotoyedekparca.com/urunler/${parentSlug}`;
         }
         break;
       }
@@ -376,13 +376,13 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
       '@type': 'ListItem',
       position: 1,
       name: 'Ana Sayfa',
-      item: 'https://yonelotoyedekparca.com',
+      item: 'https://www.yonelotoyedekparca.com',
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Ürünler',
-      item: 'https://yonelotoyedekparca.com/urunler',
+      item: 'https://www.yonelotoyedekparca.com/urunler',
     },
   ];
 
@@ -391,7 +391,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
       '@type': 'ListItem',
       position: 3,
       name: parentCategory.Name,
-      item: `https://yonelotoyedekparca.com/urunler/${slugify(parentCategory.Name)}`,
+      item: `https://www.yonelotoyedekparca.com/urunler/${slugify(parentCategory.Name)}`,
     });
   }
 
@@ -401,8 +401,8 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
       position: parentCategory ? 4 : 3,
       name: activeCategory.Name,
       item: parentCategory 
-        ? `https://yonelotoyedekparca.com/urunler/${slugify(parentCategory.Name)}/${slugify(activeCategory.Name)}`
-        : `https://yonelotoyedekparca.com/urunler/${slugify(activeCategory.Name)}`,
+        ? `https://www.yonelotoyedekparca.com/urunler/${slugify(parentCategory.Name)}/${slugify(activeCategory.Name)}`
+        : `https://www.yonelotoyedekparca.com/urunler/${slugify(activeCategory.Name)}`,
     });
   }
 
@@ -418,7 +418,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
     '@type': 'CollectionPage',
     name: activeCategory ? activeCategory.Name : 'Ürünler',
     description: 'Yonel Otomotiv yedek parça ürünleri',
-    url: `https://yonelotoyedekparca.com/urunler${activeCategory ? `/${slugify(activeCategory.Name)}` : ''}`,
+    url: `https://www.yonelotoyedekparca.com/urunler${activeCategory ? `/${slugify(activeCategory.Name)}` : ''}`,
     numberOfItems: total,
     itemListElement: products.map((product, index) => ({
       '@type': 'ListItem',
@@ -427,7 +427,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
         '@type': 'Product',
         name: product.Name,
         description: product.Description || product.Name,
-        url: `https://yonelotoyedekparca.com/products/${product.Id}`,
+        url: `https://www.yonelotoyedekparca.com/urunler/urun/${generateProductUrl(product)}`,
       },
     })),
   };

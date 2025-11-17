@@ -33,13 +33,13 @@ export default function Breadcrumb({ items, currentPage }: Props) {
         '@type': 'ListItem',
         position: 1,
         name: 'Ana Sayfa',
-        item: 'https://yonelotoyedekparca.com/',
+        item: 'https://www.yonelotoyedekparca.com/',
       },
       ...breadcrumbItems.map((item, index) => ({
         '@type': 'ListItem',
         position: index + 2,
         name: item.label,
-        item: item.href ? `https://yonelotoyedekparca.com${item.href}` : undefined,
+        item: item.href ? `https://www.yonelotoyedekparca.com${item.href}` : undefined,
       })),
     ],
   };

@@ -31,7 +31,7 @@ export default function ProductCard({ product }: Props) {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '905542597273';
   const whatsappMessage = `Merhaba, "${product.Name}" ürünü hakkında bilgi almak istiyorum.`;
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
-  const productUrl = `/products/${generateProductUrl(product)}`;
+  const productUrl = `/urunler/urun/${generateProductUrl(product)}`;
 
   return (
     <Card 

@@ -1,4 +1,5 @@
 import ProductsRepository from '@/lib/repositories/ProductsRepository';
+import { generateProductUrl } from '@/lib/utils/slugify';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
   description: 'İveco Daily (120-14, 85-12, 65-9, 50NC), Fiat Ducato (2.3, 3.0), Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal yedek parça, hızlı teslimat. 50+ yıl tecrübe.',
   keywords: 'iveco daily 120-14 yedek parça, iveco 85-12 yedek parça, iveco 65-9 yedek parça, iveco 50nc yedek parça, iveco eurobus yedek parça, fiat ducato 2.3 yedek parça, fiat ducato 3.0 yedek parça, foton traktör yedek parça, karataş traktör yedek parça, mutlu akü, orijinal yedek parça, online yedek parça, türkiye geneli yedek parça, tüm türkiye yedek parça, türkiye yedek parça satışı, iveco daily fren balata, iveco motor parçaları, ducato filtre',
   alternates: {
-    canonical: 'https://yonelotoyedekparca.com',
+    canonical: 'https://www.yonelotoyedekparca.com',
   },
   authors: [{ name: 'Yönel Oto Yedek Parça' }],
   robots: {
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus Yedek Parça | Fiat Ducato 2.3, 3.0 | Foton, Karataş Traktör',
     description: 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal yedek parça, hızlı teslimat. 50+ yıl tecrübe.',
-    url: 'https://yonelotoyedekparca.com',
+    url: 'https://www.yonelotoyedekparca.com',
     siteName: 'Yönel Oto Yedek Parça',
     locale: 'tr_TR',
     type: 'website',
@@ -204,12 +205,12 @@ export default async function Home() {
             '@graph': [
               {
                 '@type': 'Organization',
-                '@id': 'https://yonelotoyedekparca.com/#organization',
+                '@id': 'https://www.yonelotoyedekparca.com/#organization',
                 name: 'Yönel Oto Yedek Parça',
-                url: 'https://yonelotoyedekparca.com',
+                url: 'https://www.yonelotoyedekparca.com',
                 logo: {
                   '@type': 'ImageObject',
-                  url: 'https://yonelotoyedekparca.com/assets/logo.jpg',
+                  url: 'https://www.yonelotoyedekparca.com/assets/logo.jpg',
                   width: 260,
                   height: 120,
                 },
@@ -224,15 +225,15 @@ export default async function Home() {
                   availableLanguage: 'Turkish',
                 },
                 sameAs: [
-                  'https://yonelotoyedekparca.com',
+                  'https://www.yonelotoyedekparca.com',
                 ],
               },
               {
                 '@type': 'LocalBusiness',
-                '@id': 'https://yonelotoyedekparca.com/#localbusiness',
+                '@id': 'https://www.yonelotoyedekparca.com/#localbusiness',
                 name: 'Yönel Oto Yedek Parça',
-                image: 'https://yonelotoyedekparca.com/og-image.jpg',
-                url: 'https://yonelotoyedekparca.com',
+                image: 'https://www.yonelotoyedekparca.com/og-image.jpg',
+                url: 'https://www.yonelotoyedekparca.com',
                 telephone: '+905542597273',
                 priceRange: '$$',
                 areaServed: {
@@ -263,7 +264,7 @@ export default async function Home() {
                 '@type': 'AutoPartsStore',
                 name: 'Yönel Oto Yedek Parça',
                 description: 'İveco Daily (120-14, 85-12, 65-9, 50NC, Eurobus), Fiat Ducato (2.3, 3.0), Foton Traktör, Karataş Traktör yedek parçaları ve Mutlu Akü satışı. Tüm Türkiye\'ye online yedek parça satışı. Orijinal yedek parça, fren balata, filtre, motor parçaları.',
-                url: 'https://yonelotoyedekparca.com',
+                url: 'https://www.yonelotoyedekparca.com',
                 telephone: '+905542597273',
                 email: 'tokatyonelotoyedekparca@gmail.com',
                 areaServed: {
@@ -292,7 +293,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'İveco Daily 120-14 Yedek Parça',
                         description: 'İveco Daily 120-14 modeline özel orijinal yedek parçalar - fren balata, motor parçaları, filtre. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=iveco+120-14',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=iveco+120-14',
                       },
                     },
                     {
@@ -301,7 +302,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'İveco Daily 85-12 Yedek Parça',
                         description: 'İveco Daily 85-12 modeline özel orijinal yedek parçalar. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=iveco+85-12',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=iveco+85-12',
                       },
                     },
                     {
@@ -310,7 +311,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'İveco Daily 65-9 Yedek Parça',
                         description: 'İveco Daily 65-9 modeline özel orijinal yedek parçalar. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=iveco+65-9',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=iveco+65-9',
                       },
                     },
                     {
@@ -319,7 +320,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'İveco Daily 50NC Yedek Parça',
                         description: 'İveco Daily 50NC modeline özel orijinal yedek parçalar. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=iveco+50nc',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=iveco+50nc',
                       },
                     },
                     {
@@ -328,7 +329,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'İveco Eurobus Yedek Parça',
                         description: 'İveco Eurobus modeline özel orijinal yedek parçalar. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=iveco+eurobus',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=iveco+eurobus',
                       },
                     },
                     {
@@ -337,7 +338,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'Fiat Ducato 2.3 Yedek Parça',
                         description: 'Fiat Ducato 2.3 motor yedek parçaları - orijinal ve yan sanayi. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=ducato+2.3',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=ducato+2.3',
                       },
                     },
                     {
@@ -346,7 +347,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'Fiat Ducato 3.0 Yedek Parça',
                         description: 'Fiat Ducato 3.0 motor yedek parçaları - orijinal ve yan sanayi. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=ducato+3.0',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=ducato+3.0',
                       },
                     },
                     {
@@ -355,7 +356,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'Foton Traktör Yedek Parça',
                         description: 'Foton traktör parçaları ve aksesuar - hidrolik sistemler, motor parçaları. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=foton',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=foton',
                       },
                     },
                     {
@@ -364,7 +365,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'Karataş Traktör Yedek Parça',
                         description: 'Karataş traktör yedek parça ve hidrolik sistemler. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=karataş',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=karataş',
                       },
                     },
                     {
@@ -373,7 +374,7 @@ export default async function Home() {
                         '@type': 'Product',
                         name: 'Mutlu Akü',
                         description: 'Tüm araç tipleri için Mutlu akü çeşitleri - araç ve traktör aküleri. Tüm Türkiye\'ye online satış ve hızlı teslimat.',
-                        url: 'https://yonelotoyedekparca.com/urunler?search=mutlu',
+                        url: 'https://www.yonelotoyedekparca.com/urunler?search=mutlu',
                       },
                     },
                   ],
@@ -381,16 +382,16 @@ export default async function Home() {
               },
               {
                 '@type': 'WebSite',
-                '@id': 'https://yonelotoyedekparca.com/#website',
-                url: 'https://yonelotoyedekparca.com',
+                '@id': 'https://www.yonelotoyedekparca.com/#website',
+                url: 'https://www.yonelotoyedekparca.com',
                 name: 'Yönel Oto Yedek Parça',
                 description: 'İveco Daily (120-14, 85-12, 65-9, 50NC, Eurobus), Fiat Ducato (2.3, 3.0), Foton Traktör, Karataş Traktör Yedek Parçaları ve Mutlu Akü',
                 publisher: {
-                  '@id': 'https://yonelotoyedekparca.com/#organization',
+                  '@id': 'https://www.yonelotoyedekparca.com/#organization',
                 },
                 potentialAction: {
                   '@type': 'SearchAction',
-                  target: 'https://yonelotoyedekparca.com/urunler?search={search_term_string}',
+                  target: 'https://www.yonelotoyedekparca.com/urunler?search={search_term_string}',
                   'query-input': 'required name=search_term_string',
                 },
               },
@@ -744,14 +745,16 @@ export default async function Home() {
 
             {/* Products Grid with Modern Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {featuredProducts.map((product, index) => (
-                <div 
-                  key={product.Id} 
-                  className="relative"
-                  itemProp="itemListElement" 
-                  itemScope 
-                  itemType="https://schema.org/Product"
-                >
+              {featuredProducts.map((product, index) => {
+                const productUrl = `/urunler/urun/${generateProductUrl(product)}`;
+                return (
+                  <div 
+                    key={product.Id} 
+                    className="relative"
+                    itemProp="itemListElement" 
+                    itemScope 
+                    itemType="https://schema.org/Product"
+                  >
                   {/* Number Badge */}
                   <div className="absolute -top-4 -left-4 z-20 bg-gradient-to-br from-primary to-red-700 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shadow-lg">
                     {index + 1}
@@ -767,15 +770,16 @@ export default async function Home() {
                     </div>
                   )}
 
-                  {/* Product Card */}
-                  <ModernProductCard product={product} />
+                    {/* Product Card */}
+                    <ModernProductCard product={product} />
 
-                  {/* Schema.org Hidden Data */}
-                  <meta itemProp="position" content={String(index + 1)} />
-                  <meta itemProp="name" content={product.Name} />
-                  <meta itemProp="url" content={`https://www.yonelotoyedekparca.com/products/${product.Id}`} />
-                </div>
-              ))}
+                    {/* Schema.org Hidden Data */}
+                    <meta itemProp="position" content={String(index + 1)} />
+                    <meta itemProp="name" content={product.Name} />
+                    <meta itemProp="url" content={`https://www.yonelotoyedekparca.com${productUrl}`} />
+                  </div>
+                );
+              })}
             </div>
 
             {/* CTA Section - Premium Design */}

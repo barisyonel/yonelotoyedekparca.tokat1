@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Blog | Yedek Parça Rehberi - Yönel Oto',
     description: 'İveco, Ducato, Foton ve Karataş için profesyonel yedek parça rehberleri. 50+ yıl tecrübe.',
-    url: 'https://yonelotoyedekparca.com/blog',
+    url: 'https://www.yonelotoyedekparca.com/blog',
     type: 'website',
     locale: 'tr_TR',
     images: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     images: ['/twitter-image.jpg'],
   },
   alternates: {
-    canonical: 'https://yonelotoyedekparca.com/blog',
+    canonical: 'https://www.yonelotoyedekparca.com/blog',
   },
 };
 
@@ -184,13 +184,13 @@ export default function BlogPage() {
             '@type': 'Blog',
             name: 'Yönel Oto Yedek Parça Blog',
             description: 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parça bakım rehberleri',
-            url: 'https://yonelotoyedekparca.com/blog',
+            url: 'https://www.yonelotoyedekparca.com/blog',
             publisher: {
               '@type': 'Organization',
               name: 'Yönel Oto Yedek Parça',
               logo: {
                 '@type': 'ImageObject',
-                url: 'https://yonelotoyedekparca.com/assets/logo.webp',
+                url: 'https://www.yonelotoyedekparca.com/assets/logo.webp',
               },
             },
             blogPost: blogPosts.map(post => ({

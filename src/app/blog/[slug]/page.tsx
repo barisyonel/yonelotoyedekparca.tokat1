@@ -976,7 +976,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       tags: post.tags,
     },
     alternates: {
-      canonical: `https://yonelotoyedekparca.com/blog/${post.slug}`,
+      canonical: `https://www.yonelotoyedekparca.com/blog/${post.slug}`,
     },
   };
 }
@@ -1004,7 +1004,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             '@type': 'BlogPosting',
             headline: post.title,
             description: post.excerpt,
-            image: `https://yonelotoyedekparca.com${post.image}`,
+            image: `https://www.yonelotoyedekparca.com${post.image}`,
             datePublished: post.date,
             author: {
               '@type': 'Organization',
@@ -1015,12 +1015,12 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               name: 'Yönel Oto Yedek Parça',
               logo: {
                 '@type': 'ImageObject',
-                url: 'https://yonelotoyedekparca.com/assets/logo.webp',
+                url: 'https://www.yonelotoyedekparca.com/assets/logo.webp',
               },
             },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': `https://yonelotoyedekparca.com/blog/${post.slug}`,
+              '@id': `https://www.yonelotoyedekparca.com/blog/${post.slug}`,
             },
           }),
         }}

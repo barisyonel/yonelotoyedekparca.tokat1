@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'İletişim - Yönel Oto Yedek Parça | Tokat',
     description: 'İveco Daily, Ducato, Foton ve Karataş traktör yedek parça. Tel: 0554 259 72 73.',
-    url: 'https://yonelotoyedekparca.com/iletisim',
+    url: 'https://www.yonelotoyedekparca.com/iletisim',
     type: 'website',
     locale: 'tr_TR',
     images: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: ['/twitter-image.jpg'],
   },
   alternates: {
-    canonical: 'https://yonelotoyedekparca.com/iletisim',
+    canonical: 'https://www.yonelotoyedekparca.com/iletisim',
   },
 };
 
@@ -41,9 +41,9 @@ export default function ContactPage() {
             '@context': 'https://schema.org',
             '@type': 'LocalBusiness',
             name: 'Yönel Oto Yedek Parça',
-            image: 'https://yonelotoyedekparca.com/og-image.jpg',
-            '@id': 'https://yonelotoyedekparca.com',
-            url: 'https://yonelotoyedekparca.com',
+            image: 'https://www.yonelotoyedekparca.com/og-image.jpg',
+            '@id': 'https://www.yonelotoyedekparca.com',
+            url: 'https://www.yonelotoyedekparca.com',
             telephone: '+905542597273',
             email: 'tokatyonelotoyedekparca@gmail.com',
             priceRange: '$$',
@@ -68,7 +68,7 @@ export default function ContactPage() {
                 closes: '18:00',
               },
             ],
-            sameAs: ['https://yonelotoyedekparca.com'],
+            sameAs: ['https://www.yonelotoyedekparca.com'],
           }),
         }}
       />

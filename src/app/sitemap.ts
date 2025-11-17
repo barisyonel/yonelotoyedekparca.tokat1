@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Revalidate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://yonelotoyedekparca.com';
+  const baseUrl = 'https://www.yonelotoyedekparca.com';
   const currentDate = new Date();
 
   // Static pages with high priority
@@ -50,6 +50,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/gizlilik-politikasi`,
+      lastModified: currentDate,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/kullanim-kosullari`,
+      lastModified: currentDate,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/mesafeli-satis-sozlesmesi`,
+      lastModified: currentDate,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/iade-ve-degisim`,
       lastModified: currentDate,
       changeFrequency: 'yearly',
       priority: 0.5,
@@ -110,7 +128,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     productPages = products
       .filter((product) => product.Id && product.Name)
       .map((product) => ({
-        url: `${baseUrl}/products/${generateProductUrl(product)}`,
+        url: `${baseUrl}/urunler/urun/${generateProductUrl(product)}`,
         lastModified: product.CreatedAt || currentDate,
         changeFrequency: 'weekly' as const,
         priority: 0.7,

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Yönel Oto Yedek Parça web sitesi gizlilik politikası ve çerez kullanımı hakkında bilgilendirme.',
   keywords: 'gizlilik politikası, çerez politikası, privacy policy, cookie policy',
   alternates: {
-    canonical: 'https://yonelotoyedekparca.com/gizlilik-politikasi',
+    canonical: 'https://www.yonelotoyedekparca.com/gizlilik-politikasi',
   },
 };
 

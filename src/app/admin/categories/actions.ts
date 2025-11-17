@@ -47,7 +47,7 @@ export async function createCategory(formData: FormData) {
     // Invalidate cache
     revalidateTag(CACHE_TAGS.CATEGORIES);
     revalidatePath('/admin/categories');
-    revalidatePath('/products');
+    revalidatePath('/urunler/urun');
     revalidatePath('/urunler');
 
     return { success: true, message: 'Kategori başarıyla oluşturuldu!' };
@@ -71,7 +71,7 @@ export async function updateCategory(id: number, formData: FormData) {
     // Invalidate cache
     revalidateTag(CACHE_TAGS.CATEGORIES);
     revalidatePath('/admin/categories');
-    revalidatePath('/products');
+    revalidatePath('/urunler/urun');
     revalidatePath('/urunler');
 
     return { success: true, message: 'Kategori başarıyla güncellendi!' };
@@ -92,7 +92,7 @@ export async function deleteCategory(id: number) {
     // Invalidate cache
     revalidateTag(CACHE_TAGS.CATEGORIES);
     revalidatePath('/admin/categories');
-    revalidatePath('/products');
+    revalidatePath('/urunler/urun');
     revalidatePath('/urunler');
 
     return { success: true, message: 'Kategori başarıyla silindi!' };

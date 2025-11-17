@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında aydınlatma metni ve kişisel verilerin korunması politikası.',
   keywords: 'KVKK, kişisel verilerin korunması, gizlilik, veri koruma, aydınlatma metni',
   alternates: {
-    canonical: 'https://yonelotoyedekparca.com/kvkk',
+    canonical: 'https://www.yonelotoyedekparca.com/kvkk',
   },
 };
 

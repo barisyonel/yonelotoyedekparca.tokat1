@@ -6,7 +6,7 @@ import NavigationProgress from '@/components/NavigationProgress';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://yonelotoyedekparca.com'),
+  metadataBase: new URL('https://www.yonelotoyedekparca.com'),
   title: 'Yönel Oto Yedek Parça | Foton, Karataş, Iveco, Mutlu Akü',
   description: 'Foton traktör yedek parçaları, Iveco Daily, Karataş traktör, Ducato yedek parça ve Mutlu akü satışında Türkiye\'nin güvenilir adresi.',
   keywords: 'foton yedek parça, iveco daily yedek parça, karataş traktör, mutlu akü, ducato yedek parça',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
-    url: 'https://yonelotoyedekparca.com',
+    url: 'https://www.yonelotoyedekparca.com',
     title: 'Yönel Oto Yedek Parça',
     description: 'Foton, Iveco, Karataş Traktör ve Mutlu Akü - 50+ yıllık tecrübe',
     images: [

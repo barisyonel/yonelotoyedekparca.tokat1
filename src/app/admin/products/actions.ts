@@ -58,7 +58,8 @@ export async function createProduct(formData: FormData) {
     });
 
     revalidatePath('/admin/products');
-    revalidatePath('/products');
+    revalidatePath('/urunler');
+    revalidatePath('/urunler/urun');
     revalidatePath('/');
 
     return { success: true, message: 'Ürün başarıyla oluşturuldu!' };
@@ -88,7 +89,8 @@ export async function updateProduct(id: number, formData: FormData) {
     });
 
     revalidatePath('/admin/products');
-    revalidatePath('/products');
+    revalidatePath('/urunler');
+    revalidatePath('/urunler/urun');
     revalidatePath('/');
 
     return { success: true, message: 'Ürün başarıyla güncellendi!' };
@@ -107,7 +109,8 @@ export async function deleteProduct(id: number) {
     }
 
     revalidatePath('/admin/products');
-    revalidatePath('/products');
+    revalidatePath('/urunler');
+    revalidatePath('/urunler/urun');
     revalidatePath('/');
 
     return { success: true, message: 'Ürün başarıyla silindi!' };
