@@ -15,7 +15,7 @@ const ScrollFadeIn = dynamic(() => import('@/components/ScrollFadeIn'), {
 const ModernProductCard = dynamic(() => import('@/components/ModernProductCard'), {
   ssr: true,
 });
-const AnimatedBrandCard = dynamic(() => import('@/components/AnimatedBrandCard'), {
+const ModernBrandCard = dynamic(() => import('@/components/ModernBrandCard'), {
   ssr: true,
   loading: () => <div style={{ minHeight: '200px' }} />,
 });
@@ -153,6 +153,8 @@ export default async function Home() {
       slug: 'mutlu/aku', // Parent/Sub category format
     },
   ];
+
+  const brandOrbitItems = [...brands, ...brands];
 
   const offerCatalogItems = [
     {
@@ -363,30 +365,166 @@ export default async function Home() {
       {/* Modern Hero Slider - Komatsu Style */}
       <ModernHeroSlider />
 
-      {/* Main Title Section - SEO Focused */}
-      <section className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto text-center">
-            {/* Main Heading - Single H1 for SEO (optimized length) */}
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-primary mb-6 leading-tight">
-              İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parçaları
-            </h1>
-            
-            {/* Description - SEO Optimized */}
-            <p className="text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-5xl mx-auto font-medium mb-4">
-              <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus), <strong>Fiat Ducato</strong> (2.3, 3.0), 
-              <strong> Foton Traktör</strong>, <strong>Karataş Traktör</strong> yedek parçaları ve <strong>Mutlu Akü</strong> 
-              satışında Türkiye&apos;nin güvenilir adresi. <strong>Tüm Türkiye&apos;ye online yedek parça satışı</strong> ve hızlı teslimat. 50+ yıllık tecrübe ile orijinal ve kaliteli yan sanayi ürünleri.
-            </p>
-            
-            {/* SEO Keywords as H2 */}
-            <h2 className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-5xl mx-auto font-semibold mb-2">
-              Tüm Türkiye&apos;ye Online Yedek Parça Satışı | Foton Traktör, Karataş Traktör ve Mutlu Akü
-            </h2>
+      {/* Featured Products moved under hero (includes main H1) */}
+      {featuredProducts.length > 0 && (
+        <section 
+          className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden"
+          itemScope 
+          itemType="https://schema.org/ItemList"
+        >
+          {/* Decorative Background Elements */}
+          <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-500/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
 
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-6xl mx-auto text-center mb-16">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-primary mb-6 leading-tight">
+                İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parçaları
+              </h1>
+              <p className="text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-5xl mx-auto font-medium mb-4">
+                <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus), <strong>Fiat Ducato</strong> (2.3, 3.0), 
+                <strong> Foton Traktör</strong>, <strong>Karataş Traktör</strong> yedek parçaları ve <strong>Mutlu Akü</strong> 
+                satışında Türkiye&apos;nin güvenilir adresi. <strong>Tüm Türkiye&apos;ye online yedek parça satışı</strong> ve hızlı teslimat. 50+ yıllık tecrübe ile orijinal ve kaliteli yan sanayi ürünleri.
+              </p>
+              <h2 className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-5xl mx-auto font-semibold">
+                Türkiye Geneli Orijinal Yedek Parça ve Teknik Destek Hizmeti
+              </h2>
+            </div>
+
+            <ScrollFadeIn>
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-red-700 text-white px-6 py-2.5 rounded-full text-sm font-bold mb-6 shadow-lg">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  <span>İVECO YEDEK PARÇA</span>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                </div>
+
+                <h2 
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 leading-tight"
+                  itemProp="name"
+                >
+                  İveco <span className="text-primary">Öne Çıkan</span> Ürünler
+                </h2>
+
+                <p className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-6">
+                  <strong className="text-primary">İveco Daily 120-14, 85-12, 65-9, 50NC</strong> ve 
+                  <strong className="text-primary"> Eurobus</strong> modelleri için en çok tercih edilen 
+                  <strong> orijinal ve yan sanayi yedek parçalar</strong>. 
+                  Motor, fren, şanzıman ve elektrik sistemleri için 50+ yıllık tecrübe ile hizmetinizdeyiz.
+                </p>
+
+                <div className="flex flex-wrap justify-center gap-4 mb-8">
+                  <div className="bg-white/80 backdrop-blur-sm border-2 border-primary/20 px-5 py-3 rounded-xl shadow-md">
+                    <div className="text-2xl font-bold text-primary">500+</div>
+                    <div className="text-sm text-gray-600 font-semibold">İveco Ürünü</div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm border-2 border-green-500/20 px-5 py-3 rounded-xl shadow-md">
+                    <div className="text-2xl font-bold text-green-600">%100</div>
+                    <div className="text-sm text-gray-600 font-semibold">Orijinal Garanti</div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm border-2 border-blue-500/20 px-5 py-3 rounded-xl shadow-md">
+                    <div className="text-2xl font-bold text-blue-600">24 Saat</div>
+                    <div className="text-sm text-gray-600 font-semibold">Hızlı Teslimat</div>
+                  </div>
+                </div>
+              </div>
+            </ScrollFadeIn>
+
+            <ScrollFadeIn>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                {featuredProducts.map((product, index) => {
+                  const productUrl = `/urunler/urun/${generateProductUrl(product)}`;
+                  return (
+                    <div 
+                      key={product.Id} 
+                      className="relative"
+                      itemProp="itemListElement" 
+                      itemScope 
+                      itemType="https://schema.org/Product"
+                    >
+                      <div className="absolute -top-4 -left-4 z-20 bg-gradient-to-br from-primary to-red-700 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shadow-lg">
+                        {index + 1}
+                      </div>
+
+                      {index === 0 && (
+                        <div className="absolute -top-4 -right-4 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          ÇOK SATAN
+                        </div>
+                      )}
+
+                      <ModernProductCard product={product} />
+
+                      <meta itemProp="position" content={String(index + 1)} />
+                      <meta itemProp="name" content={product.Name} />
+                      <meta itemProp="url" content={`https://www.yonelotoyedekparca.com${productUrl}`} />
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="text-center">
+                <div className="inline-block bg-gradient-to-r from-gray-50 to-white p-8 rounded-3xl shadow-xl border-2 border-primary/20">
+                  <p className="text-gray-700 text-lg mb-6 max-w-2xl">
+                    İveco araçlarınız için <strong className="text-primary">500+ farklı ürün</strong> seçeneğimiz bulunmaktadır. 
+                    Tüm İveco yedek parçalarını incelemek için aşağıdaki butona tıklayın.
+                  </p>
+
+                  <Link
+                    href={`/urunler/${getCategorySlugById(17)}`}
+                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-primary to-red-700 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                    itemProp="url"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <span>Tüm İveco Ürünlerini Görüntüle</span>
+                    <svg 
+                      className="w-5 h-5 group-hover:translate-x-1 transition-transform" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+
+                  <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="font-semibold">Orijinal Ürün Garantisi</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                        <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
+                      </svg>
+                      <span className="font-semibold">Türkiye Geneli Kargo</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                      </svg>
+                      <span className="font-semibold">50+ Yıllık Tecrübe</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ScrollFadeIn>
           </div>
-        </div>
-      </section>
+
+          <meta itemProp="numberOfItems" content={String(featuredProducts.length)} />
+          <meta itemProp="itemListOrder" content="https://schema.org/ItemListOrderAscending" />
+        </section>
+      )}
 
       {/* Brands Section - Komatsu Style with Scroll Animations */}
       <section className="py-20 bg-white">
@@ -403,38 +541,26 @@ export default async function Home() {
             </div>
           </ScrollFadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {brands.map((brand, index) => {
-              // Animasyon sınıflarını belirle
-              let animationClass = '';
-              let delayClass = '';
-              
-              if (index === 0 || index === 1) {
-                animationClass = 'animate__animated animate__fadeInLeft';
-                delayClass = index === 1 ? 'animate__delay-200ms' : '';
-              } else if (index === 2) {
-                animationClass = 'animate__animated animate__fadeInDown';
-                delayClass = 'animate__delay-300ms';
-              } else if (index === 3 || index === 4) {
-                animationClass = 'animate__animated animate__fadeInRight';
-                delayClass = index === 4 ? 'animate__delay-200ms' : '';
-              }
-              
-              // Link ekle
-              const brandWithLink = {
-                ...brand,
-                link: `/urunler/${brand.slug}`,
-              };
-              
-              return (
-                <AnimatedBrandCard
-                  key={brand.name}
-                  brand={brandWithLink}
-                  animationClass={animationClass}
-                  delayClass={delayClass}
-                />
-              );
-            })}
+          <div className="brand-orbit-wrapper mt-12">
+            <div className="brand-orbit-fade brand-orbit-fade-left" />
+            <div className="brand-orbit-fade brand-orbit-fade-right" />
+            <div className="brand-orbit-track">
+              {brandOrbitItems.map((brand, index) => {
+                const brandWithLink = {
+                  ...brand,
+                  link: `/urunler/${brand.slug}`,
+                };
+
+                return (
+                  <div
+                    key={`${brand.name}-${index}`}
+                    className="brand-orbit-card"
+                  >
+                    <ModernBrandCard brand={brandWithLink} />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -497,11 +623,13 @@ export default async function Home() {
                   </div>
 
                   {/* Model Name */}
-                  <h3 className={`text-2xl font-bold mb-2 transition-colors ${
-                    popular ? 'text-primary' : 'text-gray-900 group-hover:text-primary'
-                  }`}>
+                  <p
+                    className={`text-2xl font-bold mb-2 transition-colors ${
+                      popular ? 'text-primary' : 'text-gray-900 group-hover:text-primary'
+                    }`}
+                  >
                     İveco {model}
-                  </h3>
+                  </p>
 
                   {/* Subtitle */}
                   <p className="text-sm text-gray-600 mb-4 font-medium">
@@ -581,12 +709,12 @@ export default async function Home() {
                     </div>
 
                     {/* Category Name */}
-                    <h3 
+                    <p
                       className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-white transition-colors duration-300"
                       itemProp="name"
                     >
                       {category.name}
-                    </h3>
+                    </p>
 
                     {/* Description */}
                     <p 
@@ -616,26 +744,34 @@ export default async function Home() {
           <ScrollFadeIn>
             <div className="mt-16 bg-gradient-to-br from-gray-50 to-white rounded-3xl p-8 md:p-12 border border-gray-200">
               <div className="max-w-4xl mx-auto">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
                   Yedek Parça Kategorilerimiz
-                </h3>
+                </h2>
                 <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
                   <p className="mb-4">
                     <strong>İveco (Daily, 120-14, 85-12, 65-9, 50NC, Eurobus), Fiat Ducato, Foton ve Karataş Traktör</strong> araçlarınız için ihtiyaç duyduğunuz 
                     tüm <strong>orijinal ve yan sanayi yedek parçaları</strong> kapsamlı kategorilerimizde bulabilirsiniz.
                   </p>
-                  <p className="mb-4">
-                    <strong className="text-primary">Fren Sistemleri:</strong> Güvenli sürüş için kaliteli fren balata, fren diski, 
-                    hidrolik fren parçaları ve ABS sensörleri stoklarımızda mevcuttur.
-                  </p>
-                  <p className="mb-4">
-                    <strong className="text-primary">Motor ve Filtre Grubu:</strong> Aracınızın performansını artıran motor yedek parçaları, 
-                    yağ filtresi, hava filtresi, yakıt filtresi ve polen filtreleri ile motor ömrünü uzatın.
-                  </p>
-                  <p>
-                    50+ yıllık tecrübemizle, <strong>aynı gün kargo</strong> ve <strong>uzman destek</strong> garantisiyle 
-                    hizmetinizdeyiz. Tüm kategorilerde <strong>orijinal ürün garantisi</strong> sunuyoruz.
-                  </p>
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Fren Sistemleri</h3>
+                      <p className="mb-0">
+                        Güvenli sürüş için fren balata, fren diski, hidrolik fren parçaları ve ABS sensörleri stoklarımızda mevcuttur.
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Motor ve Filtre Grubu</h3>
+                      <p className="mb-0">
+                        Motor performansını artıran motor yedek parçaları, yağ filtresi, hava filtresi, yakıt filtresi ve polen filtreleri ile motor ömrünü uzatın.
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Teslimat ve Destek</h3>
+                      <p className="mb-0">
+                        50+ yıllık tecrübemizle <strong>aynı gün kargo</strong> ve <strong>uzman destek</strong> garantisi sunuyor, tüm kategorilerde <strong>orijinal ürün güvencesi</strong> veriyoruz.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -643,163 +779,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Featured Products - İveco */}
-      {featuredProducts.length > 0 && (
-        <section 
-          className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden"
-          itemScope 
-          itemType="https://schema.org/ItemList"
-        >
-          {/* Decorative Background Elements */}
-          <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-500/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
-
-          <div className="container mx-auto px-4 relative z-10">
-            <ScrollFadeIn>
-              {/* Header Section with Premium Design */}
-              <div className="text-center mb-16">
-                {/* Top Badge */}
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-red-700 text-white px-6 py-2.5 rounded-full text-sm font-bold mb-6 shadow-lg">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                  <span>İVECO YEDEK PARÇA</span>
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                </div>
-
-                {/* Main Title */}
-                <h2 
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 leading-tight"
-                  itemProp="name"
-                >
-                  İveco <span className="text-primary">Öne Çıkan</span> Ürünler
-                </h2>
-
-                {/* Description with SEO-rich keywords */}
-                <p className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-6">
-                  <strong className="text-primary">İveco Daily 120-14, 85-12, 65-9, 50NC</strong> ve 
-                  <strong className="text-primary"> Eurobus</strong> modelleri için en çok tercih edilen 
-                  <strong> orijinal ve yan sanayi yedek parçalar</strong>. 
-                  Motor, fren, şanzıman ve elektrik sistemleri için 50+ yıllık tecrübe ile hizmetinizdeyiz.
-                </p>
-
-                {/* Quick Stats */}
-                <div className="flex flex-wrap justify-center gap-4 mb-8">
-                  <div className="bg-white/80 backdrop-blur-sm border-2 border-primary/20 px-5 py-3 rounded-xl shadow-md">
-                    <div className="text-2xl font-bold text-primary">500+</div>
-                    <div className="text-sm text-gray-600 font-semibold">İveco Ürünü</div>
-                  </div>
-                  <div className="bg-white/80 backdrop-blur-sm border-2 border-green-500/20 px-5 py-3 rounded-xl shadow-md">
-                    <div className="text-2xl font-bold text-green-600">%100</div>
-                    <div className="text-sm text-gray-600 font-semibold">Orijinal Garanti</div>
-                  </div>
-                  <div className="bg-white/80 backdrop-blur-sm border-2 border-blue-500/20 px-5 py-3 rounded-xl shadow-md">
-                    <div className="text-2xl font-bold text-blue-600">24 Saat</div>
-                    <div className="text-sm text-gray-600 font-semibold">Hızlı Teslimat</div>
-                  </div>
-                </div>
-              </div>
-            </ScrollFadeIn>
-
-            {/* Products Grid with Modern Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {featuredProducts.map((product, index) => {
-                const productUrl = `/urunler/urun/${generateProductUrl(product)}`;
-                return (
-                  <div 
-                    key={product.Id} 
-                    className="relative"
-                    itemProp="itemListElement" 
-                    itemScope 
-                    itemType="https://schema.org/Product"
-                  >
-                  {/* Number Badge */}
-                  <div className="absolute -top-4 -left-4 z-20 bg-gradient-to-br from-primary to-red-700 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shadow-lg">
-                    {index + 1}
-                  </div>
-
-                  {/* Popularity Badge for First Item */}
-                  {index === 0 && (
-                    <div className="absolute -top-4 -right-4 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                      ÇOK SATAN
-                    </div>
-                  )}
-
-                    {/* Product Card */}
-                    <ModernProductCard product={product} />
-
-                    {/* Schema.org Hidden Data */}
-                    <meta itemProp="position" content={String(index + 1)} />
-                    <meta itemProp="name" content={product.Name} />
-                    <meta itemProp="url" content={`https://www.yonelotoyedekparca.com${productUrl}`} />
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* CTA Section - Premium Design */}
-            <div className="text-center">
-              <div className="inline-block bg-gradient-to-r from-gray-50 to-white p-8 rounded-3xl shadow-xl border-2 border-primary/20">
-                <p className="text-gray-700 text-lg mb-6 max-w-2xl">
-                  İveco araçlarınız için <strong className="text-primary">500+ farklı ürün</strong> seçeneğimiz bulunmaktadır. 
-                  Tüm İveco yedek parçalarını incelemek için aşağıdaki butona tıklayın.
-                </p>
-
-                <Link
-                  href={`/urunler/${getCategorySlugById(17)}`}
-                  className="group inline-flex items-center gap-3 bg-gradient-to-r from-primary to-red-700 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
-                  itemProp="url"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                  </svg>
-                  <span>Tüm İveco Ürünlerini Görüntüle</span>
-                  <svg 
-                    className="w-5 h-5 group-hover:translate-x-1 transition-transform" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-
-                {/* Additional Info */}
-                <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="font-semibold">Orijinal Ürün Garantisi</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-                      <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
-                    </svg>
-                    <span className="font-semibold">Türkiye Geneli Kargo</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                    </svg>
-                    <span className="font-semibold">50+ Yıllık Tecrübe</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Schema.org Hidden Data */}
-          <meta itemProp="numberOfItems" content={String(featuredProducts.length)} />
-          <meta itemProp="itemListOrder" content="https://schema.org/ItemListOrderAscending" />
-        </section>
-      )}
 
       {/* Strong CTA Section */}
       <section className="py-20 bg-gradient-to-r from-primary via-red-700 to-red-800 text-white relative overflow-hidden">
@@ -856,7 +835,7 @@ export default async function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-white transition-colors">Hemen Arayın</h3>
+                  <p className="text-xl font-bold mb-2 group-hover:text-white transition-colors">Hemen Arayın</p>
                   <p className="text-3xl font-bold text-primary mb-2 group-hover:text-white transition-colors">
                     0554 259 72 73
                   </p>
@@ -880,7 +859,7 @@ export default async function Home() {
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-white transition-colors">WhatsApp Destek</h3>
+                  <p className="text-xl font-bold mb-2 group-hover:text-white transition-colors">WhatsApp Destek</p>
                   <p className="text-2xl font-bold text-green-600 mb-2 group-hover:text-white transition-colors">
                     Mesaj Gönderin
                   </p>
@@ -902,7 +881,7 @@ export default async function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-white transition-colors">İletişim Formu</h3>
+                  <p className="text-xl font-bold mb-2 group-hover:text-white transition-colors">İletişim Formu</p>
                   <p className="text-2xl font-bold text-blue-600 mb-2 group-hover:text-white transition-colors">
                     Mesaj Bırakın
                   </p>
