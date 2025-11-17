@@ -754,19 +754,19 @@ export default async function Home() {
                   </p>
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Fren Sistemleri</h3>
+                      <p className="text-xl font-semibold text-gray-900 mb-2">Fren Sistemleri</p>
                       <p className="mb-0">
                         Güvenli sürüş için fren balata, fren diski, hidrolik fren parçaları ve ABS sensörleri stoklarımızda mevcuttur.
                       </p>
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Motor ve Filtre Grubu</h3>
+                      <p className="text-xl font-semibold text-gray-900 mb-2">Motor ve Filtre Grubu</p>
                       <p className="mb-0">
                         Motor performansını artıran motor yedek parçaları, yağ filtresi, hava filtresi, yakıt filtresi ve polen filtreleri ile motor ömrünü uzatın.
                       </p>
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Teslimat ve Destek</h3>
+                      <p className="text-xl font-semibold text-gray-900 mb-2">Teslimat ve Destek</p>
                       <p className="mb-0">
                         50+ yıllık tecrübemizle <strong>aynı gün kargo</strong> ve <strong>uzman destek</strong> garantisi sunuyor, tüm kategorilerde <strong>orijinal ürün güvencesi</strong> veriyoruz.
                       </p>
@@ -1028,7 +1028,7 @@ export default async function Home() {
                           <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                         </svg>
                       </div>
-                      <h4 className="text-xl font-bold text-gray-900">Motor Yedek Parça</h4>
+                      <h4 className="text-xl font-bold text-gray-900">Foton Motor Grubu Parçaları</h4>
                     </div>
                     <ul className="space-y-2 text-gray-700">
                       <li>✓ Piston ve Piston Segmanları</li>
@@ -1047,7 +1047,7 @@ export default async function Home() {
                           <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
                         </svg>
                       </div>
-                      <h4 className="text-xl font-bold text-gray-900">Hidrolik Sistem</h4>
+                      <h4 className="text-xl font-bold text-gray-900">Foton Hidrolik Sistem Parçaları</h4>
                     </div>
                     <ul className="space-y-2 text-gray-700">
                       <li>✓ Hidrolik Pompa ve Motorlar</li>
@@ -1066,7 +1066,7 @@ export default async function Home() {
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-7.536 5.879a1 1 0 001.415 0 3 3 0 014.242 0 1 1 0 001.415-1.415 5 5 0 00-7.072 0 1 1 0 000 1.415z" clipRule="evenodd" />
                         </svg>
                       </div>
-                      <h4 className="text-xl font-bold text-gray-900">Şanzıman & Fren</h4>
+                      <h4 className="text-xl font-bold text-gray-900">Foton Şanzıman ve Fren Grubu</h4>
                     </div>
                     <ul className="space-y-2 text-gray-700">
                       <li>✓ Debriyaj Balata ve Baskı</li>
@@ -1085,7 +1085,7 @@ export default async function Home() {
                           <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z" />
                         </svg>
                       </div>
-                      <h4 className="text-xl font-bold text-gray-900">Elektrik & Filtre</h4>
+                      <h4 className="text-xl font-bold text-gray-900">Foton Elektrik ve Filtre Çözümleri</h4>
                     </div>
                     <ul className="space-y-2 text-gray-700">
                       <li>✓ Marş Motoru ve Alternatör</li>

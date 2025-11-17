@@ -6,6 +6,7 @@ import CategoriesRepository from '@/lib/repositories/CategoriesRepository';
 import SliderImagesRepository from '@/lib/repositories/SliderImagesRepository';
 import Breadcrumb from '@/components/Breadcrumb';
 import ProductsHeader from '@/app/products/ProductsHeader';
+import { resolveProductsHeading } from '@/app/products/heading';
 import { Metadata } from 'next';
 import { slugify, generateProductUrl } from '@/lib/utils/slugify';
 import { notFound } from 'next/navigation';
@@ -433,6 +434,26 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
     })),
   };
 
+  const headingText = resolveProductsHeading(activeCategory, search || undefined);
+
+  const catalogGuideSections = [
+    {
+      title: 'Katalog Yapısı ve Ürün Kartları',
+      content:
+        'Yedek Parça Kataloğu sayfamız, İveco Daily, Fiat Ducato, Foton, Karataş ve Mutlu Akü çözümlerini tek çatı altında toplar. Filonuzdaki her araç tipi için fren, motor, filtrasyon, elektrik ve yürüyen aksam parçalarını arayabilir, referans numarasıyla filtreleyerek saniyeler içinde doğru ürüne ulaşabilirsiniz. Her ürün kartında stok bilgisi, görsel, açıklama ve WhatsApp üzerinden hızlı destek bağlantısı yer aldığından uyumluluğu anında teyit edebilirsiniz.',
+    },
+    {
+      title: 'Filtreleme Seçenekleri ve Teslimat Avantajı',
+      content:
+        'Filtre paneli sayesinde kategori, alt kategori, arama terimi veya sıralama seçeneğine göre listeyi yeniden düzenleyebilir, yalnızca İveco 120-14 fren sistemleri veya Fiat Ducato 3.0 motor parçaları gibi özel kombinasyonları görüntüleyebilirsiniz. Tüm ürünlerimiz orijinal ya da yüksek kaliteli muadil seçeneklerden oluşur; Türkiye geneline aynı gün kargo, Tokat merkezli stok avantajı ve 50+ yıllık tedarik tecrübesiyle gönderilir.',
+    },
+    {
+      title: 'Sipariş Süreci ve İçerik Bağlantıları',
+      content:
+        'Ürün detaylarını incelerken telefonla sipariş vermek için sayfanın üst kısmındaki CTA butonlarını kullanabilir, teknik çizim veya şasi numarasını paylaşarak doğru parçayı birlikte seçebiliriz. Blog yazılarımız, garanti şartlarımız ve sık sorulan sorular bölümleri birbirine iç bağlantılarla referans verir; böylece aradığınız bilgiye tek sayfadan ulaşırken arama motorlarına da tutarlı bir içerik yapısı sunarız.',
+    },
+  ];
+
   return (
     <div>
       {/* Breadcrumb Schema for Google */}
@@ -469,7 +490,42 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
 
         {/* Header with title - H1 for SEO */}
         <Box sx={{ mb: { xs: '1.5rem', md: '2rem' } }}>
-          <ProductsHeader activeCategory={activeCategory} />
+          <ProductsHeader activeCategory={activeCategory} searchQuery={search || undefined} />
+        </Box>
+
+        {/* Introductory summary */}
+        <Box
+          component="section"
+          aria-label="Ürünler sayfası açıklaması"
+          sx={{
+            mb: { xs: '2rem', md: '2.5rem' },
+            bgcolor: '#f8fafc',
+            borderRadius: 3,
+            p: { xs: '1.5rem', md: '2rem' },
+          }}
+        >
+          <Typography
+            component="p"
+            sx={{
+              fontSize: { xs: '1rem', md: '1.1rem' },
+              lineHeight: 1.8,
+              color: '#384152',
+              mb: '1.25rem',
+            }}
+          >
+            {headingText} sayfamız, İveco Daily, Fiat Ducato, Foton, Karataş ve Mutlu Akü gibi ticari araç markalarının fren, motor, filtrasyon ve elektrik parçalarını tek katalogda birleştirir. Ürün kartlarında stok bilgisi, görsel ve WhatsApp üzerinden hızlı destek bağlantıları bulunduğu için aradığınız referans numarasını saniyeler içinde doğrulayabilirsiniz.
+          </Typography>
+          <Typography
+            component="p"
+            sx={{
+              fontSize: { xs: '1rem', md: '1.1rem' },
+              lineHeight: 1.8,
+              color: '#384152',
+              mb: 0,
+            }}
+          >
+            Filtre paneli ile kategori, alt kategori, arama terimi veya sıralama seçeneğine göre listeyi anında daraltabilir, sadece ihtiyaç duyduğunuz model kombinasyonlarını görüntüleyebilirsiniz. Böylece kullanıcılar doğrudan ürünlere odaklanırken sayfanın üst bölümünde kısa ama anlaşılır bir özet yer alır.
+          </Typography>
         </Box>
 
         {/* Products Carousel - Admin tarafından eklenen slider görselleri */}
@@ -513,7 +569,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
               <ProductsToolbar categories={categories} activeCategory={activeCategory} />
             </Box>
 
-            {/* Product Grid */}
+        {/* Product Grid */}
             {products.length === 0 ? (
               <Box
                 sx={{
@@ -583,11 +639,18 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
           </Box>
         </Box>
 
-        {/* SEO Content Section - 250+ words for better SEO */}
+        {/* Info Cards - Alt bilgi kartları */}
+        <Box sx={{ mt: { xs: '3rem', md: '4rem' } }}>
+          <ClientOnly>
+            <ProductsInfoCards />
+          </ClientOnly>
+        </Box>
+
+        {/* SEO Content Section - moved below products */}
         <Box 
+          component="section"
           sx={{ 
             mt: { xs: '3rem', md: '4rem' },
-            mb: { xs: '2rem', md: '3rem' },
             bgcolor: '#f9fafb',
             borderRadius: 3,
             p: { xs: '1.5rem', md: '2.5rem', lg: '3rem' },
@@ -708,11 +771,90 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
           </Box>
         </Box>
 
-        {/* Info Cards - Alt bilgi kartları */}
-        <Box sx={{ mt: { xs: '3rem', md: '4rem' } }}>
-          <ClientOnly>
-            <ProductsInfoCards />
-          </ClientOnly>
+        {/* Extended guide accordion */}
+        <Box
+          component="section"
+          sx={{
+            mt: { xs: '2.5rem', md: '3.5rem' },
+            mb: { xs: '2rem', md: '3rem' },
+            p: { xs: '1.25rem', md: '2rem' },
+            borderRadius: 3,
+            border: '1px solid #e2e8f0',
+            bgcolor: '#ffffff',
+          }}
+        >
+          <Typography
+            variant="h2"
+            component="h2"
+            sx={{
+              fontSize: { xs: '1.4rem', md: '1.9rem' },
+              fontWeight: 700,
+              color: '#1a1a1a',
+              mb: { xs: '1rem', md: '1.5rem' },
+            }}
+          >
+            Yedek Parça Kataloğu Rehberi
+          </Typography>
+          <Typography
+            component="p"
+            sx={{
+              fontSize: { xs: '1rem', md: '1.1rem' },
+              lineHeight: 1.7,
+              color: '#475569',
+              mb: { xs: '1.25rem', md: '1.75rem' },
+            }}
+          >
+            Kapsamlı içeriğimizi ziyaretçiyi yormadan sunmak için aşağıdaki başlıklardan ilginizi çekenleri açabilirsiniz. Her bölümde katalog yapısı, filtreleme seçenekleri ve sipariş süreçleri hakkında detaylar yer alır.
+          </Typography>
+          <Box
+            component="div"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: { xs: '0.75rem', md: '1rem' },
+            }}
+          >
+            {catalogGuideSections.map((section, index) => (
+              <Box
+                component="details"
+                key={section.title}
+                {...(index === 0 ? { open: true } : {})}
+                sx={{
+                  borderRadius: 2,
+                  border: '1px solid #e2e8f0',
+                  backgroundColor: '#fefefe',
+                  overflow: 'hidden',
+                }}
+              >
+                <Box
+                  component="summary"
+                  sx={{
+                    cursor: 'pointer',
+                    listStyle: 'none',
+                    fontWeight: 600,
+                    fontSize: { xs: '1rem', md: '1.05rem' },
+                    color: '#0f172a',
+                    px: { xs: '1rem', md: '1.25rem' },
+                    py: { xs: '0.9rem', md: '1rem' },
+                    backgroundColor: '#f1f5f9',
+                  }}
+                >
+                  {section.title}
+                </Box>
+                <Typography
+                  component="p"
+                  sx={{
+                    px: { xs: '1rem', md: '1.25rem' },
+                    py: { xs: '0.9rem', md: '1rem' },
+                    lineHeight: 1.8,
+                    color: '#475569',
+                  }}
+                >
+                  {section.content}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
         </Box>
 
         {/* Scroll to Top Button */}

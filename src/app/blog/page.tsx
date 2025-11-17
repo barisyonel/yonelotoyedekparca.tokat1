@@ -56,7 +56,7 @@ const blogPosts: BlogPost[] = [
     excerpt: 'İveco Daily 120-14, 85-12, 65-9 ve 50NC modelleri için doğru yedek parça seçimi nasıl yapılır? 50 yıllık tecrübemizle tüm detayları açıklıyoruz.',
     content: '',
     category: 'İveco Daily',
-    tags: ['İveco Daily', 'Yedek Parça', 'Orijinal Parça', 'Bakım'],
+    tags: ['İveco Daily Rehberi', 'Parça Seçimi'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '15 Aralık 2024',
     readTime: '8 dk',
@@ -69,7 +69,7 @@ const blogPosts: BlogPost[] = [
     excerpt: 'Fiat Ducato 2.3 MultiJet ve 3.0 HDI motorlarının uzun ömürlü olması için yapılması gereken periyodik bakımlar ve dikkat edilmesi gereken noktalar.',
     content: '',
     category: 'Fiat Ducato',
-    tags: ['Ducato', 'Motor Bakımı', 'Dizel Motor', 'Periyodik Bakım'],
+    tags: ['Fiat Ducato Motor', 'Periyodik Bakım'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '10 Aralık 2024',
     readTime: '10 dk',
@@ -82,7 +82,7 @@ const blogPosts: BlogPost[] = [
     excerpt: 'Foton traktör sahipleri için yedek parça bulma zorlukları, doğru tedarikçi seçimi ve traktörünüzün performansını artıracak bakım önerileri.',
     content: '',
     category: 'Foton Traktör',
-    tags: ['Foton', 'Traktör', 'Yedek Parça', 'Tarım Makinaları'],
+    tags: ['Foton Traktör İpuçları', 'Tarım Performansı'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '5 Aralık 2024',
     readTime: '7 dk',
@@ -95,7 +95,7 @@ const blogPosts: BlogPost[] = [
     excerpt: 'Karataş traktörlerde hidrolik sistem bakımı, yağ değişimi, filtre seçimi ve sık karşılaşılan sorunların çözümleri hakkında detaylı bilgiler.',
     content: '',
     category: 'Karataş Traktör',
-    tags: ['Karataş', 'Hidrolik Sistem', 'Traktör Bakımı', 'Yağ Değişimi'],
+    tags: ['Karataş Hidrolik', 'Servis Bakımı'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '1 Aralık 2024',
     readTime: '9 dk',
@@ -108,7 +108,7 @@ const blogPosts: BlogPost[] = [
     excerpt: 'Mutlu akü bakım önerileri, şarj durumu kontrolü, kış aylarında alınacak önlemler ve akü bakım ipuçları.',
     content: '',
     category: 'Mutlu Akü',
-    tags: ['Mutlu Akü', 'Akü Bakımı', 'Kış Bakımı', 'Şarj'],
+    tags: ['Mutlu Akü Bakımı', 'Kış Önlemleri'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '25 Kasım 2024',
     readTime: '6 dk',
@@ -121,7 +121,7 @@ const blogPosts: BlogPost[] = [
     excerpt: 'İveco Daily ticari araçlarda fren sisteminin önemi, balata ve disk değişim zamanları, fren hidroliği bakımı ve güvenli sürüş için kritik kontroller.',
     content: '',
     category: 'İveco Daily',
-    tags: ['İveco', 'Fren Sistemi', 'Güvenlik', 'Balata'],
+    tags: ['İveco Fren Sistemi', 'Güvenli Sürüş'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '20 Kasım 2024',
     readTime: '8 dk',
@@ -134,7 +134,7 @@ const blogPosts: BlogPost[] = [
     excerpt: 'Orijinal yedek parça mı yoksa kaliteli yan sanayi mı? Fiyat-performans dengesini nasıl kurarsınız? Hangi parçalarda orijinal şart? Tüm soruların cevapları.',
     content: '',
     category: 'Genel',
-    tags: ['Orijinal Parça', 'Yan Sanayi', 'Kalite', 'Fiyat'],
+    tags: ['Orijinal Parça', 'Yan Sanayi Tercihi'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '15 Kasım 2024',
     readTime: '12 dk',
@@ -147,7 +147,7 @@ const blogPosts: BlogPost[] = [
     excerpt: 'Ducato ön takım parçalarının (salıncak, rotil, bijon, rot başı) yıpranma belirtileri, değişim zamanı ve kaliteli yedek parça seçimi hakkında bilmeniz gerekenler.',
     content: '',
     category: 'Fiat Ducato',
-    tags: ['Ducato', 'Ön Takım', 'Salıncak', 'Rotil'],
+    tags: ['Ducato Ön Takım', 'Süspansiyon Kontrolü'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '10 Kasım 2024',
     readTime: '7 dk',
@@ -160,7 +160,7 @@ const blogPosts: BlogPost[] = [
     excerpt: 'Foton ve Karataş traktörlerde filtre bakımının önemi, doğru filtre seçimi, değişim periyotları ve filtrelerin motor ömrüne etkisi hakkında kapsamlı rehber.',
     content: '',
     category: 'Tarım Makinaları',
-    tags: ['Traktör', 'Filtre', 'Bakım', 'Foton', 'Karataş'],
+    tags: ['Traktör Filtreleri', 'Motor Koruma'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '5 Kasım 2024',
     readTime: '9 dk',
@@ -168,6 +168,17 @@ const blogPosts: BlogPost[] = [
     featured: false,
   },
 ];
+
+const MAX_VISIBLE_TAGS = 2;
+
+const getShortLinkLabel = (title: string) => {
+  const truncated = title.split(':')[0].trim();
+  if (truncated.length <= 45) return truncated;
+  return `${truncated.slice(0, 45)}…`;
+};
+
+const getDisplayTags = (tags: string[]) =>
+  Array.from(new Set(tags)).slice(0, MAX_VISIBLE_TAGS);
 
 export default function BlogPage() {
   const featuredPosts = blogPosts.filter(post => post.featured);
@@ -219,7 +230,7 @@ export default function BlogPage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-tight mt-4">
-              İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parça Bakım Rehberleri
+              Uzman Yedek Parça Bakım Blogu
             </h1>
             <p className="text-xl md:text-2xl text-gray-900 max-w-3xl mx-auto leading-relaxed font-medium">
               <strong className="text-gray-900">İveco Daily, Fiat Ducato, Foton, Karataş Traktör</strong> ve <strong>Mutlu Akü</strong> için 
@@ -281,15 +292,15 @@ export default function BlogPage() {
                         {post.readTime}
                       </div>
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors line-clamp-2">
+                    <p className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
-                    </h3>
+                    </p>
                     <p className="text-gray-600 leading-relaxed mb-6 line-clamp-3">
                       {post.excerpt}
                     </p>
                     <div className="flex items-center justify-between">
                       <div className="flex flex-wrap gap-2">
-                        {post.tags.slice(0, 2).map((tag) => (
+                        {getDisplayTags(post.tags).map((tag) => (
                           <span key={tag} className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
                             {tag}
                           </span>
@@ -347,9 +358,9 @@ export default function BlogPage() {
                         {post.readTime}
                       </div>
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                    <p className="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
-                    </h3>
+                    </p>
                     <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2">
                       {post.excerpt}
                     </p>
@@ -371,7 +382,7 @@ export default function BlogPage() {
           <div className="max-w-6xl mx-auto">
             <div className="prose prose-lg max-w-none">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parça Bakım Rehberleri
+                Bakım Rehberleri ve Uzman Tavsiyeleri
               </h2>
               
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
@@ -476,7 +487,7 @@ export default function BlogPage() {
                       href={`/blog/${post.slug}`}
                       className="text-primary hover:underline font-semibold text-base"
                     >
-                      → {post.title.length > 60 ? `${post.title.substring(0, 60)}...` : post.title}
+                      → {getShortLinkLabel(post.title)}
                     </Link>
                   ))}
                 </div>

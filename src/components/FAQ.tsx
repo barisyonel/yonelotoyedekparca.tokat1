@@ -85,9 +85,9 @@ export default function FAQ() {
                   onClick={() => toggleFAQ(index)}
                   className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
                 >
-                  <h3 className="text-lg font-bold text-gray-900 pr-4">
+                  <p className="text-lg font-bold text-gray-900 pr-4">
                     {faq.question}
-                  </h3>
+                  </p>
                   <div
                     className={`flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center transition-transform duration-300 ${
                       openIndex === index ? 'rotate-180' : ''
