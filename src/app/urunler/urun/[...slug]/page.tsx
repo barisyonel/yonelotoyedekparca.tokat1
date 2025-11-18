@@ -229,6 +229,13 @@ export default async function ProductDetailPage({ params }: PageProps) {
       '@type': 'Offer',
       availability: 'https://schema.org/InStock',
       priceCurrency: 'TRY',
+      price: '0', // Fiyat için iletişime geçin - Google schema için zorunlu alan
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        priceCurrency: 'TRY',
+        value: '0',
+        priceType: 'https://schema.org/PriceSpecification',
+      },
       url: canonicalUrl,
       seller: {
         '@type': 'Organization',
