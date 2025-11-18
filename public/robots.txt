@@ -1,5 +1,5 @@
 # Yönel Oto Yedek Parça - Robots.txt
-# https://yonelotoyedekparca.com
+# https://www.yonelotoyedekparca.com
 # İveco Daily (120-14, 85-12, 65-9, 50NC) - Foton, Karataş Traktör, Ducato Yedek Parça
 
 # ==============================================
@@ -10,7 +10,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location (dynamic, auto-generated from database)
-Sitemap: https://yonelotoyedekparca.com/sitemap.xml
+Sitemap: https://www.yonelotoyedekparca.com/sitemap.xml
 
 # Crawl delay for optimal performance
 Crawl-delay: 1
@@ -68,8 +68,7 @@ Disallow: /*?page=*
 Disallow: /*?limit=*
 Disallow: /*?sort=*
 Disallow: /*?search=*
-Disallow: /*?categoryId=*
-Disallow: /*?subCategory=*
+
 
 # Allow canonical URLs only (no query parameters)
 Allow: /urunler$

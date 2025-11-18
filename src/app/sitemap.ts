@@ -8,7 +8,7 @@ export const revalidate = 3600; // Revalidate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.yonelotoyedekparca.com';
-  const currentDate = new Date();
+  const currentDate = new Date('2025-11-18');
 
   // Static pages with high priority
   const staticPages: MetadataRoute.Sitemap = [
@@ -76,6 +76,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let categoryPages: MetadataRoute.Sitemap = [];
   let productPages: MetadataRoute.Sitemap = [];
+  let blogPages: MetadataRoute.Sitemap = [];
+
+  // Blog posts - Static list (matches blog/page.tsx)
+  const blogPosts = [
+    'iveco-daily-yedek-parca-secimi-rehberi',
+    'fiat-ducato-motor-bakimi-ipuclari',
+    'foton-traktor-yedek-parca-temini',
+    'karatas-traktor-hidrolik-sistem-bakimi',
+    'mutlu-aku-bakim-ve-kullanim-omru',
+    'iveco-daily-fren-sistemi-bakimi',
+    'orijinal-yan-sanayi-yedek-parca-farklari',
+    'ducato-salincak-ve-rotil-degisimi',
+    'traktor-filtre-bakimi-rehberi',
+  ];
+
+  blogPages = blogPosts.map((slug) => ({
+    url: `${baseUrl}/blog/${slug}`,
+    lastModified: currentDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
 
   try {
     // Fetch all categories
@@ -135,7 +156,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }));
 
     if (process.env.NODE_ENV === 'development') {
-      console.log(`✅ Sitemap generated: ${staticPages.length} static, ${categoryPages.length} categories, ${productPages.length} products`);
+      console.log(`✅ Sitemap generated: ${staticPages.length} static, ${categoryPages.length} categories, ${productPages.length} products, ${blogPages.length} blog posts`);
     }
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
@@ -145,6 +166,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Combine all pages
-  return [...staticPages, ...categoryPages, ...productPages];
+  return [...staticPages, ...categoryPages, ...productPages, ...blogPages];
 }
 

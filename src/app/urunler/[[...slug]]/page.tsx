@@ -50,7 +50,7 @@ interface PageProps {
 // Metadata for SEO - Optimized lengths (Title: max 580px ≈ 55-60 chars, Description: max 1000px ≈ 155 chars)
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   let title = 'İveco, Fiat, Foton ve Karataş Yedek Parça Kataloğu | Yönel Oto';
-  let description = 'İveco Daily, Fiat Ducato, Foton, Karataş Traktör ve Mutlu Akü yedek parça kataloğu. Orijinal parça, hızlı teslimat.';
+  let description = 'İveco Daily, Fiat Ducato, Foton, Karataş Traktör ve Mutlu Akü yedek parça kataloğu. Orijinal ve yan sanayi parça, hızlı teslimat, Türkiye geneli kargo hizmeti. 50+ yıllık tecrübe.';
   let keywords = 'iveco daily 120-14 yedek parça, iveco 85-12, iveco 65-9, iveco 50nc, iveco eurobus, fiat ducato 2.3, fiat ducato 3.0, foton traktör, karataş traktör, mutlu akü, orijinal yedek parça, online yedek parça, türkiye geneli yedek parça, tüm türkiye yedek parça';
   let canonicalUrl = 'https://www.yonelotoyedekparca.com/urunler';
 
@@ -505,6 +505,60 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
               minWidth: 0,
             }}
           >
+            {/* SEO Rich Content - Metin-kod oranını artırmak için */}
+            <Box
+              component="section"
+              sx={{
+                mb: { xs: '1.5rem', md: '2rem' },
+                p: { xs: '1rem', md: '1.5rem' },
+                bgcolor: '#f9fafb',
+                borderRadius: 2,
+                border: '1px solid #e5e7eb',
+              }}
+            >
+              <Typography
+                component="p"
+                sx={{
+                  fontSize: { xs: '0.95rem', md: '1rem' },
+                  lineHeight: 1.8,
+                  color: '#374151',
+                  mb: { xs: '0.75rem', md: '1rem' },
+                }}
+              >
+                <strong>Yönel Oto Yedek Parça</strong> olarak, <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC), <strong>Fiat Ducato</strong> (2.3 ve 3.0 MultiJet), 
+                <strong> Foton Traktör</strong> (504, 604 serileri), <strong>Karataş Traktör</strong> ve <strong>Mutlu Akü</strong> markalarının tüm yedek parçalarını 
+                Türkiye geneline hızlı ve güvenilir şekilde ulaştırıyoruz. Tokat merkezli stok altyapımız sayesinde en çok talep edilen fren balatası, yağ filtresi, 
+                hava filtresi, yakıt filtresi, motor parçaları, şanzıman komponentleri, hidrolik pompa, alternatör, marş motoru ve akü gibi ürünleri fiziksel 
+                depomuzda bulunduruyoruz.
+              </Typography>
+              <Typography
+                component="p"
+                sx={{
+                  fontSize: { xs: '0.95rem', md: '1rem' },
+                  lineHeight: 1.8,
+                  color: '#374151',
+                  mb: { xs: '0.75rem', md: '1rem' },
+                }}
+              >
+                Her siparişte şasi numarası, ürün kodu veya katalog referansı ile eşleştirme yaparak aracın üretim yılına, motor tipine veya özel paketine göre 
+                doğru parçayı göndermeyi garanti ediyoruz. Orijinal yedek parçaların yanı sıra, OEM sertifikalı yan sanayi çözümleri de sunarak farklı bütçelere 
+                uygun alternatifler öneriyoruz. Sipariş öncesi ve sonrası teknik destek, montaj tavsiyeleri ve tork değerleri gibi detaylı bilgileri de müşterilerimizle 
+                paylaşıyoruz.
+              </Typography>
+              <Typography
+                component="p"
+                sx={{
+                  fontSize: { xs: '0.95rem', md: '1rem' },
+                  lineHeight: 1.8,
+                  color: '#374151',
+                }}
+              >
+                50+ yıllık tecrübemizle, ticari araç ve traktör sahiplerinin ihtiyaç duyduğu tüm yedek parçaları tek katalog altında toplayarak, arama ve sipariş 
+                sürecini kolaylaştırıyoruz. Aynı gün kargo, güvenli ödeme seçenekleri ve Türkiye geneli hızlı teslimat hizmetimizle yanınızdayız. WhatsApp üzerinden 
+                hızlı destek ve telefon ile uzman danışmanlık hizmeti sunuyoruz.
+              </Typography>
+            </Box>
+
             {/* Toolbar - Sort & Limit Controls + Mobile Filter Button */}
             <Box sx={{ mb: { xs: '1.5rem', md: '2rem' } }}>
               <ProductsToolbar categories={categories} activeCategory={activeCategory} />
