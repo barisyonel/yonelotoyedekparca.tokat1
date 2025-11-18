@@ -7,7 +7,7 @@ export function resolveProductsHeading(
   searchQuery?: string | null,
 ): string {
   const search = searchQuery?.trim() || '';
-  let heading = 'Yedek Parça Kataloğu';
+  let heading = 'İveco, Fiat, Foton ve Karataş Yedek Parça Kataloğu';
 
   if (activeCategory) {
     const categoryName = activeCategory.Name.toLowerCase();

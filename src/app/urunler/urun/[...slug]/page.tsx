@@ -139,6 +139,23 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const whatsappMessage = `Merhaba, "${product.Name}" ürünü hakkında bilgi almak istiyorum.`;
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
+  const visualBreadcrumbs = [
+    { label: 'Ana Sayfa', href: '/' },
+    { label: 'Ürünler', href: '/urunler' },
+    ...(product.CategoryName
+      ? [{ label: product.CategoryName, href: `/urunler/${slugify(product.CategoryName)}` }]
+      : []),
+    ...(product.SubCategoryName && product.CategoryName
+      ? [
+          {
+            label: product.SubCategoryName,
+            href: `/urunler/${slugify(product.CategoryName)}/${slugify(product.SubCategoryName)}`,
+          },
+        ]
+      : []),
+    { label: product.Name },
+  ];
+
   // Breadcrumb Schema for Google
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -300,6 +317,24 @@ export default async function ProductDetailPage({ params }: PageProps) {
       />
       
       <Container maxWidth="lg" sx={{ py: 4 }}>
+        {/* Visual Breadcrumb */}
+        <Box component="nav" aria-label="breadcrumbs" sx={{ mb: 2, fontSize: '0.95rem', color: '#6b7280' }}>
+          {visualBreadcrumbs.map((item, idx) => (
+            <Box component="span" key={`${item.label}-${idx}`}>
+              {item.href ? (
+                <Link href={item.href} className="text-primary hover:underline">
+                  {item.label}
+                </Link>
+              ) : (
+                <Typography component="span" sx={{ fontWeight: 600, color: '#111827' }}>
+                  {item.label}
+                </Typography>
+              )}
+              {idx < visualBreadcrumbs.length - 1 && <span style={{ margin: '0 4px' }}>/</span>}
+            </Box>
+          ))}
+        </Box>
+
         {/* Geri Butonu */}
         <Box sx={{ mb: 3 }}>
           <Link href={backUrl} style={{ textDecoration: 'none' }}>

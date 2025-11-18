@@ -50,8 +50,8 @@ interface PageProps {
 
 // Metadata for SEO - Optimized lengths (Title: max 580px ≈ 55-60 chars, Description: max 1000px ≈ 155 chars)
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  let title = 'Yedek Parça Kataloğu - İveco, Ducato, Foton, Karataş - Yönel Oto';
-  let description = 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal parça, hızlı teslimat.';
+  let title = 'İveco, Fiat, Foton ve Karataş Yedek Parça Kataloğu | Yönel Oto';
+  let description = 'İveco Daily, Fiat Ducato, Foton, Karataş Traktör ve Mutlu Akü yedek parça kataloğu. Orijinal parça, hızlı teslimat.';
   let keywords = 'iveco daily 120-14 yedek parça, iveco 85-12, iveco 65-9, iveco 50nc, iveco eurobus, fiat ducato 2.3, fiat ducato 3.0, foton traktör, karataş traktör, mutlu akü, orijinal yedek parça, online yedek parça, türkiye geneli yedek parça, tüm türkiye yedek parça';
   let canonicalUrl = 'https://www.yonelotoyedekparca.com/urunler';
 
@@ -83,24 +83,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           const categoryName = cat.Name;
           // İveco için özel title - Optimized length
           if (categoryName.toLowerCase().includes('iveco')) {
-            title = `İveco Daily Yedek Parçaları - 120-14, 85-12, 50NC - Yönel Oto`;
-            description = `İveco Daily 120-14, 85-12, 65-9, 50NC modelleri için orijinal yedek parça. Hızlı teslimat, Türkiye geneli servis.`;
+            title = 'İveco Daily Yedek Parça Kataloğu | Yönel Oto';
+            description = 'İveco Daily 120-14, 85-12, 65-9, 50NC modelleri için orijinal yedek parça. Hızlı teslimat, Türkiye geneli servis.';
             keywords = 'iveco daily 120-14 yedek parça, iveco 85-12 yedek parça, iveco 65-9 yedek parça, iveco 50nc yedek parça, iveco eurobus yedek parça, iveco daily fren balata, iveco motor parçaları, iveco daily online, türkiye geneli iveco daily, tüm türkiye iveco yedek parça';
           } else if (categoryName.toLowerCase().includes('ducato') || categoryName.toLowerCase().includes('fiat')) {
-            title = `Fiat Ducato 2.3 ve 3.0 Yedek Parçaları - Yönel Oto`;
-            description = `Fiat Ducato 2.3 ve 3.0 motor yedek parçaları. Orijinal Ducato parça, hızlı teslimat.`;
+            title = 'Fiat Ducato 2.3 & 3.0 Yedek Parçaları | Yönel Oto';
+            description = 'Fiat Ducato 2.3 ve 3.0 motor yedek parçaları. Orijinal Ducato parça, hızlı teslimat.';
             keywords = 'fiat ducato 2.3 yedek parça, fiat ducato 3.0 yedek parça, ducato yedek parça, ducato fren balata, ducato motor parçaları, ducato online, türkiye geneli ducato, tüm türkiye ducato yedek parça';
           } else if (categoryName.toLowerCase().includes('foton')) {
-            title = `Foton Traktör Yedek Parçaları - Yönel Oto`;
-            description = `Foton Traktör yedek parçaları. Orijinal Foton traktör parçaları, hızlı teslimat. Türkiye geneli servis.`;
+            title = 'Foton Traktör Yedek Parça Kataloğu | Yönel Oto';
+            description = 'Foton Traktör yedek parçaları. Orijinal Foton traktör parçaları, hızlı teslimat. Türkiye geneli servis.';
             keywords = 'foton traktör yedek parça, foton traktör parçaları, foton traktör aksesuar, foton traktör online, türkiye geneli foton traktör, tüm türkiye foton traktör yedek parça';
           } else if (categoryName.toLowerCase().includes('karataş')) {
-            title = `Karataş Traktör Yedek Parçaları - Yönel Oto`;
-            description = `Karataş Traktör yedek parçaları. Orijinal Karataş traktör parçaları, hızlı teslimat.`;
+            title = 'Karataş Traktör Yedek Parça Kataloğu | Yönel Oto';
+            description = 'Karataş Traktör yedek parçaları. Orijinal Karataş traktör parçaları, hızlı teslimat.';
             keywords = 'karataş traktör yedek parça, karataş traktör parçaları, karataş traktör aksesuar, karataş traktör online, türkiye geneli karataş traktör, tüm türkiye karataş traktör yedek parça';
           } else if (categoryName.toLowerCase().includes('mutlu')) {
-            title = `Mutlu Akü Çeşitleri - Yönel Oto`;
-            description = `Mutlu Akü çeşitleri. Online akü satışı, hızlı teslimat. Araç ve traktör aküleri.`;
+            title = 'Mutlu Akü Çeşitleri ve Fiyatları | Yönel Oto';
+            description = 'Mutlu Akü çeşitleri. Online akü satışı, hızlı teslimat. Araç ve traktör aküleri.';
             keywords = 'mutlu akü, mutlu akü fiyat, mutlu akü çeşitleri, mutlu akü online, türkiye geneli mutlu akü, tüm türkiye mutlu akü';
           } else {
             // Optimize title length for other categories
@@ -345,28 +345,25 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   // Fetch data with error handling
   let products: Product[] = [];
   let total = 0;
-  try {
-    const result = await ProductsRepository.findAll({
-      page,
-      limit,
-      search,
-      categoryId,
-      sort,
-    });
-    products = result.products;
-    total = result.total;
-  } catch (error) {
-    console.error('Products fetch error:', error);
-    products = [];
-    total = 0;
-  }
-
-  // Fetch sliders with error handling
   let sliders: SliderImage[] = [];
   try {
-    sliders = await SliderImagesRepository.findAll();
+    const [productResult, sliderResult] = await Promise.all([
+      ProductsRepository.findAll({
+        page,
+        limit,
+        search,
+        categoryId,
+        sort,
+      }),
+      SliderImagesRepository.findAll(),
+    ]);
+    products = productResult.products;
+    total = productResult.total;
+    sliders = sliderResult;
   } catch (error) {
-    console.error('Sliders fetch error:', error);
+    console.error('Data fetch error:', error);
+    products = [];
+    total = 0;
     sliders = [];
   }
   
@@ -436,24 +433,6 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
 
   const headingText = resolveProductsHeading(activeCategory, search || undefined);
 
-  const catalogGuideSections = [
-    {
-      title: 'Katalog Yapısı ve Ürün Kartları',
-      content:
-        'Yedek Parça Kataloğu sayfamız, İveco Daily, Fiat Ducato, Foton, Karataş ve Mutlu Akü çözümlerini tek çatı altında toplar. Filonuzdaki her araç tipi için fren, motor, filtrasyon, elektrik ve yürüyen aksam parçalarını arayabilir, referans numarasıyla filtreleyerek saniyeler içinde doğru ürüne ulaşabilirsiniz. Her ürün kartında stok bilgisi, görsel, açıklama ve WhatsApp üzerinden hızlı destek bağlantısı yer aldığından uyumluluğu anında teyit edebilirsiniz.',
-    },
-    {
-      title: 'Filtreleme Seçenekleri ve Teslimat Avantajı',
-      content:
-        'Filtre paneli sayesinde kategori, alt kategori, arama terimi veya sıralama seçeneğine göre listeyi yeniden düzenleyebilir, yalnızca İveco 120-14 fren sistemleri veya Fiat Ducato 3.0 motor parçaları gibi özel kombinasyonları görüntüleyebilirsiniz. Tüm ürünlerimiz orijinal ya da yüksek kaliteli muadil seçeneklerden oluşur; Türkiye geneline aynı gün kargo, Tokat merkezli stok avantajı ve 50+ yıllık tedarik tecrübesiyle gönderilir.',
-    },
-    {
-      title: 'Sipariş Süreci ve İçerik Bağlantıları',
-      content:
-        'Ürün detaylarını incelerken telefonla sipariş vermek için sayfanın üst kısmındaki CTA butonlarını kullanabilir, teknik çizim veya şasi numarasını paylaşarak doğru parçayı birlikte seçebiliriz. Blog yazılarımız, garanti şartlarımız ve sık sorulan sorular bölümleri birbirine iç bağlantılarla referans verir; böylece aradığınız bilgiye tek sayfadan ulaşırken arama motorlarına da tutarlı bir içerik yapısı sunarız.',
-    },
-  ];
-
   return (
     <div>
       {/* Breadcrumb Schema for Google */}
@@ -491,41 +470,6 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
         {/* Header with title - H1 for SEO */}
         <Box sx={{ mb: { xs: '1.5rem', md: '2rem' } }}>
           <ProductsHeader activeCategory={activeCategory} searchQuery={search || undefined} />
-        </Box>
-
-        {/* Introductory summary */}
-        <Box
-          component="section"
-          aria-label="Ürünler sayfası açıklaması"
-          sx={{
-            mb: { xs: '2rem', md: '2.5rem' },
-            bgcolor: '#f8fafc',
-            borderRadius: 3,
-            p: { xs: '1.5rem', md: '2rem' },
-          }}
-        >
-          <Typography
-            component="p"
-            sx={{
-              fontSize: { xs: '1rem', md: '1.1rem' },
-              lineHeight: 1.8,
-              color: '#384152',
-              mb: '1.25rem',
-            }}
-          >
-            {headingText} sayfamız, İveco Daily, Fiat Ducato, Foton, Karataş ve Mutlu Akü gibi ticari araç markalarının fren, motor, filtrasyon ve elektrik parçalarını tek katalogda birleştirir. Ürün kartlarında stok bilgisi, görsel ve WhatsApp üzerinden hızlı destek bağlantıları bulunduğu için aradığınız referans numarasını saniyeler içinde doğrulayabilirsiniz.
-          </Typography>
-          <Typography
-            component="p"
-            sx={{
-              fontSize: { xs: '1rem', md: '1.1rem' },
-              lineHeight: 1.8,
-              color: '#384152',
-              mb: 0,
-            }}
-          >
-            Filtre paneli ile kategori, alt kategori, arama terimi veya sıralama seçeneğine göre listeyi anında daraltabilir, sadece ihtiyaç duyduğunuz model kombinasyonlarını görüntüleyebilirsiniz. Böylece kullanıcılar doğrudan ürünlere odaklanırken sayfanın üst bölümünde kısa ama anlaşılır bir özet yer alır.
-          </Typography>
         </Box>
 
         {/* Products Carousel - Admin tarafından eklenen slider görselleri */}
@@ -641,220 +585,106 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
 
         {/* Info Cards - Alt bilgi kartları */}
         <Box sx={{ mt: { xs: '3rem', md: '4rem' } }}>
-          <ClientOnly>
-            <ProductsInfoCards />
-          </ClientOnly>
+          <ProductsInfoCards />
         </Box>
 
-        {/* SEO Content Section - moved below products */}
-        <Box 
-          component="section"
-          sx={{ 
-            mt: { xs: '3rem', md: '4rem' },
-            bgcolor: '#f9fafb',
-            borderRadius: 3,
-            p: { xs: '1.5rem', md: '2.5rem', lg: '3rem' },
-          }}
-        >
-          <Typography 
-            variant="h2" 
-            component="h2"
-            sx={{ 
-              fontSize: { xs: '1.5rem', md: '2rem', lg: '2.25rem' },
-              fontWeight: 700,
-              color: '#1a1a1a',
-              mb: { xs: '1.5rem', md: '2rem' },
-            }}
-          >
-            {activeCategory 
-              ? `${activeCategory.Name} Yedek Parçaları Hakkında`
-              : 'Yedek Parça Kataloğumuz Hakkında'}
-          </Typography>
-          
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: { xs: '1.5rem', md: '2rem' },
-            }}
-          >
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                fontSize: { xs: '1rem', md: '1.125rem' },
-                lineHeight: 1.8,
-                color: '#4a4a4a',
-              }}
-            >
-              {activeCategory && activeCategory.Name.toLowerCase().includes('iveco') ? (
-                <>
-                  <strong>İveco Daily</strong> araç sahipleri için en kapsamlı yedek parça stoğuna sahibiz. 
-                  <strong> İveco Daily 120-14, 85-12, 65-9, 50NC</strong> ve <strong>Eurobus</strong> modelleri için motor aksamı, 
-                  şanzıman, diferansiyel, fren sistemi, elektrik parçaları ve kaporta ürünlerinde hem orijinal hem de kaliteli muadil ürünler sunmaktayız. 
-                  İveco Daily yedek parça kategorisinde; debriyaj ve volant, fren balata ve diski, yağ ve hava filtresi, yakıt filtresi, alternatör, 
-                  marş motoru, şarj dinamosu, su pompası, termostat gibi tüm bakım ürünleri depolarımızda mevcuttur. 
-                  50+ yıllık tecrübemizle, maksimum 2 iş günü içerisinde adresinize teslim ediyoruz.
-                </>
-              ) : activeCategory && (activeCategory.Name.toLowerCase().includes('ducato') || activeCategory.Name.toLowerCase().includes('fiat')) ? (
-                <>
-                  <strong>Fiat Ducato</strong> ticari araçlarınız için en kaliteli yedek parçaları sunuyoruz. 
-                  <strong> Fiat Ducato 2.3 MultiJet</strong> ve <strong>Fiat Ducato 3.0 MultiJet</strong> motor modellerine özel 
-                  orijinal ve yan sanayi yedek parçalarımız bulunmaktadır. Ducato fren balata, motor yağ filtresi, hava filtresi, 
-                  polen filtresi, su pompası, debriyaj seti, alternatör ve marş motoru gibi kritik parçalarda güvenle alışveriş yapabilirsiniz. 
-                  Tüm Türkiye&apos;ye online satış ve hızlı teslimat garantisi ile hizmetinizdeyiz. Orijinal Ducato yedek parça tercihinizde 
-                  profesyonel destek ve kalite garantisi sunuyoruz.
-                </>
-              ) : activeCategory && activeCategory.Name.toLowerCase().includes('foton') ? (
-                <>
-                  <strong>Foton Traktör</strong> sahipleri için en kapsamlı yedek parça stoğunu sunuyoruz. 
-                  Tarımda güvenilirlik ve dayanıklılığıyla öne çıkan Foton traktörleriniz için motor parçaları, hidrolik sistem elemanları, 
-                  şanzıman aksam, fren grubu ve elektrik sistemleri başta olmak üzere tüm yedek parça kategorilerinde hizmet veriyoruz. 
-                  Foton traktör yedek parça kategorisinde; piston ve piston segmanları, silindir kapağı ve contaları, enjektör ve yakıt pompaları, 
-                  hidrolik pompa ve motorlar, hidrolik silindir ve pistonlar, debriyaj balata ve baskı, şanzıman dişli takımları gibi tüm kritik 
-                  parçalar stoklarımızda mevcuttur. Tarımda kesintisiz üretim için güvenilir parçalar.
-                </>
-              ) : activeCategory && activeCategory.Name.toLowerCase().includes('karataş') ? (
-                <>
-                  <strong>Karataş Traktör</strong>, Türkiye&apos;nin yerli üretim traktör markalarından biridir. 
-                  Karataş traktörleriniz için orijinal ve yan sanayi yedek parçalarında uzman kadromuz ve geniş stoklarımızla hizmetinizdeyiz. 
-                  Tarla çalışmalarınızda kesintisiz üretim için ihtiyaç duyduğunuz tüm yedek parçaları hızlı ve güvenilir şekilde tedarik ediyoruz. 
-                  Karataş traktör yedek parça kategorisinde; motor revizyonu, şanzıman tamiri, hidrolik sistem bakımı, fren sistemi yenileme ve elektrik 
-                  tesisatı onarımı için ihtiyaç duyacağınız tüm parçalar stoklarımızda mevcuttur. Yerli üretimin gücüyle, uygun fiyat avantajı ve hızlı teslimat garantisi sunuyoruz.
-                </>
-              ) : activeCategory && activeCategory.Name.toLowerCase().includes('mutlu') ? (
-                <>
-                  <strong>Mutlu Akü</strong> yetkili satıcısı olarak, otomobil, hafif ticari, ağır vasıta ve traktör aküsü çeşitlerinde 
-                  en uygun fiyatları sunuyoruz. 45 Ah&apos;dan 200 Ah&apos;a kadar farklı kapasitelerde Mutlu akü stoğumuz mevcuttur. 
-                  Araç ve traktörleriniz için güvenilir enerji çözümleri sunan Mutlu akü, uzun ömürlü ve yüksek performanslı akü teknolojisi ile 
-                  öne çıkmaktadır. Tüm Türkiye&apos;ye online akü satışı ve hızlı teslimat ile hizmetinizdeyiz. 
-                  Mutlu akü fiyatları ve kampanyalarımız için bizi arayabilirsiniz. Orijinal Mutlu akü garantisi ile güvenle alışveriş yapabilirsiniz.
-                </>
-              ) : (
-                <>
-                  <strong>Yönel Oto Yedek Parça</strong> olarak, <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus), 
-                  <strong> Fiat Ducato</strong> (2.3, 3.0), <strong>Foton Traktör</strong>, <strong>Karataş Traktör</strong> yedek parçaları ve 
-                  <strong> Mutlu Akü</strong> satışında Türkiye&apos;nin güvenilir adresiyiz. 50+ yıllık tecrübemizle, 
-                  orijinal ve kaliteli yan sanayi ürünlerini tüm Türkiye&apos;ye hızlı teslimat ile sunuyoruz. 
-                  Yedek parça katalogumuzda; fren sistemleri, motor yedek parçaları, filtre grubu, elektrik sistemleri, yağlar ve balata kampana 
-                  gibi tüm kategori seçeneklerinde geniş ürün yelpazesi bulunmaktadır. Orijinal ürün garantisi, aynı gün kargo ve uzman destek 
-                  garantisi ile hizmetinizdeyiz. Online yedek parça satışı konusunda Türkiye&apos;nin önde gelen firmalarından biri olarak, 
-                  müşteri memnuniyetini ön planda tutuyoruz.
-                </>
-              )}
-            </Typography>
-
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                fontSize: { xs: '1rem', md: '1.125rem' },
-                lineHeight: 1.8,
-                color: '#4a4a4a',
-              }}
-            >
-              {activeCategory ? (
-                <>
-                  Kategorimizdeki ürünlerimiz, <strong>orijinal ürün garantisi</strong> ile satılmaktadır. 
-                  Tüm Türkiye&apos;ye <strong>aynı gün kargo</strong> hizmeti sunuyoruz. 
-                  Ürünlerimiz hakkında detaylı bilgi almak için WhatsApp hattımızdan veya telefon numaramızdan iletişime geçebilirsiniz. 
-                  <strong> 50+ yıllık tecrübemiz</strong> ile, aradığınız yedek parçayı en doğru şekilde bulmanıza yardımcı oluyoruz.
-                </>
-              ) : (
-                <>
-                  Katalogumuzdaki tüm ürünler, <strong>orijinal ürün garantisi</strong> ile satılmaktadır. 
-                  <strong> İveco Daily</strong>, <strong>Fiat Ducato</strong>, <strong>Foton</strong> ve <strong>Karataş Traktör</strong> yedek parçaları 
-                  için Türkiye&apos;nin en geniş stoklarına sahibiz. Tüm Türkiye&apos;ye <strong>aynı gün kargo</strong> hizmeti sunuyoruz. 
-                  Ürünlerimiz hakkında detaylı bilgi almak için WhatsApp hattımızdan veya telefon numaramızdan iletişime geçebilirsiniz. 
-                  <strong> 50+ yıllık tecrübemiz</strong> ile, aradığınız yedek parçayı en doğru şekilde bulmanıza yardımcı oluyoruz.
-                </>
-              )}
-            </Typography>
-          </Box>
-        </Box>
-
-        {/* Extended guide accordion */}
+        {/* Brand specific article */}
         <Box
           component="section"
+          aria-label="Marka bazlı yedek parça bilgileri"
           sx={{
-            mt: { xs: '2.5rem', md: '3.5rem' },
-            mb: { xs: '2rem', md: '3rem' },
-            p: { xs: '1.25rem', md: '2rem' },
+            mt: { xs: '3rem', md: '4rem' },
+            mb: { xs: '2.5rem', md: '3rem' },
+            p: { xs: '1.5rem', md: '2.5rem' },
             borderRadius: 3,
-            border: '1px solid #e2e8f0',
-            bgcolor: '#ffffff',
+            border: '1px solid #e5e7eb',
+            backgroundColor: '#f9fafb',
           }}
         >
           <Typography
             variant="h2"
             component="h2"
             sx={{
-              fontSize: { xs: '1.4rem', md: '1.9rem' },
+              fontSize: { xs: '1.5rem', md: '2rem' },
               fontWeight: 700,
-              color: '#1a1a1a',
+              color: '#111827',
               mb: { xs: '1rem', md: '1.5rem' },
             }}
           >
-            Yedek Parça Kataloğu Rehberi
+            Marka Bazlı Yedek Parça Kataloğu Hakkında
           </Typography>
           <Typography
             component="p"
             sx={{
               fontSize: { xs: '1rem', md: '1.1rem' },
-              lineHeight: 1.7,
-              color: '#475569',
-              mb: { xs: '1.25rem', md: '1.75rem' },
+              lineHeight: 1.8,
+              color: '#374151',
+              mb: { xs: '1rem', md: '1.25rem' },
             }}
           >
-            Kapsamlı içeriğimizi ziyaretçiyi yormadan sunmak için aşağıdaki başlıklardan ilginizi çekenleri açabilirsiniz. Her bölümde katalog yapısı, filtreleme seçenekleri ve sipariş süreçleri hakkında detaylar yer alır.
+            <strong>Yönel Oto Yedek Parça</strong> kataloğu; <strong>İveco Daily</strong>, <strong>Fiat Ducato</strong>, <strong>Foton Traktör</strong>,
+            <strong> Karataş Traktör</strong> ve <strong>Mutlu Akü</strong> ürünlerini aynı çatı altında sunmak üzere tasarlandı. Tokat merkezli stok
+            altyapımız sayesinde en çok talep edilen fren balatası, yağ filtresi, hidrolik pompa ve akü referanslarını fiziksel olarak depomuzda tutuyor,
+            her siparişte şasi numarası veya ürün kodu doğrulaması yaparak doğru parçayı göndermeyi garanti ediyoruz.
           </Typography>
-          <Box
-            component="div"
+          <Typography
+            variant="h3"
+            component="h3"
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: { xs: '0.75rem', md: '1rem' },
+              fontSize: { xs: '1.2rem', md: '1.4rem' },
+              fontWeight: 600,
+              color: '#111827',
+              mb: { xs: '0.75rem', md: '1rem' },
             }}
           >
-            {catalogGuideSections.map((section, index) => (
-              <Box
-                component="details"
-                key={section.title}
-                {...(index === 0 ? { open: true } : {})}
-                sx={{
-                  borderRadius: 2,
-                  border: '1px solid #e2e8f0',
-                  backgroundColor: '#fefefe',
-                  overflow: 'hidden',
-                }}
-              >
-                <Box
-                  component="summary"
-                  sx={{
-                    cursor: 'pointer',
-                    listStyle: 'none',
-                    fontWeight: 600,
-                    fontSize: { xs: '1rem', md: '1.05rem' },
-                    color: '#0f172a',
-                    px: { xs: '1rem', md: '1.25rem' },
-                    py: { xs: '0.9rem', md: '1rem' },
-                    backgroundColor: '#f1f5f9',
-                  }}
-                >
-                  {section.title}
-                </Box>
-                <Typography
-                  component="p"
-                  sx={{
-                    px: { xs: '1rem', md: '1.25rem' },
-                    py: { xs: '0.9rem', md: '1rem' },
-                    lineHeight: 1.8,
-                    color: '#475569',
-                  }}
-                >
-                  {section.content}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
+            İveco & Fiat Ürün Grupları
+          </Typography>
+          <Typography component="p" sx={{ color: '#4b5563', lineHeight: 1.8, mb: { xs: '0.75rem', md: '1rem' } }}>
+            <strong>İveco Daily</strong> tarafında 65-9, 85-12, 120-14 ve 50NC modelleri için volan dişlisi, şanzıman dişli setleri, balata, fren diski,
+            kızdırma bujisi ve diferansiyel rulmanı gibi ağır hizmet parçalarının tamamı fiziksel stoktan çıkıyor. Sipariş öncesi şasi numarası ve katalog referansı
+            ile eşleştirme yaparak aracın üretim yılına veya özel paketine göre doğru parçayı gönderiyoruz. <strong>Fiat Ducato 2.3</strong> ve
+            <strong> 3.0 MultiJet</strong> motor platformları için ise yağ filtresi, EGR valfi, turbo hortum setleri, soğutma hortumları, debriyaj kitleri ve
+            hidrolik sistem komponentlerini aynı gün kargoya hazırlıyoruz. Orijinal parçaların yanı sıra OEM sertifikalı yan sanayi çözümleri sunarak farklı bütçelere
+            uygun alternatifler öneriyor, montaj esnasında dikkat edilmesi gereken tork değerleri ve sıvı türleri gibi teknik bilgileri de paylaşıyoruz.
+          </Typography>
+          <Typography
+            variant="h3"
+            component="h3"
+            sx={{
+              fontSize: { xs: '1.2rem', md: '1.4rem' },
+              fontWeight: 600,
+              color: '#111827',
+              mb: { xs: '0.75rem', md: '1rem' },
+            }}
+          >
+            Foton & Karataş Traktör Parçaları
+          </Typography>
+          <Typography component="p" sx={{ color: '#4b5563', lineHeight: 1.8, mb: { xs: '0.75rem', md: '1rem' } }}>
+            <strong>Foton 504</strong>, <strong>Foton 604</strong> ve Karataş serileri için motor bloğu, piston setleri, hidrolik silindirler, lift kol
+            parçaları, kabin süspansiyonu, klima hatları, filtre takımları ve hidrolik yağlar hazır depodan tedarik edilebiliyor. Tarla ve bahçe işlerinde sık
+            kullanılan bu traktörlerin fren merkezi, hidrolik pompaları, direksiyon orbitrolü, şanzıman dişli takımları ve kabin ekipmanlarını Türkiye geneline
+            kargo ile gönderiyoruz. Teslimat öncesinde her parçayı orijinal katalog referanslarıyla tarayıp şasi veya seri numarası bazlı doğrulama yapıyor,
+            gerekirse komşu parçalarla birlikte set halinde paketleyerek montajda yaşanacak zaman kaybını önlüyoruz. Bu sayede sahadaki ekipmanlar uzun süreli
+            ve kesintisiz çalışmaya devam ediyor.
+          </Typography>
+          <Typography
+            variant="h3"
+            component="h3"
+            sx={{
+              fontSize: { xs: '1.2rem', md: '1.4rem' },
+              fontWeight: 600,
+              color: '#111827',
+              mb: { xs: '0.75rem', md: '1rem' },
+            }}
+          >
+            Mutlu Akü ve Destek Hizmetleri
+          </Typography>
+          <Typography component="p" sx={{ color: '#4b5563', lineHeight: 1.7 }}>
+            Tokat bölgesinde <strong>Mutlu Akü</strong> yetkili satıcısı olarak 45 Ah’dan 200 Ah’a kadar tüm kapasitelerde stok bulunduruyoruz. Soğuk
+            hava şartları veya uzun süre park eden araçlar için voltaj ölçümü, şarj uyarıları ve montaj tavsiyelerini siparişle birlikte paylaşıyor, gerektiğinde
+            telefon ve WhatsApp üzerinden teknik destek veriyoruz. Böylece katalogda gördüğünüz her ürün; doğru referans, hızlı tedarik ve satış sonrası
+            danışmanlıkla desteklenmiş oluyor.
+          </Typography>
         </Box>
 
         {/* Scroll to Top Button */}
