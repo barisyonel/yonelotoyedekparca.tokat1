@@ -588,7 +588,7 @@ export default async function Home() {
               { model: '85-12', categoryId: 23, popular: true },
               { model: '65-9', categoryId: 24, popular: false },
               { model: '50NC', categoryId: 25, popular: false },
-              { model: 'Daily 4x4', categoryId: 17, popular: false },
+              { model: 'Daily', categoryId: 17, popular: false },
             ].map(({ model, categoryId, popular }, index) => {
               const categorySlug = getCategorySlugById(categoryId);
               const href = categorySlug ? `/urunler/${categorySlug}` : '/urunler';
@@ -946,7 +946,7 @@ export default async function Home() {
                   <strong className="text-primary"> İveco Daily 85-12</strong>, 
                   <strong className="text-primary"> İveco Daily 65-9</strong>, 
                   <strong className="text-primary"> İveco Daily 50NC</strong> ve 
-                  <strong className="text-primary"> İveco Daily 4x4</strong> modelleri için motor aksamı, 
+                  <strong className="text-primary"> İveco Daily</strong> modelleri için motor aksamı, 
                   şanzıman, diferansiyel, fren sistemi, elektrik parçaları ve kaporta ürünlerinde 
                   hem orijinal hem de kaliteli muadil ürünler sunmaktayız.
                 </p>

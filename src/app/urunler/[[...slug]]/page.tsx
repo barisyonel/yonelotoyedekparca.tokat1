@@ -6,7 +6,6 @@ import CategoriesRepository from '@/lib/repositories/CategoriesRepository';
 import SliderImagesRepository from '@/lib/repositories/SliderImagesRepository';
 import Breadcrumb from '@/components/Breadcrumb';
 import ProductsHeader from '@/app/products/ProductsHeader';
-import { resolveProductsHeading } from '@/app/products/heading';
 import { Metadata } from 'next';
 import { slugify, generateProductUrl } from '@/lib/utils/slugify';
 import { notFound } from 'next/navigation';
@@ -430,8 +429,6 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
       },
     })),
   };
-
-  const headingText = resolveProductsHeading(activeCategory, search || undefined);
 
   return (
     <div>
