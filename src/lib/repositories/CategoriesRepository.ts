@@ -18,12 +18,20 @@ class CategoriesRepository {
   static async findAll(): Promise<Category[]> {
     return unstable_cache(
       async () => {
-        const pool = await getConnection();
-        const result = await pool
-          .request()
-          .query('SELECT * FROM Categories ORDER BY Name');
-        
-        return this.buildTree(result.recordset);
+        try {
+          const pool = await getConnection();
+          const result = await pool
+            .request()
+            .query('SELECT * FROM Categories ORDER BY Name');
+          
+          const categories = this.buildTree(result.recordset);
+          console.log(`✅ Categories fetched from DB: ${categories.length} categories`);
+          return categories;
+        } catch (error) {
+          console.error('❌ Error fetching categories from database:', error);
+          // Return empty array instead of throwing - let the page handle it
+          return [];
+        }
       },
       ['categories-all'],
       {

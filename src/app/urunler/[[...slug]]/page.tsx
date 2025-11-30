@@ -160,8 +160,14 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   try {
     categories = await CategoriesRepository.findAll();
   } catch (error) {
-    console.error('Categories fetch error:', error);
+    console.error('❌ Categories fetch error:', error);
     categories = [];
+  }
+  
+  // Log categories count for debugging (both dev and production)
+  console.log(`📊 Categories loaded: ${categories.length}`);
+  if (categories.length === 0) {
+    console.warn('⚠️  No categories found! This may cause issues.');
   }
   
   // Slug'dan kategori bul
@@ -174,19 +180,17 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
     const parentSlug = params.slug[0]; // İlk segment ana kategori slug'ı
     const subSlug = params.slug[1]; // İkinci segment alt kategori slug'ı (varsa)
     
-    // Debug: Log all categories and their slugs
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔍 Looking for slug:', parentSlug);
-      console.log('📋 Available categories:');
-      categories.forEach(cat => {
-        console.log(`  - "${cat.Name}" → slug: "${slugify(cat.Name)}"`);
-        if (cat.SubCategories) {
-          cat.SubCategories.forEach(sub => {
-            console.log(`    └─ "${sub.Name}" → slug: "${slugify(sub.Name)}"`);
-          });
-        }
-      });
-    }
+    // Debug: Log all categories and their slugs (both dev and production for debugging)
+    console.log('🔍 Looking for slug:', parentSlug, subSlug ? `/${subSlug}` : '');
+    console.log('📋 Available categories:');
+    categories.forEach(cat => {
+      console.log(`  - "${cat.Name}" → slug: "${slugify(cat.Name)}"`);
+      if (cat.SubCategories) {
+        cat.SubCategories.forEach(sub => {
+          console.log(`    └─ "${sub.Name}" → slug: "${slugify(sub.Name)}"`);
+        });
+      }
+    });
     
     // Önce ana kategoriyi bul - case-insensitive ve fuzzy matching
     for (const cat of categories) {
@@ -209,12 +213,11 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
             }
           }
           
-          // Alt kategori bulunamadıysa 404
+          // Alt kategori bulunamadıysa log ve devam et (ürünleri kontrol et)
           if (!activeCategory) {
-            if (process.env.NODE_ENV === 'development') {
-              console.error('❌ Sub-category not found for slug:', subSlug);
-            }
-            notFound();
+            console.error('❌ Sub-category not found for slug:', subSlug);
+            console.log('⚠️  Continuing without sub-category match - will show products if available');
+            // Don't call notFound() here - let products be fetched first
           }
         } else {
           // Alt kategori slug'ı yoksa, ana kategori aktif
@@ -332,13 +335,13 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
       }
     }
     
-    // Ana kategori bulunamadıysa 404
+    // Ana kategori bulunamadıysa log ve devam et (ürünleri kontrol et)
     if (!parentCategory) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('❌ Category not found for slug:', parentSlug);
-        console.error('Available slugs:', categories.map(c => slugify(c.Name)));
-      }
-      notFound();
+      console.error('❌ Category not found for slug:', parentSlug);
+      console.error('Available slugs:', categories.map(c => slugify(c.Name)));
+      console.log('⚠️  Continuing without category match - will show all products');
+      // Don't call notFound() here - let products be fetched first
+      // If no products are found, the page will show "Ürün bulunamadı" message
     }
   }
 
@@ -347,6 +350,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   let total = 0;
   let sliders: SliderImage[] = [];
   try {
+    console.log('🔍 Fetching products with params:', { page, limit, search, categoryId, sort });
     const [productResult, sliderResult] = await Promise.all([
       ProductsRepository.findAll({
       page,
@@ -360,11 +364,18 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
     products = productResult.products;
     total = productResult.total;
     sliders = sliderResult;
+    console.log(`✅ Products fetched: ${products.length} products, total: ${total}`);
   } catch (error) {
-    console.error('Data fetch error:', error);
+    console.error('❌ Data fetch error:', error);
     products = [];
     total = 0;
     sliders = [];
+  }
+  
+  // If we have a slug but no category match AND no products, then show 404
+  if (params.slug && params.slug.length > 0 && !parentCategory && products.length === 0 && !search) {
+    console.error('❌ No category match and no products found for slug:', params.slug);
+    notFound();
   }
   
   const totalPages = Math.ceil(total / limit);
@@ -641,7 +652,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
         </Box>
 
         {/* Brand specific article */}
-        <Box
+        <Box 
           component="section"
           aria-label="Marka bazlı yedek parça bilgileri"
           sx={{ 
