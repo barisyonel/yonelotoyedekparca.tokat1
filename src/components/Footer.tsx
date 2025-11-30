@@ -182,7 +182,7 @@ export default function Footer() {
             </Box>
           </Grid>
 
-          {/* Product Categories */}
+          {/* Product Categories - Enhanced with more internal links for SEO */}
           <Grid item xs={12} sm={6} md={2}>
             <Typography
               variant="h6"
@@ -209,10 +209,12 @@ export default function Footer() {
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 3 }}>
               {[
-                { href: '/urunler/iveco/daily', label: 'İveco Daily' },
-                { href: '/urunler/fiat/ducato', label: 'Fiat Ducato' },
-                { href: '/urunler/foton', label: 'Foton Traktör' },
-                { href: '/urunler/karatas', label: 'Karataş Traktör' },
+                { href: '/urunler/iveco/daily', label: 'İveco Daily Yedek Parça' },
+                { href: '/urunler/iveco/120-14', label: 'İveco 120-14 Yedek Parça' },
+                { href: '/urunler/iveco/85-12', label: 'İveco 85-12 Yedek Parça' },
+                { href: '/urunler/fiat/ducato', label: 'Fiat Ducato Yedek Parça' },
+                { href: '/urunler/foton', label: 'Foton Traktör Yedek Parça' },
+                { href: '/urunler/karatas', label: 'Karataş Traktör Yedek Parça' },
                 { href: '/urunler/mutlu/aku', label: 'Mutlu Akü' },
               ].map((link) => (
                 <Link

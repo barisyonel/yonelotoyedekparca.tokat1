@@ -12,10 +12,11 @@ export default function ConditionalLayout({
 }) {
   const pathname = usePathname();
 
-  // Admin ve auth sayfalarında Navbar, Footer ve WhatsApp gösterme
+  // Admin, auth ve organic-seo sayfalarında Navbar, Footer ve WhatsApp gösterme
   const isAdminOrAuth = pathname.startsWith('/admin') || pathname.startsWith('/auth');
+  const isOrganicSEO = pathname === '/organic-seo';
 
-  if (isAdminOrAuth) {
+  if (isAdminOrAuth || isOrganicSEO) {
     return <div suppressHydrationWarning>{children}</div>;
   }
 

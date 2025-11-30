@@ -60,6 +60,63 @@ export default function ContactPage() {
               latitude: 40.334797,
               longitude: 36.540769,
             },
+            servesCuisine: 'Yedek Parça',
+            areaServed: [
+              {
+                '@type': 'Country',
+                name: 'Türkiye',
+              },
+              {
+                '@type': 'State',
+                name: 'Tokat',
+              },
+            ],
+            hasOfferCatalog: {
+              '@type': 'OfferCatalog',
+              name: 'Yedek Parça Katalog',
+              itemListElement: [
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Product',
+                    name: 'İveco Daily Yedek Parça',
+                    url: 'https://www.yonelotoyedekparca.com/urunler/iveco/daily',
+                  },
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Product',
+                    name: 'Fiat Ducato Yedek Parça',
+                    url: 'https://www.yonelotoyedekparca.com/urunler/fiat/ducato',
+                  },
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Product',
+                    name: 'Foton Traktör Yedek Parça',
+                    url: 'https://www.yonelotoyedekparca.com/urunler/foton',
+                  },
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Product',
+                    name: 'Karataş Traktör Yedek Parça',
+                    url: 'https://www.yonelotoyedekparca.com/urunler/karatas',
+                  },
+                },
+                {
+                  '@type': 'Offer',
+                  itemOffered: {
+                    '@type': 'Product',
+                    name: 'Mutlu Akü',
+                    url: 'https://www.yonelotoyedekparca.com/urunler/mutlu/aku',
+                  },
+                },
+              ],
+            },
             openingHoursSpecification: [
               {
                 '@type': 'OpeningHoursSpecification',
@@ -85,8 +142,9 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-xl font-semibold mb-2">📍 Adres</h3>
                 <p className="text-gray-600">
-                  Yönel Oto Yedek Parça<br />
-                  Türkiye
+                  <strong>Yönel Oto Yedek Parça</strong><br />
+                  Tokat, Türkiye<br />
+                  <span className="text-sm text-gray-500">Türkiye geneline hızlı kargo ile hizmet veriyoruz</span>
                 </p>
               </div>
 

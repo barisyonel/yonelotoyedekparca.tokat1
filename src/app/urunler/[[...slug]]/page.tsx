@@ -13,6 +13,7 @@ import { SliderImage } from '@/lib/models/SliderImage';
 import { Category } from '@/lib/models/Category';
 import { Product } from '@/lib/models/Product';
 import ClientOnly from '@/components/ClientOnly';
+import Link from 'next/link';
 
 // Dynamic imports for better code splitting
 const ProductCard = nextDynamic(() => import('@/app/products/ProductCard'), {
@@ -348,11 +349,11 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   try {
     const [productResult, sliderResult] = await Promise.all([
       ProductsRepository.findAll({
-        page,
-        limit,
-        search,
-        categoryId,
-        sort,
+      page,
+      limit,
+      search,
+      categoryId,
+      sort,
       }),
       SliderImagesRepository.findAll(),
     ]);
@@ -525,10 +526,10 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
                   mb: { xs: '0.75rem', md: '1rem' },
                 }}
               >
-                <strong>Yönel Oto Yedek Parça</strong> olarak, <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC), <strong>Fiat Ducato</strong> (2.3 ve 3.0 MultiJet), 
-                <strong> Foton Traktör</strong> (504, 604 serileri), <strong>Karataş Traktör</strong> ve <strong>Mutlu Akü</strong> markalarının tüm yedek parçalarını 
-                Türkiye geneline hızlı ve güvenilir şekilde ulaştırıyoruz. Tokat merkezli stok altyapımız sayesinde en çok talep edilen fren balatası, yağ filtresi, 
-                hava filtresi, yakıt filtresi, motor parçaları, şanzıman komponentleri, hidrolik pompa, alternatör, marş motoru ve akü gibi ürünleri fiziksel 
+                <strong>Yönel Oto Yedek Parça</strong> olarak, <Link href="/urunler/iveco/daily" style={{ color: '#a80000', textDecoration: 'none', fontWeight: 600 }}><strong>İveco Daily</strong></Link> (120-14, 85-12, 65-9, 50NC), <Link href="/urunler/fiat/ducato" style={{ color: '#a80000', textDecoration: 'none', fontWeight: 600 }}><strong>Fiat Ducato</strong></Link> (2.3 ve 3.0 MultiJet), 
+                <Link href="/urunler/foton" style={{ color: '#a80000', textDecoration: 'none', fontWeight: 600 }}><strong> Foton Traktör</strong></Link> (504, 604 serileri), <Link href="/urunler/karatas" style={{ color: '#a80000', textDecoration: 'none', fontWeight: 600 }}><strong>Karataş Traktör</strong></Link> ve <Link href="/urunler/mutlu/aku" style={{ color: '#a80000', textDecoration: 'none', fontWeight: 600 }}><strong>Mutlu Akü</strong></Link> markalarının tüm yedek parçalarını 
+                Türkiye geneline hızlı ve güvenilir şekilde ulaştırıyoruz. Tokat merkezli stok altyapımız sayesinde en çok talep edilen <Link href="/urunler" style={{ color: '#a80000', textDecoration: 'none' }}>fren balatası</Link>, <Link href="/urunler" style={{ color: '#a80000', textDecoration: 'none' }}>yağ filtresi</Link>, 
+                <Link href="/urunler" style={{ color: '#a80000', textDecoration: 'none' }}>hava filtresi</Link>, <Link href="/urunler" style={{ color: '#a80000', textDecoration: 'none' }}>yakıt filtresi</Link>, <Link href="/urunler" style={{ color: '#a80000', textDecoration: 'none' }}>motor parçaları</Link>, <Link href="/urunler" style={{ color: '#a80000', textDecoration: 'none' }}>şanzıman komponentleri</Link>, <Link href="/urunler" style={{ color: '#a80000', textDecoration: 'none' }}>hidrolik pompa</Link>, <Link href="/urunler" style={{ color: '#a80000', textDecoration: 'none' }}>alternatör</Link>, <Link href="/urunler" style={{ color: '#a80000', textDecoration: 'none' }}>marş motoru</Link> ve <Link href="/urunler/mutlu/aku" style={{ color: '#a80000', textDecoration: 'none' }}>akü</Link> gibi ürünleri fiziksel 
                 depomuzda bulunduruyoruz.
               </Typography>
               <Typography
@@ -564,7 +565,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
               <ProductsToolbar categories={categories} activeCategory={activeCategory} />
             </Box>
 
-        {/* Product Grid */}
+            {/* Product Grid */}
             {products.length === 0 ? (
               <Box
                 sx={{
@@ -643,7 +644,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
         <Box
           component="section"
           aria-label="Marka bazlı yedek parça bilgileri"
-          sx={{
+          sx={{ 
             mt: { xs: '3rem', md: '4rem' },
             mb: { xs: '2.5rem', md: '3rem' },
             p: { xs: '1.5rem', md: '2.5rem' },
@@ -652,10 +653,10 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
             backgroundColor: '#f9fafb',
           }}
         >
-          <Typography
-            variant="h2"
+          <Typography 
+            variant="h2" 
             component="h2"
-            sx={{
+            sx={{ 
               fontSize: { xs: '1.5rem', md: '2rem' },
               fontWeight: 700,
               color: '#111827',
@@ -698,10 +699,10 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
             hidrolik sistem komponentlerini aynı gün kargoya hazırlıyoruz. Orijinal parçaların yanı sıra OEM sertifikalı yan sanayi çözümleri sunarak farklı bütçelere
             uygun alternatifler öneriyor, montaj esnasında dikkat edilmesi gereken tork değerleri ve sıvı türleri gibi teknik bilgileri de paylaşıyoruz.
           </Typography>
-          <Typography
+            <Typography 
             variant="h3"
             component="h3"
-            sx={{
+              sx={{ 
               fontSize: { xs: '1.2rem', md: '1.4rem' },
               fontWeight: 600,
               color: '#111827',
@@ -717,11 +718,11 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
             kargo ile gönderiyoruz. Teslimat öncesinde her parçayı orijinal katalog referanslarıyla tarayıp şasi veya seri numarası bazlı doğrulama yapıyor,
             gerekirse komşu parçalarla birlikte set halinde paketleyerek montajda yaşanacak zaman kaybını önlüyoruz. Bu sayede sahadaki ekipmanlar uzun süreli
             ve kesintisiz çalışmaya devam ediyor.
-          </Typography>
-          <Typography
+            </Typography>
+            <Typography 
             variant="h3"
             component="h3"
-            sx={{
+              sx={{ 
               fontSize: { xs: '1.2rem', md: '1.4rem' },
               fontWeight: 600,
               color: '#111827',
@@ -735,7 +736,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
             hava şartları veya uzun süre park eden araçlar için voltaj ölçümü, şarj uyarıları ve montaj tavsiyelerini siparişle birlikte paylaşıyor, gerektiğinde
             telefon ve WhatsApp üzerinden teknik destek veriyoruz. Böylece katalogda gördüğünüz her ürün; doğru referans, hızlı tedarik ve satış sonrası
             danışmanlıkla desteklenmiş oluyor.
-          </Typography>
+            </Typography>
         </Box>
 
         {/* Scroll to Top Button */}

@@ -212,6 +212,26 @@ export default function BlogPage() {
               author: {
                 '@type': 'Organization',
                 name: post.author,
+                url: 'https://www.yonelotoyedekparca.com',
+                logo: {
+                  '@type': 'ImageObject',
+                  url: 'https://www.yonelotoyedekparca.com/assets/logo.webp',
+                },
+                sameAs: [
+                  'https://www.yonelotoyedekparca.com',
+                ],
+              },
+              publisher: {
+                '@type': 'Organization',
+                name: 'Yönel Oto Yedek Parça',
+                logo: {
+                  '@type': 'ImageObject',
+                  url: 'https://www.yonelotoyedekparca.com/assets/logo.webp',
+                },
+              },
+              mainEntityOfPage: {
+                '@type': 'WebPage',
+                '@id': `https://www.yonelotoyedekparca.com/blog/${post.slug}`,
               },
             })),
           }),
