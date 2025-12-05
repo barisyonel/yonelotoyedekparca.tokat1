@@ -9,9 +9,9 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import ProductsRepository from '@/lib/repositories/ProductsRepository';
-import { extractIdFromSlug, slugify } from '@/lib/utils/slugify';
+import { extractIdFromSlug, slugify, generateProductUrl } from '@/lib/utils/slugify';
 import { Metadata } from 'next';
 
 // Force dynamic rendering to prevent build-time database connection
@@ -25,7 +25,6 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  // Slug array'i birleştir (kategori/urun-id formatı)
   const slugString = params.slug.join('/');
   const productId = extractIdFromSlug(slugString);
   
@@ -43,9 +42,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const canonicalUrl = `https://www.yonelotoyedekparca.com/urunler/urun/${slugString}`;
+  const canonicalUrl = `https://www.yonelotoyedekparca.com/urunler/urun/${generateProductUrl(product)}`;
   
-  // SEO için keywords oluştur
   const seoKeywords = [
     product.Name,
     product.CategoryName,
@@ -54,12 +52,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     'orijinal yedek parça',
   ].filter(Boolean).join(', ');
   
-  // İveco modelleri için özel keywords
   const ivecoModels = ['120-14', '85-12', '65-9', '50NC', 'Eurobus'];
   const ducatoModels = ['2.3', '3.0'];
   
   let enhancedKeywords = seoKeywords;
-  // Tüm ürünler için genel Türkiye keywords
   const turkeyKeywords = ', online yedek parça, türkiye geneli yedek parça, tüm türkiye yedek parça, türkiye yedek parça satışı';
   
   if (product.CategoryName && product.CategoryName.toLowerCase().includes('iveco')) {
@@ -78,7 +74,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     enhancedKeywords += `, mutlu akü, mutlu akü fiyat, mutlu akü çeşitleri, mutlu akü online, türkiye geneli mutlu akü, tüm türkiye mutlu akü${turkeyKeywords}`;
   }
   
-  // Eğer kategori eşleşmediyse genel Türkiye keywords ekle
   if (!enhancedKeywords.includes('türkiye geneli')) {
     enhancedKeywords += turkeyKeywords;
   }
@@ -107,7 +102,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
-  // Slug array'i birleştir (kategori/urun-id formatı)
   const slugString = params.slug.join('/');
   const productId = extractIdFromSlug(slugString);
 
@@ -121,10 +115,14 @@ export default async function ProductDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  // Canonical URL tanımla
-  const canonicalUrl = `https://www.yonelotoyedekparca.com/urunler/urun/${slugString}`;
+  // --- YÖNLENDİRME KONTROLÜ ---
+  const expectedUrlSlug = generateProductUrl(product);
+  
+  if (slugString !== expectedUrlSlug) {
+      redirect(`/urunler/urun/${expectedUrlSlug}`);
+  }
+  // ---------------------------
 
-  // Geri dönüş linki oluştur
   let backUrl = '/urunler';
   if (product.CategoryName) {
     const categorySlug = slugify(product.CategoryName);
@@ -156,173 +154,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
     { label: product.Name },
   ];
 
-  // Breadcrumb Schema for Google
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Ana Sayfa',
-        item: 'https://www.yonelotoyedekparca.com',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Ürünler',
-        item: 'https://www.yonelotoyedekparca.com/urunler',
-      },
-      ...(product.CategoryName ? [{
-        '@type': 'ListItem',
-        position: 3,
-        name: product.CategoryName,
-        item: `https://www.yonelotoyedekparca.com/urunler/${slugify(product.CategoryName)}`,
-      }] : []),
-      ...(product.SubCategoryName && product.CategoryName ? [{
-        '@type': 'ListItem',
-        position: 4,
-        name: product.SubCategoryName,
-        item: `https://www.yonelotoyedekparca.com/urunler/${slugify(product.CategoryName)}/${slugify(product.SubCategoryName)}`,
-      }] : []),
-      {
-        '@type': 'ListItem',
-        position: product.CategoryName ? (product.SubCategoryName ? 5 : 4) : 3,
-        name: product.Name,
-        item: `https://www.yonelotoyedekparca.com/urunler/urun/${slugString}`,
-      },
-    ],
-  };
-
-  // Product Schema for SEO - Enhanced with model information
-  const productSchema: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: product.Name,
-    image: product.ImageUrl ? [product.ImageUrl] : ['https://www.yonelotoyedekparca.com/og-image.jpg'],
-    description: product.Description || `${product.Name} - ${product.CategoryName || ''} yedek parça. Orijinal yedek parça, hızlı teslimat.`,
-    sku: `YP-${product.Id}`,
-    mpn: product.Id.toString(),
-    brand: {
-      '@type': 'Brand',
-      name: product.CategoryName || 'Yönel Oto Yedek Parça',
-    },
-    category: product.CategoryName || 'Yedek Parça',
-    additionalProperty: [
-      {
-        '@type': 'PropertyValue',
-        name: 'Kategori',
-        value: product.CategoryName || 'Yedek Parça',
-      },
-      ...(product.SubCategoryName ? [{
-        '@type': 'PropertyValue',
-        name: 'Alt Kategori',
-        value: product.SubCategoryName,
-      }] : []),
-      {
-        '@type': 'PropertyValue',
-        name: 'Ürün Tipi',
-        value: 'Orijinal Yedek Parça',
-      },
-    ],
-    offers: {
-      '@type': 'Offer',
-      availability: 'https://schema.org/InStock',
-      priceCurrency: 'TRY',
-      price: '0', // Fiyat için iletişime geçin - Google schema için zorunlu alan
-      priceSpecification: {
-        '@type': 'UnitPriceSpecification',
-        priceCurrency: 'TRY',
-        value: '0',
-        priceType: 'https://schema.org/PriceSpecification',
-      },
-      url: canonicalUrl,
-      seller: {
-        '@type': 'Organization',
-        name: 'Yönel Oto Yedek Parça',
-        url: 'https://www.yonelotoyedekparca.com',
-        contactPoint: {
-          '@type': 'ContactPoint',
-          telephone: '+90-554-259-72-73',
-          contactType: 'Customer Service',
-          areaServed: 'TR',
-          availableLanguage: 'Turkish',
-        },
-      },
-      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: '150',
-      bestRating: '5',
-      worstRating: '1',
-    },
-    review: [
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Müşteri',
-        },
-        datePublished: new Date().toISOString().split('T')[0],
-        reviewBody: 'Orijinal ürün, hızlı teslimat. Güvenilir firma.',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-        },
-      },
-    ],
-  };
-  
-  // Model bilgisi ekle (İveco veya Ducato için)
-  if (product.CategoryName) {
-    const categoryLower = product.CategoryName.toLowerCase();
-    if (categoryLower.includes('iveco')) {
-      (productSchema.additionalProperty as Array<{ '@type': string; name: string; value: string }>).push({
-        '@type': 'PropertyValue',
-        name: 'Uyumlu Modeller',
-        value: 'İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus',
-      });
-    }
-    if (categoryLower.includes('ducato') || categoryLower.includes('fiat')) {
-      (productSchema.additionalProperty as Array<{ '@type': string; name: string; value: string }>).push({
-        '@type': 'PropertyValue',
-        name: 'Uyumlu Modeller',
-        value: 'Fiat Ducato 2.3, Fiat Ducato 3.0',
-      });
-    }
-    if (categoryLower.includes('foton')) {
-      (productSchema.additionalProperty as Array<{ '@type': string; name: string; value: string }>).push({
-        '@type': 'PropertyValue',
-        name: 'Uyumlu Modeller',
-        value: 'Foton Traktör',
-      });
-    }
-    if (categoryLower.includes('karataş')) {
-      (productSchema.additionalProperty as Array<{ '@type': string; name: string; value: string }>).push({
-        '@type': 'PropertyValue',
-        name: 'Uyumlu Modeller',
-        value: 'Karataş Traktör',
-      });
-    }
-  }
-
   return (
     <>
-      {/* Breadcrumb Schema for Google */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-
-      {/* Product Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-      />
-      
       <Container maxWidth="lg" sx={{ py: 4 }}>
         {/* Visual Breadcrumb */}
         <Box component="nav" aria-label="breadcrumbs" sx={{ mb: 2, fontSize: '0.95rem', color: '#6b7280' }}>
@@ -492,4 +325,3 @@ export default async function ProductDetailPage({ params }: PageProps) {
     </>
   );
 }
-
