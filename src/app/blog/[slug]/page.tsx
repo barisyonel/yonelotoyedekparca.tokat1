@@ -967,6 +967,17 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     title: `${trimmed}${base}`,
     description: post.excerpt,
     keywords: post.tags.join(', '),
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
     openGraph: {
       title: trimmed,
       description: post.excerpt,

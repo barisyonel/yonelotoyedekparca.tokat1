@@ -1,39 +1,18 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
-export const metadata: Metadata = {
-  title: 'Blog | Yedek Parça Rehberi ve Bakım İpuçları - Yönel Oto',
-  description: 'İveco Daily, Ducato, Foton, Karataş traktör bakım ve onarım rehberleri. 50+ yıl tecrübe ile hazırlanmış uzman tavsiyeleri.',
-  keywords: 'iveco daily bakım, ducato yedek parça rehberi, foton traktör bakım ipuçları, karataş traktör onarım, mutlu akü bakımı, yedek parça seçimi, orijinal parça, yan sanayi parça',
-  openGraph: {
-    title: 'Blog | Yedek Parça Rehberi - Yönel Oto',
-    description: 'İveco, Ducato, Foton ve Karataş için profesyonel yedek parça rehberleri. 50+ yıl tecrübe.',
-    url: 'https://www.yonelotoyedekparca.com/blog',
-    type: 'website',
-    locale: 'tr_TR',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Yönel Oto Yedek Parça Blog',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Blog | Yedek Parça Rehberi',
-    description: 'İveco, Ducato, Foton ve Karataş bakım rehberleri',
-    images: ['/twitter-image.jpg'],
-  },
-  alternates: {
-    canonical: 'https://www.yonelotoyedekparca.com/blog',
-  },
-};
+import SearchIcon from '@mui/icons-material/Search';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import CloseIcon from '@mui/icons-material/Close';
+import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 
 interface BlogPost {
   slug: string;
@@ -181,8 +160,63 @@ const getDisplayTags = (tags: string[]) =>
   Array.from(new Set(tags)).slice(0, MAX_VISIBLE_TAGS);
 
 export default function BlogPage() {
-  const featuredPosts = blogPosts.filter(post => post.featured);
-  const regularPosts = blogPosts.filter(post => !post.featured);
+  const [selectedCategory, setSelectedCategory] = useState<string>('Tümü');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Tüm kategorileri çıkar
+  const categories = useMemo(() => {
+    const cats = ['Tümü', ...Array.from(new Set(blogPosts.map(post => post.category)))];
+    return cats;
+  }, []);
+
+  // Tüm etiketleri çıkar
+  const allTags = useMemo(() => {
+    const tags = blogPosts.flatMap(post => post.tags);
+    const tagCounts: Record<string, number> = {};
+    tags.forEach(tag => {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
+    return Object.entries(tagCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([tag]) => tag);
+  }, []);
+
+  // Filtrelenmiş blog yazıları
+  const filteredPosts = useMemo(() => {
+    let filtered = blogPosts;
+
+    // Kategori filtresi
+    if (selectedCategory !== 'Tümü') {
+      filtered = filtered.filter(post => post.category === selectedCategory);
+    }
+
+    // Arama filtresi
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        post =>
+          post.title.toLowerCase().includes(query) ||
+          post.excerpt.toLowerCase().includes(query) ||
+          post.tags.some(tag => tag.toLowerCase().includes(query)) ||
+          post.category.toLowerCase().includes(query)
+      );
+    }
+
+    return filtered;
+  }, [selectedCategory, searchQuery]);
+
+  const featuredPosts = filteredPosts.filter(post => post.featured);
+  const regularPosts = filteredPosts.filter(post => !post.featured);
+
+  // Kategoriye göre sayıları hesapla
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = { Tümü: blogPosts.length };
+    blogPosts.forEach(post => {
+      counts[post.category] = (counts[post.category] || 0) + 1;
+    });
+    return counts;
+  }, []);
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -268,18 +302,111 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Featured Posts */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+      {/* Search and Filter Section */}
+      <section className="py-8 bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full text-sm font-bold mb-4">
-                ⭐ ÖNE ÇIKAN YAZILAR
+            {/* Search Bar */}
+            <Box sx={{ mb: 3 }}>
+              <TextField
+                fullWidth
+                placeholder="Blog yazılarında ara..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: '#666' }} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: searchQuery && (
+                    <InputAdornment position="end">
+                      <CloseIcon
+                        sx={{ cursor: 'pointer', color: '#666', '&:hover': { color: '#a80000' } }}
+                        onClick={() => setSearchQuery('')}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                    bgcolor: '#f9fafb',
+                    '&:hover': {
+                      bgcolor: '#f3f4f6',
+                    },
+                    '&.Mui-focused': {
+                      bgcolor: '#fff',
+                    },
+                  },
+                }}
+              />
+            </Box>
+
+            {/* Category Filters */}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, alignItems: 'center' }}>
+              <FilterListIcon sx={{ color: '#666', fontSize: 20 }} />
+              <span className="text-sm font-semibold text-gray-700 mr-2">Kategoriler:</span>
+              {categories.map((category) => (
+                <Chip
+                  key={category}
+                  label={`${category} (${categoryCounts[category] || 0})`}
+                  onClick={() => setSelectedCategory(category)}
+                  sx={{
+                    bgcolor: selectedCategory === category ? '#a80000' : '#f3f4f6',
+                    color: selectedCategory === category ? '#fff' : '#374151',
+                    fontWeight: selectedCategory === category ? 600 : 500,
+                    '&:hover': {
+                      bgcolor: selectedCategory === category ? '#8b0000' : '#e5e7eb',
+                    },
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                />
+              ))}
+            </Box>
+
+            {/* Active Filters Info */}
+            {(selectedCategory !== 'Tümü' || searchQuery) && (
+              <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                <span className="text-sm text-gray-600">
+                  {filteredPosts.length} yazı bulundu
+                </span>
+                {(selectedCategory !== 'Tümü' || searchQuery) && (
+                  <Chip
+                    label="Filtreleri Temizle"
+                    onClick={() => {
+                      setSelectedCategory('Tümü');
+                      setSearchQuery('');
+                    }}
+                    size="small"
+                    sx={{
+                      bgcolor: '#f3f4f6',
+                      color: '#374151',
+                      '&:hover': { bgcolor: '#e5e7eb' },
+                      cursor: 'pointer',
+                    }}
+                  />
+                )}
+              </Box>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Posts */}
+      {featuredPosts.length > 0 && (
+        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-12">
+                <div className="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full text-sm font-bold mb-4">
+                  ⭐ ÖNE ÇIKAN YAZILAR
+                </div>
+                <h2 className="text-4xl font-bold text-gray-900">
+                  En Çok Okunan İçerikler
+                </h2>
               </div>
-              <h2 className="text-4xl font-bold text-gray-900">
-                En Çok Okunan İçerikler
-              </h2>
-            </div>
 
             <div className="grid md:grid-cols-2 gap-8">
               {featuredPosts.slice(0, 2).map((post) => (
@@ -338,18 +465,43 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* All Posts */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">
-              Tüm Blog Yazıları
+              {selectedCategory !== 'Tümü' || searchQuery
+                ? `Filtrelenmiş Blog Yazıları (${filteredPosts.length})`
+                : 'Tüm Blog Yazıları'}
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {[...featuredPosts.slice(2), ...regularPosts].map((post) => (
-                <Link
+            {filteredPosts.length === 0 ? (
+              <Box
+                sx={{
+                  textAlign: 'center',
+                  py: 8,
+                  bgcolor: '#f9fafb',
+                  borderRadius: 2,
+                  border: '1px solid #e5e7eb',
+                }}
+              >
+                <p className="text-lg text-gray-600 mb-2">Aradığınız kriterlere uygun yazı bulunamadı.</p>
+                <button
+                  onClick={() => {
+                    setSelectedCategory('Tümü');
+                    setSearchQuery('');
+                  }}
+                  className="text-primary hover:underline font-semibold"
+                >
+                  Filtreleri temizle
+                </button>
+              </Box>
+            ) : (
+              <div className="grid md:grid-cols-3 gap-8">
+                {[...featuredPosts.slice(2), ...regularPosts].map((post) => (
+                  <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
                   className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-gray-100 hover:border-primary"
@@ -392,9 +544,44 @@ export default function BlogPage() {
                 </Link>
               ))}
             </div>
+            )}
           </div>
         </div>
       </section>
+
+      {/* Popular Tags Section */}
+      {allTags.length > 0 && (
+        <section className="py-12 bg-gray-50 border-t border-gray-200">
+          <div className="container mx-auto px-4">
+            <div className="max-w-7xl mx-auto">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+                Popüler Etiketler
+              </h3>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, justifyContent: 'center' }}>
+                {allTags.map((tag) => (
+                  <Chip
+                    key={tag}
+                    label={tag}
+                    onClick={() => setSearchQuery(tag)}
+                    sx={{
+                      bgcolor: '#fff',
+                      color: '#374151',
+                      border: '1px solid #e5e7eb',
+                      '&:hover': {
+                        bgcolor: '#f3f4f6',
+                        borderColor: '#a80000',
+                        color: '#a80000',
+                      },
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                    }}
+                  />
+                ))}
+              </Box>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* SEO Content Section - 800+ words for better SEO */}
       <section className="py-20 bg-white">
