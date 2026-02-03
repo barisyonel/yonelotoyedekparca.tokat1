@@ -142,6 +142,44 @@ const nextConfig = {
       },
     ];
   },
+
+  // Trailing slash yönetimi - tüm URL'ler trailing slash olmadan
+  trailingSlash: false,
+
+  // Redirects - trailing slash ve eski URL'ler için
+  async redirects() {
+    return [
+      // Trailing slash redirects - /urunler/ -> /urunler
+      {
+        source: '/urunler/',
+        destination: '/urunler',
+        permanent: true,
+      },
+      {
+        source: '/blog/',
+        destination: '/blog',
+        permanent: true,
+      },
+      // Eski /products URL'lerini /urunler/urun'a yönlendir
+      {
+        source: '/products/:path*',
+        destination: '/urunler/urun/:path*',
+        permanent: true,
+      },
+      // Query parametreli blog kategori sayfalarını noindex için redirect et
+      {
+        source: '/blog',
+        has: [
+          {
+            type: 'query',
+            key: 'category',
+          },
+        ],
+        destination: '/blog',
+        permanent: false, // Temporary redirect to prevent indexing
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

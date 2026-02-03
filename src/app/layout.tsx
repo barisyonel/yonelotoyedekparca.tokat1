@@ -16,6 +16,17 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
@@ -36,6 +47,9 @@ export const metadata: Metadata = {
     title: 'Yönel Oto Yedek Parça',
     description: 'Foton, Iveco, Karataş Traktör ve Mutlu Akü - 50+ yıllık tecrübe',
     images: ['/twitter-image.jpg'],
+  },
+  alternates: {
+    canonical: 'https://www.yonelotoyedekparca.com',
   },
 };
 

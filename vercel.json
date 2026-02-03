@@ -50,6 +50,27 @@
       "source": "/products",
       "destination": "/urunler",
       "permanent": true
+    },
+    {
+      "source": "/urunler/",
+      "destination": "/urunler",
+      "permanent": true
+    },
+    {
+      "source": "/blog/",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "has": [
+        {
+          "type": "query",
+          "key": "category"
+        }
+      ],
+      "destination": "/blog",
+      "permanent": false
     }
   ]
 }
