@@ -21,24 +21,26 @@ export default function Footer() {
   return (
     <Box
       component="footer"
+      className="brand-footer-shell"
       sx={{
-        background: 'linear-gradient(135deg, #a80000 0%, #8b0000 50%, #6b0000 100%)',
         color: 'white',
         position: 'relative',
         overflow: 'hidden',
         mt: 'auto',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-          opacity: 0.1,
-        },
       }}
     >
+      <div className="brand-footer-glow brand-footer-glow--gold" aria-hidden />
+      <div className="brand-footer-glow brand-footer-glow--navy" aria-hidden />
+      <Box
+        className="brand-footer-wave"
+        sx={{ zIndex: 2 }}
+        aria-hidden
+      >
+        <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ width: '100%', height: 48, display: 'block' }}>
+          <path d="M0 48L60 38C120 28 240 8 360 4C480 0 600 12 720 18C840 24 960 24 1080 20C1200 16 1320 8 1380 4L1440 0V48H0Z" fill="rgba(255,255,255,0.08)" />
+          <path d="M0 32L80 26C160 20 320 8 480 10C640 12 800 28 960 32C1120 36 1280 28 1360 24L1440 20V48H0V32Z" fill="rgba(255,255,255,0.05)" />
+        </svg>
+      </Box>
       <Container
         maxWidth="lg"
         sx={{
@@ -54,12 +56,14 @@ export default function Footer() {
             <Typography
               variant="h5"
               gutterBottom
+              className="brand-section-title"
               sx={{
                 color: 'white',
                 fontWeight: 800,
                 fontSize: { xs: '1.5rem', md: '1.75rem' },
                 mb: 2,
-                textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                textShadow: '0 2px 16px rgba(0,0,0,0.35)',
+                letterSpacing: '0.02em',
               }}
             >
               YÖNEL OTO YEDEK PARÇA
@@ -126,22 +130,12 @@ export default function Footer() {
             <Typography
               variant="h6"
               gutterBottom
+              className="brand-section-title"
               sx={{
                 fontWeight: 700,
                 fontSize: { xs: '1.125rem', md: '1.25rem' },
                 mb: 2.5,
                 color: 'white',
-                position: 'relative',
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  bottom: -8,
-                  left: 0,
-                  width: '3rem',
-                  height: '3px',
-                  background: 'linear-gradient(90deg, #ffd700, #ffed4e)',
-                  borderRadius: '2px',
-                },
               }}
             >
               Hızlı Linkler
@@ -187,22 +181,12 @@ export default function Footer() {
             <Typography
               variant="h6"
               gutterBottom
+              className="brand-section-title"
               sx={{
                 fontWeight: 700,
                 fontSize: { xs: '1.125rem', md: '1.25rem' },
                 mb: 2.5,
                 color: 'white',
-                position: 'relative',
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  bottom: -8,
-                  left: 0,
-                  width: '3rem',
-                  height: '3px',
-                  background: 'linear-gradient(90deg, #ffd700, #ffed4e)',
-                  borderRadius: '2px',
-                },
               }}
             >
               Ürün Kategorileri
@@ -250,22 +234,12 @@ export default function Footer() {
             <Typography
               variant="h6"
               gutterBottom
+              className="brand-section-title"
               sx={{
                 fontWeight: 700,
                 fontSize: { xs: '1.125rem', md: '1.25rem' },
                 mb: 2.5,
                 color: 'white',
-                position: 'relative',
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  bottom: -8,
-                  left: 0,
-                  width: '3rem',
-                  height: '3px',
-                  background: 'linear-gradient(90deg, #ffd700, #ffed4e)',
-                  borderRadius: '2px',
-                },
               }}
             >
               İletişim
@@ -274,22 +248,23 @@ export default function Footer() {
               <Box
                 component="a"
                 href="tel:+905542597273"
+                className="brand-footer-card"
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: 1.5,
+                  p: 1.5,
                   color: 'rgba(255, 255, 255, 0.9)',
                   textDecoration: 'none',
                   transition: 'all 0.3s ease',
                   '&:hover': {
-                    color: '#ffd700',
-                    transform: 'translateX(5px)',
+                    color: '#f5c542',
                   },
                 }}
               >
                 <Box
                   sx={{
-                    bgcolor: 'rgba(255, 255, 255, 0.15)',
+                    bgcolor: 'rgba(255, 255, 255, 0.12)',
                     borderRadius: '50%',
                     p: 1,
                     display: 'flex',
@@ -400,22 +375,12 @@ export default function Footer() {
             <Typography
               variant="h6"
               gutterBottom
+              className="brand-section-title"
               sx={{
                 fontWeight: 700,
                 fontSize: { xs: '1.125rem', md: '1.25rem' },
                 mb: 2.5,
                 color: 'white',
-                position: 'relative',
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  bottom: -8,
-                  left: 0,
-                  width: '3rem',
-                  height: '3px',
-                  background: 'linear-gradient(90deg, #ffd700, #ffed4e)',
-                  borderRadius: '2px',
-                },
               }}
             >
               Yasal Metinler
@@ -543,10 +508,14 @@ export default function Footer() {
         {/* Copyright */}
         <Box
           sx={{
-            borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+            borderTop: '1px solid rgba(255, 255, 255, 0.2)',
             mt: { xs: 4, md: 5 },
             pt: { xs: 3, md: 4 },
             textAlign: 'center',
+            background: 'linear-gradient(180deg, transparent, rgba(0,0,0,0.12))',
+            borderRadius: '1rem 1rem 0 0',
+            mx: -1,
+            px: 1,
           }}
         >
           <Typography

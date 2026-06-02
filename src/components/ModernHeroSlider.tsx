@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { HOME_SLIDER_DEFAULTS } from '@/lib/homeSliderDefaults';
+import { getSliderImageUrl } from '@/lib/utils/sliderImage';
 
 type SlideItem = {
   id: number;
@@ -44,9 +45,19 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
   const goToSlide = (index: number) => setCurrentSlide(index);
 
   return (
-    <section className="w-full py-8 md:py-12 lg:py-16">
-      <div className="relative gradient-box mobile-gradient-bg py-10 md:py-12 lg:py-16 px-4 md:px-6 lg:px-0 min-h-[620px] md:min-h-[680px] lg:min-h-0 lg:h-[540px] 2xl:h-[700px] overflow-hidden rounded-[24px] md:rounded-[30px] lg:rounded-[36px]">
-        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+    <section className="w-full py-8 md:py-12 lg:py-16 px-2 sm:px-4">
+      <div className="relative brand-hero-shell mobile-gradient-bg py-10 md:py-12 lg:py-16 px-4 md:px-6 lg:px-0 min-h-[620px] md:min-h-[680px] lg:min-h-0 lg:h-[540px] 2xl:h-[700px] overflow-hidden rounded-[24px] md:rounded-[30px] lg:rounded-[36px] shadow-[0_24px_80px_rgba(15,39,74,0.25)]">
+        <div
+          className="brand-hero-orb w-64 h-64 md:w-80 md:h-80 top-[-10%] right-[-5%] bg-[#f5c542]/25"
+          style={{ animationDelay: '0s' }}
+          aria-hidden
+        />
+        <div
+          className="brand-hero-orb w-56 h-56 bottom-[-15%] left-[-8%] bg-[#173a69]/50"
+          style={{ animationDelay: '2s' }}
+          aria-hidden
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/5 via-transparent to-black/15 pointer-events-none z-[2]" />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="hidden md:block w-full absolute left-0 md:-left-[12%] top-0 h-full"
@@ -69,23 +80,26 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
           </defs>
         </svg>
 
-        <div className="slider md:max-w-[760px] lg:max-w-[1000px] xl:max-w-[1200px] 2xl:max-w-[1440px] mx-auto relative lg:top-[46%] lg:-translate-y-1/2 h-[90vh] md:h-[640px] lg:h-full w-full lg:flex items-center z-10">
+        <div className="slider md:max-w-[760px] lg:max-w-[1000px] xl:max-w-[1200px] 2xl:max-w-[1440px] mx-auto relative lg:top-[46%] lg:-translate-y-1/2 h-[90vh] md:h-[640px] lg:h-full w-full lg:flex items-center z-[3]">
           <div className="slides relative w-full h-full">
             {slides.map((slide, index) => (
               <div
                 key={slide.id}
                 className={`slide ${
                   index === currentSlide ? 'active' : ''
-                } max-w-[350px] md:max-w-full w-full flex flex-col lg:flex-row justify-start lg:justify-center gap-8 md:gap-10 lg:gap-5 pb-28 md:pb-24 lg:pb-0`}
+                } max-w-[350px] md:max-w-full w-full flex flex-col lg:flex-row justify-start lg:justify-center gap-6 md:gap-8 lg:gap-5 pb-40 md:pb-36 lg:pb-0`}
               >
-                <div className="lg:w-1/2 md:mt-4 lg:mt-[100px] pl-1 md:pl-2 lg:pl-3">
-                  <p className="uppercase text-white text-sm tracking-wide font-medium">Yönel Oto</p>
-                  <div className="mt-4 lg:mt-8 xl:mt-12">
+                <div className="hero-slide-copy lg:w-[46%] xl:w-[42%] mt-0 md:mt-2 lg:mt-[52px] xl:mt-[60px] lg:-translate-y-6 xl:-translate-y-8 lg:pb-4 pl-1 md:pl-2 lg:pl-3">
+                  <p className="inline-flex items-center gap-2 uppercase text-white/95 text-xs md:text-sm tracking-[0.2em] font-semibold px-3 py-1 rounded-full bg-white/10 border border-white/25">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#f5c542] animate-pulse" />
+                    Yönel Oto
+                  </p>
+                  <div className="mt-3 md:mt-4 lg:mt-8 xl:mt-12">
                     <div className="flex flex-col md:flex-row md:max-w-[620px] lg:max-w-[560px] 2xl:max-w-[650px] gap-4 md:gap-6 lg:gap-8">
-                      <div className="mt-2 shrink-0 w-12 h-12 rounded-full border-2 border-white/80 flex items-center justify-center">
-                        <span className="text-white font-semibold">{String(index + 1).padStart(2, '0')}</span>
+                      <div className="mt-2 shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#f5c542]/80 bg-white/10 flex items-center justify-center shadow-lg shadow-black/20">
+                        <span className="text-white font-bold text-sm md:text-base">{String(index + 1).padStart(2, '0')}</span>
                       </div>
-                      <div className="backdrop-blur-[2px] bg-black/10 rounded-2xl p-3 md:p-4 border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
+                      <div className="brand-glass-panel rounded-2xl md:rounded-3xl p-4 md:p-5">
                         <h2 className="text-[24px] leading-[30px] md:text-[30px] md:leading-[36px] lg:text-[36px] 2xl:text-[44px] 2xl:leading-[52px] text-white font-semibold lg:leading-[42px] tracking-[-0.64px] drop-shadow-[0_2px_12px_rgba(0,0,0,0.2)]">
                           {slide.title}
                         </h2>
@@ -98,7 +112,7 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
                         {slide.buttonText ? (
                           <Link
                             href={slide.buttonLink || '/'}
-                            className="inline-flex items-center gap-2 mt-4 md:mt-5 bg-white/15 hover:bg-white/25 border border-white/40 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:translate-y-[-1px] shadow-lg"
+                            className="brand-cta-btn inline-flex items-center gap-2 mt-4 md:mt-5 px-6 py-3 rounded-xl font-bold"
                           >
                             {slide.buttonText}
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,39 +125,47 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
                   </div>
                 </div>
 
-                <div className="lg:w-1/2 flex lg:justify-end">
-                  <div
-                    className="relative w-full md:w-[92%] md:mx-auto lg:w-full xl:w-[620px] 2xl:w-[720px] aspect-[9/7] rounded-[26px] lg:rounded-[40px] border border-white/60 shadow-[0_18px_50px_rgba(0,0,0,0.28)] bg-white/95 overflow-hidden"
-                  >
-                    <Image
-                      src={slide.image}
-                      alt={slide.title}
-                      fill
-                      className="object-cover md:object-contain p-0 md:p-3 lg:p-4"
-                      sizes="(max-width: 768px) 92vw, (max-width: 1200px) 48vw, 720px"
-                      priority={index === 0}
-                    />
-                    <div className="absolute inset-0 rounded-[30px] lg:rounded-[40px] bg-gradient-to-t from-black/10 to-transparent" />
+                <div className="lg:w-[54%] xl:w-[58%] flex lg:justify-end w-full">
+                  <div className="hero-slide-media w-full max-w-[350px] sm:max-w-none md:w-[92%] md:mx-auto lg:w-full lg:max-w-[560px] xl:max-w-none xl:w-[700px] 2xl:w-[820px]">
+                    <div className="hero-slide-image-card relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl lg:rounded-[2rem] bg-[#0a1628] shadow-[0_20px_50px_rgba(0,0,0,0.35)] ring-1 ring-white/50">
+                      <Image
+                        src={getSliderImageUrl(slide.image)}
+                        alt={slide.title}
+                        fill
+                        className="hero-slide-img"
+                        sizes="(max-width: 640px) 350px, (max-width: 1024px) 560px, 820px"
+                        quality={90}
+                        priority={index === 0}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+        </div>
 
-          <div className="absolute max-w-[300px] md:max-w-[420px] lg:max-w-[450px] xl:max-w-[475px] 2xl:max-w-[550px] w-[92%] md:w-[90%] lg:w-full bottom-[-8px] md:bottom-[6px] lg:bottom-[-14px] xl:bottom-[-18px] left-1/2 -translate-x-1/2 lg:left-3 lg:translate-x-0">
-            <div className="flex items-center gap-3">
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`pagination-tabs ${index === currentSlide ? 'active' : ''}`}
-                  aria-label={`${index + 1}. slayta git`}
-                >
-                  <div className="h-[3px] bg-white/95 w-full rounded-full" />
-                  <p className="mt-2 uppercase text-white tracking-[2px] text-sm font-medium">{String(index + 1).padStart(2, '0')}</p>
-                </button>
-              ))}
-            </div>
+        <div className="hero-slide-pagination absolute z-20 w-[92%] max-w-[300px] md:max-w-[420px] lg:max-w-[480px] xl:max-w-[520px] 2xl:max-w-[560px] bottom-4 md:bottom-5 lg:bottom-5 xl:bottom-6 left-1/2 -translate-x-1/2 lg:left-6 lg:translate-x-0 xl:left-8 md:mx-0 lg:mx-0 pointer-events-auto">
+          <div className="flex items-center gap-3">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`pagination-tabs ${index === currentSlide ? 'active' : ''}`}
+                aria-label={`${index + 1}. slayta git`}
+              >
+                <div className="h-[3px] w-full rounded-full overflow-hidden bg-white/25">
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${
+                      index === currentSlide
+                        ? 'w-full bg-gradient-to-r from-[#f5c542] via-white to-[#f5c542]'
+                        : 'w-0 bg-white/60'
+                    }`}
+                  />
+                </div>
+                <p className="mt-2 uppercase text-white tracking-[2px] text-sm font-medium">{String(index + 1).padStart(2, '0')}</p>
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -164,6 +186,34 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
           pointer-events: auto;
         }
 
+        @media screen and (max-width: 1023px) {
+          .slide {
+            top: 44%;
+            transform: translateY(-48%);
+          }
+
+          .hero-slide-copy {
+            transform: translateY(-12px);
+          }
+        }
+
+        @media screen and (max-width: 760px) {
+          .slide {
+            top: 42%;
+            transform: translateY(-46%);
+          }
+
+          .hero-slide-copy {
+            transform: translateY(-20px);
+          }
+        }
+
+        @media screen and (min-width: 1024px) {
+          .hero-slide-copy {
+            padding-bottom: 4.5rem;
+          }
+        }
+
         .pagination-tabs {
           width: 75px;
           opacity: 0.5;
@@ -178,7 +228,7 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
 
         @media screen and (max-width: 760px) {
           .mobile-gradient-bg {
-            background: linear-gradient(90deg, #0f274a -0.15%, #173a69 24.85%, #7a1522 58.85%, #a80000 82.85%, #c8102e 99.85%);
+            background: var(--brand-gradient);
           }
         }
 
@@ -186,6 +236,14 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
           .pagination-tabs.active {
             width: 300px;
           }
+        }
+
+        .hero-slide-image-card :global(img),
+        .hero-slide-image-card :global(.hero-slide-img) {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: contain !important;
+          object-position: center !important;
         }
       `}</style>
     </section>

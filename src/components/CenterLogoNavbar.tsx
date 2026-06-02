@@ -62,32 +62,34 @@ export default function CenterLogoNavbar() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-primary text-white"
+            className="brand-top-bar text-white"
           >
             {/* Desktop Version */}
-            <div className="hidden lg:block py-2 px-4">
+            <div className="hidden lg:block py-2.5 px-4 relative z-10">
               <div className="container mx-auto flex justify-between items-center text-sm">
                 <div className="flex gap-6">
-                  <a href="tel:05542597273" className="flex items-center gap-2 hover:text-yellow-300 transition-colors">
+                  <a href="tel:05542597273" className="flex items-center gap-2 hover:text-[#f5c542] transition-colors">
                     <PhoneIcon fontSize="small" />
                     <span>0 (554) 259 72 73</span>
                   </a>
                   <a 
                     href="mailto:tokatyonelotoyedekparca@gmail.com" 
-                    className="flex items-center gap-2 hover:text-yellow-300 transition-colors"
+                    className="flex items-center gap-2 hover:text-[#f5c542] transition-colors"
                   >
                     <EmailIcon fontSize="small" />
                     <span>tokatyonelotoyedekparca@gmail.com</span>
                   </a>
                 </div>
-                <span className="font-semibold">50+ Yıllık Tecrübe</span>
+                <span className="font-semibold tracking-wide px-3 py-0.5 rounded-full bg-white/10 border border-white/20">
+                  50+ Yıllık Tecrübe
+                </span>
               </div>
             </div>
 
             {/* Mobile Version - Compact */}
-            <div className="lg:hidden py-1.5 px-4">
+            <div className="lg:hidden py-2 px-4 relative z-10">
               <div className="container mx-auto flex justify-between items-center text-xs">
-                <a href="tel:05542597273" className="flex items-center gap-1.5 hover:text-yellow-300 transition-colors">
+                <a href="tel:05542597273" className="flex items-center gap-1.5 hover:text-[#f5c542] transition-colors">
                   <PhoneIcon sx={{ fontSize: 14 }} />
                   <span className="font-semibold">0554 259 72 73</span>
                 </a>
@@ -105,10 +107,8 @@ export default function CenterLogoNavbar() {
           y: 0,
         }}
         transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-        className={`sticky left-0 right-0 z-50 transition-all duration-500 backdrop-blur-xl ${
-          isScrolled
-            ? 'bg-white/98 shadow-xl border-b border-gray-200/60 top-0'
-            : 'bg-white/85 shadow-md border-b border-gray-100/40 top-[30px] lg:top-0'
+        className={`sticky left-0 right-0 z-50 transition-all duration-500 backdrop-blur-xl brand-navbar ${
+          isScrolled ? 'brand-navbar--scrolled top-0' : 'top-[30px] lg:top-0'
         }`}
         style={{
           backdropFilter: 'blur(20px)',
@@ -128,15 +128,9 @@ export default function CenterLogoNavbar() {
                 >
                   <Link
                     href={item.href}
-                    className={`relative px-3 py-2 font-semibold text-base tracking-wide transition-all duration-300 group ${
-                      isScrolled
-                        ? 'text-gray-800 hover:text-primary'
-                        : 'text-gray-900 hover:text-primary'
-                    }`}
+                    className="brand-nav-link px-4 py-2 font-semibold text-base tracking-wide text-gray-800 hover:text-primary"
                   >
                     {item.label}
-                    {/* Animated Underline */}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
                   </Link>
                 </motion.div>
               ))}
@@ -150,8 +144,8 @@ export default function CenterLogoNavbar() {
               whileHover={{ scale: 1.05 }}
               className="flex-shrink-0"
             >
-              <Link href="/" className="block">
-                <div className="relative h-16 lg:h-24 w-40 lg:w-56">
+              <Link href="/" className="block brand-logo-ring">
+                <div className="relative h-16 lg:h-20 w-40 lg:w-52 bg-white/90 rounded-xl">
                   <Image
                     src="/assets/logo1.png"
                     alt="Yönel Oto Yedek Parça"
@@ -175,15 +169,9 @@ export default function CenterLogoNavbar() {
                 >
                   <Link
                     href={item.href}
-                    className={`relative px-3 py-2 font-semibold text-base tracking-wide transition-all duration-300 group ${
-                      isScrolled
-                        ? 'text-gray-800 hover:text-primary'
-                        : 'text-gray-900 hover:text-primary'
-                    }`}
+                    className="brand-nav-link px-4 py-2 font-semibold text-base tracking-wide text-gray-800 hover:text-primary"
                   >
                     {item.label}
-                    {/* Animated Underline */}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
                   </Link>
                 </motion.div>
               ))}
@@ -235,10 +223,11 @@ export default function CenterLogoNavbar() {
               className="fixed inset-0 flex items-center justify-center lg:hidden z-50 p-4"
               onClick={handleDrawerToggle}
             >
-              <div 
-                className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative"
+              <div
+                className="p-[2px] rounded-3xl bg-gradient-to-br from-[#173a69] via-[#a80000] to-[#f5c542] shadow-2xl w-full max-w-md"
                 onClick={(e) => e.stopPropagation()}
               >
+              <div className="bg-white rounded-[22px] p-8 relative w-full">
                 {/* Close Button */}
                 <button
                   onClick={handleDrawerToggle}
@@ -274,7 +263,7 @@ export default function CenterLogoNavbar() {
                       <Link
                         href={item.href}
                         onClick={handleDrawerToggle}
-                        className="block px-6 py-4 rounded-xl text-gray-800 font-semibold text-lg hover:bg-primary/5 hover:text-primary transition-all text-center"
+                        className="block px-6 py-4 rounded-xl text-gray-800 font-semibold text-lg hover:bg-gradient-to-r hover:from-[#0f274a]/5 hover:to-primary/10 hover:text-primary transition-all text-center border border-transparent hover:border-primary/10"
                       >
                         {item.label}
                       </Link>
@@ -292,6 +281,7 @@ export default function CenterLogoNavbar() {
                     <span className="font-bold text-gray-900">0 (554) 259 72 73</span>
                   </a>
                 </div>
+              </div>
               </div>
             </motion.div>
           </>

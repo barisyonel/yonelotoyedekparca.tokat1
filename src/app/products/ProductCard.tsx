@@ -297,7 +297,7 @@ export default function ProductCard({ product }: Props) {
               },
             }}
           >
-            Bilgi Al
+            Sipariş Ver
           </Button>
         </Box>
       </CardContent>
