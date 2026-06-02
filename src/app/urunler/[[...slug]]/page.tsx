@@ -111,7 +111,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <Box sx={{ width: '100%', maxWidth: '100vw', margin: '0 auto', px: { xs: '2%', md: '2%' }, py: 3 }}>
+    <Box sx={{ width: '100%', maxWidth: '100vw', margin: '0 auto', px: { xs: '3%', md: '3%', lg: '2%' }, py: { xs: 2, md: 3 } }}>
       
       {/* Breadcrumb ve Header */}
       <Box sx={{ mb: 2 }}>
@@ -126,9 +126,9 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
         <ClientOnly><ProductsCarousel sliders={sliders} /></ClientOnly>
       </Box>
       
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, gap: { xs: 2, md: 3 } }}>
         {/* SOL TARAFTAKİ FİLTRE ALANI (Burayı kontrol ediyoruz) */}
-        <Box sx={{ width: { xs: '100%', md: '22%' }, display: { xs: 'none', md: 'block' } }}>
+        <Box sx={{ width: { xs: '100%', lg: '24%' }, display: { xs: 'none', lg: 'block' } }}>
           <ClientOnly>
             {/* Kategoriler prop'u buraya doğru gitmeli */}
             <ProductsFilter categories={categories} activeCategory={activeCategory} />
@@ -136,7 +136,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
         </Box>
 
         {/* SAĞ TARAF - ÜRÜN LİSTESİ */}
-        <Box sx={{ width: { xs: '100%', md: '78%' } }}>
+        <Box sx={{ width: { xs: '100%', lg: '76%' } }}>
           <Box sx={{ mb: 3 }}>
             <ProductsToolbar categories={categories} activeCategory={activeCategory} />
           </Box>
@@ -147,7 +147,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
             </Box>
           ) : (
             <>
-              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', xl: 'repeat(4, 1fr)' }, gap: 2 }}>
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)', xl: 'repeat(4, 1fr)' }, gap: { xs: 1.5, md: 2 } }}>
                 {products.map((product) => (
                   <ProductCard key={product.Id} product={product} />
                 ))}

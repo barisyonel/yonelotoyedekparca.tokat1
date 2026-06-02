@@ -9,6 +9,7 @@ export const CACHE_TAGS = {
   PRODUCTS: 'products',
   CATEGORIES: 'categories',
   SLIDERS: 'sliders',
+  HOME_SLIDERS: 'home-sliders',
   PRODUCT_DETAIL: 'product-detail',
 } as const;
 

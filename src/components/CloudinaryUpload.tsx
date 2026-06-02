@@ -16,18 +16,17 @@ interface Props {
 export default function CloudinaryUpload({ currentImageUrl, onUploadSuccess }: Props) {
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(currentImageUrl || '');
+  const MAX_FILE_SIZE_MB = 10;
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Dosya boyutu kontrolü (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Resim boyutu 5MB\'dan küçük olmalıdır');
+    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      alert(`Resim boyutu ${MAX_FILE_SIZE_MB}MB'dan küçük olmalıdır`);
       return;
     }
 
-    // Dosya türü kontrolü
     if (!file.type.startsWith('image/')) {
       alert('Lütfen geçerli bir resim dosyası seçin');
       return;
@@ -38,28 +37,22 @@ export default function CloudinaryUpload({ currentImageUrl, onUploadSuccess }: P
     try {
       const formData = new FormData();
       formData.append('file', file);
-      
-      // Upload preset - Cloudinary dashboard'da oluşturulmalı (Settings > Upload > Upload presets)
+
       const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'ml_default';
       formData.append('upload_preset', uploadPreset);
       formData.append('folder', 'yonel-products');
 
       const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-      
       if (!cloudName) {
         throw new Error('Cloudinary ayarları eksik. NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME env değişkenini kontrol edin.');
       }
 
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData,
+      });
 
       const data = await response.json();
-
       if (data.error) {
         throw new Error(data.error.message || 'Cloudinary upload hatası');
       }
@@ -69,12 +62,14 @@ export default function CloudinaryUpload({ currentImageUrl, onUploadSuccess }: P
         onUploadSuccess(data.secure_url, data.public_id);
         alert('✅ Resim başarıyla yüklendi!');
       } else {
-        throw new Error('Resim URL\'si alınamadı');
+        throw new Error("Resim URL'si alınamadı");
       }
     } catch (error) {
       console.error('Upload error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Resim yüklenirken hata oluştu';
-      alert(`❌ Hata: ${errorMessage}\n\nÇözüm:\n1. Cloudinary hesabınızda "Upload Preset" oluşturun\n2. .env dosyanıza NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ekleyin\n3. Preset'i "Unsigned" olarak ayarlayın`);
+      alert(
+        `❌ Hata: ${errorMessage}\n\nÇözüm:\n1. Cloudinary hesabınızda "Upload Preset" oluşturun\n2. .env dosyanıza NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ekleyin\n3. Preset'i "Unsigned" olarak ayarlayın`
+      );
     } finally {
       setUploading(false);
     }
@@ -106,10 +101,10 @@ export default function CloudinaryUpload({ currentImageUrl, onUploadSuccess }: P
               bgcolor: '#f5f5f5',
             }}
           >
-            <Image 
-              src={imageUrl} 
-              alt="Product" 
-              fill 
+            <Image
+              src={imageUrl}
+              alt="Product"
+              fill
               style={{ objectFit: 'contain' }}
               unoptimized={imageUrl.includes('cloudinary')}
             />
@@ -122,12 +117,7 @@ export default function CloudinaryUpload({ currentImageUrl, onUploadSuccess }: P
               disabled={uploading}
             >
               {uploading ? 'Değiştiriliyor...' : 'Görseli Değiştir'}
-              <input
-                type="file"
-                hidden
-                accept="image/*"
-                onChange={handleFileChange}
-              />
+              <input type="file" hidden accept="image/*" onChange={handleFileChange} />
             </Button>
             <Button
               variant="outlined"
@@ -147,15 +137,9 @@ export default function CloudinaryUpload({ currentImageUrl, onUploadSuccess }: P
           disabled={uploading}
         >
           {uploading ? 'Yükleniyor...' : 'Görsel Yükle'}
-          <input
-            type="file"
-            hidden
-            accept="image/*"
-            onChange={handleFileChange}
-          />
+          <input type="file" hidden accept="image/*" onChange={handleFileChange} />
         </Button>
       )}
     </Box>
   );
 }
-

@@ -1,4 +1,5 @@
 import ProductsRepository from '@/lib/repositories/ProductsRepository';
+import HomeSlidersRepository from '@/lib/repositories/HomeSlidersRepository';
 import { generateProductUrl } from '@/lib/utils/slugify';
 import Link from 'next/link';
 import type { Metadata } from 'next';
@@ -30,12 +31,27 @@ const Testimonials = dynamic(() => import('@/components/Testimonials'), {
 
   // Advanced SEO Optimized Metadata
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.yonelotoyedekparca.com'),
   title: 'İveco Daily ve Fiat Ducato Yedek Parçaları | Yönel Oto',
   description: 'İveco Daily, Fiat Ducato, Foton ve Karataş traktörleri ile Mutlu Akü için orijinal yedek parçaları Türkiye geneline hızlı gönderimle sunuyoruz.',
-  keywords: 'iveco daily yedek parça, fiat ducato, foton traktör',
+  keywords: [
+    'iveco daily yedek parça',
+    'iveco 120-14 yedek parça',
+    'iveco 85-12 yedek parça',
+    'iveco 65-9 yedek parça',
+    'iveco 50nc yedek parça',
+    'fiat ducato yedek parça',
+    'foton traktör yedek parça',
+    'karataş traktör yedek parça',
+    'mutlu akü',
+    'tokat oto yedek parça',
+  ],
   alternates: {
     canonical: 'https://www.yonelotoyedekparca.com',
   },
+  creator: 'Yönel Oto Yedek Parça',
+  publisher: 'Yönel Oto Yedek Parça',
+  category: 'Automotive',
   authors: [{ name: 'Yönel Oto Yedek Parça' }],
   robots: {
     index: true,
@@ -57,7 +73,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.jpg',
+        url: 'https://www.yonelotoyedekparca.com/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Yönel Oto Yedek Parça - İveco, Ducato, Foton, Karataş, Mutlu Akü',
@@ -68,11 +84,36 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus | Fiat Ducato 2.3, 3.0 | Foton, Karataş Traktör Yedek Parça',
     description: 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal yedek parça, hızlı teslimat.',
-    images: ['/twitter-image.jpg'],
+    images: ['https://www.yonelotoyedekparca.com/twitter-image.jpg'],
   },
 };
 
 export default async function Home() {
+  let homeSlides: Array<{
+    id: number;
+    title: string;
+    subtitle: string;
+    description: string;
+    image: string;
+    buttonText: string;
+    buttonLink: string;
+  }> = [];
+
+  try {
+    const activeSlides = await HomeSlidersRepository.findActive();
+    homeSlides = activeSlides.map((slide) => ({
+      id: slide.Id,
+      title: slide.Title,
+      subtitle: slide.Subtitle,
+      description: slide.Description,
+      image: slide.ImageUrl,
+      buttonText: slide.ButtonText,
+      buttonLink: slide.ButtonLink,
+    }));
+  } catch {
+    homeSlides = [];
+  }
+
   // Server-side data fetching (SSR) - İveco Products with Stable Order
   let featuredProducts: Array<{ Id: number; Name: string; Description?: string; ImageUrl?: string; CategoryName?: string; SubCategoryName?: string }> = [];
   
@@ -363,7 +404,7 @@ export default async function Home() {
       />
 
       {/* Modern Hero Slider - Komatsu Style */}
-      <ModernHeroSlider />
+      <ModernHeroSlider slides={homeSlides} />
 
       {/* Featured Products moved under hero (includes main H1) */}
       {featuredProducts.length > 0 && (

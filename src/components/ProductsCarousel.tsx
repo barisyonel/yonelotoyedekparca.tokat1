@@ -30,24 +30,24 @@ export default function ProductsCarousel({ sliders }: Props) {
   if (!isMounted) {
     return (
       <div className="relative w-full mb-8 overflow-hidden">
-        <div className="relative w-full" style={{ height: 'clamp(280px, 35vh, 400px)', perspective: '1200px' }}>
+        <div className="relative w-full" style={{ height: 'clamp(320px, 42vh, 520px)' }}>
           <div className="relative w-full h-full flex items-center justify-center">
             {sliders.map((slider, index) => (
               <div
                 key={slider.Id}
-                className="absolute w-[85%] md:w-[65%] lg:w-[55%] aspect-[16/9] rounded-lg md:rounded-xl overflow-hidden"
+                className="absolute w-[96%] md:w-[96%] lg:w-[88%] h-full rounded-2xl md:rounded-3xl overflow-hidden border border-gray-200 shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
                 style={{
-                  transform: index === 0 ? 'translateX(0%) scale(1)' : 'translateX(0%) scale(0.6)',
+                  transform: 'translateX(0%) scale(1)',
                   zIndex: index === 0 ? 30 : 10,
                   opacity: index === 0 ? 1 : 0,
                 }}
               >
-                <div className="relative w-full h-full">
+                <div className="relative w-full h-full bg-white">
                   <Image
                     src={slider.ImageUrl}
                     alt={`Yönel Oto Yedek Parça - Görsel ${slider.Id}`}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     priority={index === 0}
                     loading={index === 0 ? 'eager' : 'lazy'}
                     quality={85}
@@ -67,56 +67,32 @@ export default function ProductsCarousel({ sliders }: Props) {
     );
   }
 
-  const getSlideStyle = (index: number) => {
-    const diff = index - activeIndex;
-    const normalizedDiff = ((diff + sliders.length) % sliders.length);
-    
-    if (normalizedDiff === 0) {
-      // Active slide - center
-      return {
-        transform: 'translateX(0%) scale(1)',
-        zIndex: 30,
-        opacity: 1,
-      };
-    } else if (normalizedDiff === 1 || normalizedDiff === sliders.length - 1) {
-      // Adjacent slides
-      const isNext = normalizedDiff === 1;
-      return {
-        transform: `translateX(${isNext ? '80%' : '-80%'}) scale(0.8)`,
-        zIndex: 20,
-        opacity: 0.6,
-      };
-    } else {
-      // Hidden slides
-      return {
-        transform: 'translateX(0%) scale(0.6)',
-        zIndex: 10,
-        opacity: 0,
-      };
-    }
-  };
+  const getSlideStyle = (index: number) => ({
+    transform: 'translateX(0%) scale(1)',
+    zIndex: index === activeIndex ? 30 : 10,
+    opacity: index === activeIndex ? 1 : 0,
+  });
 
   return (
     <div className="relative w-full mb-8 overflow-hidden">
-      {/* Container - Daha küçük yükseklik */}
-      <div className="relative w-full" style={{ height: 'clamp(280px, 35vh, 400px)', perspective: '1200px' }}>
+      <div className="relative w-full" style={{ height: 'clamp(320px, 42vh, 520px)' }}>
         <div className="relative w-full h-full flex items-center justify-center">
           {sliders.map((slider, index) => {
             const style = getSlideStyle(index);
             return (
               <div
                 key={slider.Id}
-                className="absolute w-[85%] md:w-[65%] lg:w-[55%] aspect-[16/9] rounded-lg md:rounded-xl overflow-hidden cursor-pointer transition-all duration-700 ease-out"
+                className="absolute w-[96%] md:w-[96%] lg:w-[88%] h-full rounded-2xl md:rounded-3xl overflow-hidden border border-gray-200 shadow-[0_10px_30px_rgba(0,0,0,0.12)] cursor-pointer transition-opacity duration-500 ease-out"
                 style={style}
                 onClick={() => setActiveIndex(index)}
               >
               {/* Image - No Padding, Full Fill */}
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full bg-white">
                 <Image
                   src={slider.ImageUrl}
                   alt={`Yönel Oto Yedek Parça - Görsel ${slider.Id}`}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   priority={index === 0}
                   loading={index === 0 ? 'eager' : 'lazy'}
                   quality={85}

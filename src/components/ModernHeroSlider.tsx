@@ -1,286 +1,193 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import { HOME_SLIDER_DEFAULTS } from '@/lib/homeSliderDefaults';
 
-const slides = [
-  {
-    id: 1,
-    title: 'İveco Daily Yedek Parça',
-    subtitle: '120-14, 85-12, 65-9, 50NC Tüm Modeller',
-    description: 'Orijinal ve yan sanayi yedek parçaları stoklarımızda',
-    image: '/assets/slider1.png',
-    buttonText: 'İveco Ürünleri',
-    buttonLink: '/urunler/iveco/daily',
-  },
-  {
-    id: 2,
-    title: 'Fiat Ducato Yedek Parça',
-    subtitle: '2.3 ve 3.0 Motor Serisi',
-    description: 'Fren, motor, filtre sistemlerinde uzman çözümler',
-    image: '/assets/slider2.png',
-    buttonText: 'Ducato Ürünleri',
-    buttonLink: '/urunler/fiat/ducato',
-  },
-  {
-    id: 3,
-    title: 'Foton & Karataş Traktör',
-    subtitle: 'Tüm Modeller İçin Yedek Parça',
-    description: 'Tarımda kesintisiz üretim için güvenilir parçalar',
-    image: '/assets/slider3.png',
-    buttonText: 'Traktör Parçaları',
-    buttonLink: '/urunler/karatas',
-  },
-  {
-    id: 4,
-    title: 'Kaliteli Yedek Parça',
-    subtitle: 'Geniş Ürün Yelpazesi',
-    description: 'Motor, fren, filtre ve akü çözümlerinde uzman kadro',
-    image: '/gorsel.png',
-    buttonText: 'Tüm Ürünler',
-    buttonLink: '/urunler',
-  },
-  {
-    id: 5,
-    title: 'Mutlu Akü ve Yağlar',
-    subtitle: 'Orijinal ve Garantili Ürünler',
-    description: 'Araç ve traktörleriniz için en kaliteli bakım malzemeleri',
-    image: '/gorsel1.png',
-    buttonText: 'Ürünleri İncele',
-    buttonLink: '/urunler',
-  },
-];
+type SlideItem = {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  buttonText: string;
+  buttonLink: string;
+};
 
-export default function ModernHeroSlider() {
+const fallbackSlides: SlideItem[] = HOME_SLIDER_DEFAULTS.map((slide, index) => ({
+  id: index + 1,
+  title: slide.title,
+  subtitle: slide.subtitle,
+  description: slide.description,
+  image: slide.image,
+  buttonText: slide.buttonText,
+  buttonLink: slide.buttonLink,
+}));
+
+interface Props {
+  slides?: SlideItem[];
+}
+
+export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
+  const slides = incomingSlides && incomingSlides.length > 0 ? incomingSlides : fallbackSlides;
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
-  const [direction, setDirection] = useState(0);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    const timer = setInterval(() => {
-      setDirection(1);
+    const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
 
-    return () => clearInterval(timer);
-  }, [isMounted]);
+    return () => clearInterval(interval);
+  }, [slides.length]);
 
-  const goToSlide = (index: number) => {
-    setDirection(index > currentSlide ? 1 : -1);
-    setCurrentSlide(index);
-  };
-
-  const goToPrev = () => {
-    setDirection(-1);
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const goToNext = () => {
-    setDirection(1);
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  // Animation variants - Komatsu style (Fade + Zoom)
-  const slideVariants = {
-    enter: () => ({
-      opacity: 0,
-      scale: 1.1,
-    }),
-    center: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 1.2,
-        ease: [0.4, 0, 0.2, 1] as const, // Smooth easing
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.95,
-      transition: {
-        duration: 0.8,
-        ease: [0.4, 0, 0.2, 1] as const,
-      },
-    },
-  };
-
-  // Content animation variants
-  const contentVariants = {
-    enter: {
-      opacity: 0,
-      y: 40,
-    },
-    center: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.3,
-        duration: 0.8,
-        ease: [0.4, 0, 0.2, 1] as const,
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: -40,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
+  const goToSlide = (index: number) => setCurrentSlide(index);
 
   return (
-    <section className="relative h-[60vh] md:h-[70vh] lg:h-[75vh] overflow-hidden bg-gray-900">
-      {/* Slides Container */}
-      <AnimatePresence initial={false} custom={direction} mode="wait">
-        <motion.div
-          key={currentSlide}
-          custom={direction}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          className="absolute inset-0"
+    <section className="w-full py-8 md:py-12 lg:py-16">
+      <div className="relative gradient-box mobile-gradient-bg py-10 md:py-12 lg:py-16 px-4 md:px-6 lg:px-0 min-h-[620px] md:min-h-[680px] lg:min-h-0 lg:h-[540px] 2xl:h-[700px] overflow-hidden rounded-[24px] md:rounded-[30px] lg:rounded-[36px]">
+        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="hidden md:block w-full absolute left-0 md:-left-[12%] top-0 h-full"
+          viewBox="0 0 1200 540"
+          fill="none"
+          aria-hidden="true"
         >
-          {/* Background Image with Ken Burns Effect */}
-          <div className="absolute inset-0">
-            <Image
-              src={slides[currentSlide].image}
-              alt={slides[currentSlide].title}
-              fill
-              className="object-cover"
-              priority={currentSlide === 0}
-              loading={currentSlide === 0 ? 'eager' : 'lazy'}
-              sizes="100vw"
-              quality={85}
-            />
-            {/* Gradient Overlay - Komatsu style (darker, more premium) */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+          <path clipPath="url(#svgPath)" d="M1200 0H0V540H1200V0Z" fill="url(#paint0_linear_3178_781)" />
+          <defs>
+            <clipPath id="svgPath">
+              <path d="M417.616 0C404.551 0 396.134 3.93474 389.697 10.2961L373.613 26.2278C371.249 28.575 366.793 30.0265 361.969 30.0265H21.5005C3.57885 30.0265 -5.38198 30.0265 -12.2272 33.5142C-18.2483 36.5822 -23.1437 41.4776 -26.2117 47.4988C-29.6995 54.3439 -29.6995 63.3048 -29.6995 81.2264V488.8C-29.6995 506.722 -29.6995 515.682 -26.2117 522.528C-23.1437 528.549 -18.2483 533.444 -12.2272 536.512C-5.38198 540 3.57886 540 21.5005 540H342.371C353.648 540 364.046 534.931 369.588 529.443L380.593 517.832C382.957 515.484 387.668 510.869 397.843 510.869H1148.44C1166.37 510.869 1175.33 510.869 1182.17 507.381C1188.19 504.314 1193.09 499.418 1196.16 493.397C1199.64 486.552 1199.64 477.591 1199.64 459.669V51.2C1199.64 33.2783 1199.64 24.3175 1196.16 17.4723C1193.09 11.4511 1188.19 6.55574 1182.17 3.48779C1175.33 0 1166.37 0 1148.44 0H417.616Z" />
+            </clipPath>
+            <linearGradient id="paint0_linear_3178_781" x1="-1.8522" y1="269.875" x2="1198.15" y2="269.875" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#0F274A" />
+              <stop offset="0.22" stopColor="#173A69" />
+              <stop offset="0.55" stopColor="#7A1522" />
+              <stop offset="0.82" stopColor="#A80000" />
+              <stop offset="1" stopColor="#C8102E" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <div className="slider md:max-w-[760px] lg:max-w-[1000px] xl:max-w-[1200px] 2xl:max-w-[1440px] mx-auto relative lg:top-[46%] lg:-translate-y-1/2 h-[90vh] md:h-[640px] lg:h-full w-full lg:flex items-center z-10">
+          <div className="slides relative w-full h-full">
+            {slides.map((slide, index) => (
+              <div
+                key={slide.id}
+                className={`slide ${
+                  index === currentSlide ? 'active' : ''
+                } max-w-[350px] md:max-w-full w-full flex flex-col lg:flex-row justify-start lg:justify-center gap-8 md:gap-10 lg:gap-5 pb-28 md:pb-24 lg:pb-0`}
+              >
+                <div className="lg:w-1/2 md:mt-4 lg:mt-[100px] pl-1 md:pl-2 lg:pl-3">
+                  <p className="uppercase text-white text-sm tracking-wide font-medium">Yönel Oto</p>
+                  <div className="mt-4 lg:mt-8 xl:mt-12">
+                    <div className="flex flex-col md:flex-row md:max-w-[620px] lg:max-w-[560px] 2xl:max-w-[650px] gap-4 md:gap-6 lg:gap-8">
+                      <div className="mt-2 shrink-0 w-12 h-12 rounded-full border-2 border-white/80 flex items-center justify-center">
+                        <span className="text-white font-semibold">{String(index + 1).padStart(2, '0')}</span>
+                      </div>
+                      <div className="backdrop-blur-[2px] bg-black/10 rounded-2xl p-3 md:p-4 border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
+                        <h2 className="text-[24px] leading-[30px] md:text-[30px] md:leading-[36px] lg:text-[36px] 2xl:text-[44px] 2xl:leading-[52px] text-white font-semibold lg:leading-[42px] tracking-[-0.64px] drop-shadow-[0_2px_12px_rgba(0,0,0,0.2)]">
+                          {slide.title}
+                        </h2>
+                        {slide.subtitle ? (
+                          <p className="text-white/95 mt-3 text-lg md:text-xl font-medium">{slide.subtitle}</p>
+                        ) : null}
+                        {slide.description ? (
+                          <p className="text-white/90 mt-3 md:mt-4 max-w-[520px] text-[15px] md:text-base">{slide.description}</p>
+                        ) : null}
+                        {slide.buttonText ? (
+                          <Link
+                            href={slide.buttonLink || '/'}
+                            className="inline-flex items-center gap-2 mt-4 md:mt-5 bg-white/15 hover:bg-white/25 border border-white/40 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:translate-y-[-1px] shadow-lg"
+                          >
+                            {slide.buttonText}
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </Link>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lg:w-1/2 flex lg:justify-end">
+                  <div
+                    className="relative w-full md:w-[92%] md:mx-auto lg:w-full xl:w-[620px] 2xl:w-[720px] aspect-[9/7] rounded-[26px] lg:rounded-[40px] border border-white/60 shadow-[0_18px_50px_rgba(0,0,0,0.28)] bg-white/95 overflow-hidden"
+                  >
+                    <Image
+                      src={slide.image}
+                      alt={slide.title}
+                      fill
+                      className="object-cover md:object-contain p-0 md:p-3 lg:p-4"
+                      sizes="(max-width: 768px) 92vw, (max-width: 1200px) 48vw, 720px"
+                      priority={index === 0}
+                    />
+                    <div className="absolute inset-0 rounded-[30px] lg:rounded-[40px] bg-gradient-to-t from-black/10 to-transparent" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Content */}
-          <motion.div
-            variants={contentVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            className="relative z-10 container mx-auto px-4 md:px-8 h-full flex items-center"
-          >
-            <div className="max-w-2xl lg:max-w-3xl text-white">
-              {/* Badge - Optional */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                className="inline-block bg-primary/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-semibold mb-4"
-              >
-                YENİ ÜRÜNLER
-              </motion.div>
-
-              {/* Title - H2 for SEO (only one H1 per page) */}
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 leading-tight"
-              >
-                {slides[currentSlide].title}
-              </motion.h2>
-
-              {/* Subtitle */}
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.8 }}
-                className="text-xl md:text-2xl lg:text-3xl text-yellow-300 mb-4 font-semibold"
-              >
-                {slides[currentSlide].subtitle}
-              </motion.p>
-
-              {/* Description */}
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.8 }}
-                className="text-base md:text-lg lg:text-xl mb-8 text-gray-200 max-w-xl"
-              >
-                {slides[currentSlide].description}
-              </motion.p>
-
-              {/* Button */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 0.8 }}
-              >
-                <Link
-                  href={slides[currentSlide].buttonLink}
-                  className="inline-flex items-center gap-2 bg-primary hover:bg-red-700 text-white px-8 py-4 rounded-lg font-bold text-base md:text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-primary/50"
+          <div className="absolute max-w-[300px] md:max-w-[420px] lg:max-w-[450px] xl:max-w-[475px] 2xl:max-w-[550px] w-[92%] md:w-[90%] lg:w-full bottom-[-8px] md:bottom-[6px] lg:bottom-[-14px] xl:bottom-[-18px] left-1/2 -translate-x-1/2 lg:left-3 lg:translate-x-0">
+            <div className="flex items-center gap-3">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`pagination-tabs ${index === currentSlide ? 'active' : ''}`}
+                  aria-label={`${index + 1}. slayta git`}
                 >
-                  {slides[currentSlide].buttonText}
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-              </motion.div>
+                  <div className="h-[3px] bg-white/95 w-full rounded-full" />
+                  <p className="mt-2 uppercase text-white tracking-[2px] text-sm font-medium">{String(index + 1).padStart(2, '0')}</p>
+                </button>
+              ))}
             </div>
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Navigation Dots - Komatsu Minimal Style */}
-      <div className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`transition-all duration-300 rounded-full ${
-              index === currentSlide
-                ? 'bg-white w-10 md:w-12 h-1.5'
-                : 'bg-white/40 hover:bg-white/60 w-1.5 h-1.5'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
+          </div>
+        </div>
       </div>
 
-      {/* Arrow Navigation - Minimalist */}
-      <button
-        onClick={goToPrev}
-        className="absolute left-4 md:left-8 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 border border-white/20 hover:scale-110"
-        aria-label="Previous slide"
-      >
-        <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-      <button
-        onClick={goToNext}
-        className="absolute right-4 md:right-8 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 border border-white/20 hover:scale-110"
-        aria-label="Next slide"
-      >
-        <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
+      <style jsx>{`
+        .slide {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          opacity: 0;
+          transition: opacity 1s ease-in-out;
+          pointer-events: none;
+        }
 
-      {/* Progress Bar - Optional Premium Touch */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 z-20">
-        <motion.div
-          key={currentSlide}
-          className="h-full bg-primary"
-          initial={{ width: '0%' }}
-          animate={{ width: '100%' }}
-          transition={{ duration: 5, ease: 'linear' }}
-        />
-      </div>
+        .slide.active {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .pagination-tabs {
+          width: 75px;
+          opacity: 0.5;
+          transition: 600ms ease-out all;
+          text-align: left;
+        }
+
+        .pagination-tabs.active {
+          width: 200px;
+          opacity: 1;
+        }
+
+        @media screen and (max-width: 760px) {
+          .mobile-gradient-bg {
+            background: linear-gradient(90deg, #0f274a -0.15%, #173a69 24.85%, #7a1522 58.85%, #a80000 82.85%, #c8102e 99.85%);
+          }
+        }
+
+        @media screen and (min-width: 1400px) {
+          .pagination-tabs.active {
+            width: 300px;
+          }
+        }
+      `}</style>
     </section>
   );
 }

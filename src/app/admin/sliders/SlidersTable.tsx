@@ -230,12 +230,9 @@ export default function SlidersTable({ sliders }: Props) {
         <DialogContent>
           <Box sx={{ mt: 2 }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Ana sayfa slider&apos;ı için görsel yükleyin. Önerilen boyut: 1920x600px
+              Ürünler sayfası slider alanı için görsel yükleyin. Önerilen boyut: 1920x600px
             </Typography>
-            <CloudinaryUpload
-              currentImageUrl={formData.imageUrl}
-              onUploadSuccess={handleImageUpload}
-            />
+            <CloudinaryUpload currentImageUrl={formData.imageUrl} onUploadSuccess={handleImageUpload} />
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: 3 }}>
