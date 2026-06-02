@@ -44,10 +44,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function UrunlerPage({ params, searchParams }: PageProps) {
-  const page = parseInt(searchParams.page as string || '1');
-  const search = searchParams.search as string || '';
-  const sort = searchParams.sort as string || 'newest';
-  const limit = parseInt(searchParams.limit as string || '12');
+  const pageRaw = Array.isArray(searchParams.page) ? searchParams.page[0] : searchParams.page;
+  const searchRaw = Array.isArray(searchParams.search) ? searchParams.search[0] : searchParams.search;
+  const sortRaw = Array.isArray(searchParams.sort) ? searchParams.sort[0] : searchParams.sort;
+  const limitRaw = Array.isArray(searchParams.limit) ? searchParams.limit[0] : searchParams.limit;
+
+  const pageParsed = parseInt(pageRaw as string, 10);
+  const limitParsed = parseInt(limitRaw as string, 10);
+
+  const page = Number.isNaN(pageParsed) || pageParsed < 1 ? 1 : pageParsed;
+  const search = (searchRaw as string) || '';
+  const sort = (sortRaw as string) || 'newest';
+  const limit = Number.isNaN(limitParsed) || limitParsed < 1 ? 12 : limitParsed;
 
   // KATEGORİLERİ ÇEKME (Bu kısım bozulmuş olabilir)
   let categories: Category[] = [];
@@ -96,16 +104,20 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   let total = 0;
   let sliders: SliderImage[] = [];
   
+  // Promise.all kullanmıyoruz: slider sorgusu patlarsa ürünler de komple boş dönmesin.
   try {
-    const [productResult, sliderResult] = await Promise.all([
-      ProductsRepository.findAll({ page, limit, search, categoryId, sort }),
-      SliderImagesRepository.findAll(),
-    ]);
+    const productResult = await ProductsRepository.findAll({ page, limit, search, categoryId, sort });
     products = productResult.products;
     total = productResult.total;
-    sliders = sliderResult;
   } catch (error) {
-    console.error('Veri çekme hatası:', error);
+    console.error('Ürünleri çekerken hata:', error);
+  }
+
+  try {
+    sliders = await SliderImagesRepository.findAll();
+  } catch (error) {
+    console.error('Sliderları çekerken hata:', error);
+    sliders = [];
   }
   
   const totalPages = Math.ceil(total / limit);
