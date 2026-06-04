@@ -8,6 +8,9 @@ async function fetchFeaturedIvecoForHome(): Promise<{
   products: PlainProduct[];
   total: number;
 }> {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return { products: [], total: 0 };
+  }
   try {
     const result = await ProductsRepository.findAll({ limit: 6, search: 'iveco' });
     return {

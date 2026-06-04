@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const maxDuration = 30;
+
 export const metadata: Metadata = {
   title: 'Giriş Yap | Yönel Oto Yedek Parça',
   description: 'Admin Panel - Giriş Yap',

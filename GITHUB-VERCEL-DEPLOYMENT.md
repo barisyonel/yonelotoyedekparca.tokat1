@@ -124,8 +124,16 @@ Settings → Environment Variables → Add
 ZORUNLU ENVIRONMENT VARIABLES:
 
 1. DB_SERVER
-   Value: 104.247.167.194\\MSSQLSERVER2019
-   
+   Value: 104.247.167.194
+   (Vercel'de \\INSTANCE yazmayın — ayrı DB_INSTANCE kullanın)
+
+1b. DB_INSTANCE (önerilir)
+   Value: MSSQLSERVER2019
+
+1c. DB_PORT (Vercel için genelde ZORUNLU)
+   Value: [Hosting panelindeki SQL TCP portu]
+   Named instance serverless'ta UDP SQL Browser ile çalışmaz.
+
 2. DB_NAME
    Value: yone8215_yoneltic_y
    
@@ -168,7 +176,10 @@ ZORUNLU ENVIRONMENT VARIABLES:
 ```
 
 **⚠️ ÖNEMLİ NOTLAR:**
-- Tüm değişkenler için "All" (Production, Preview, Development) seç
+- Tüm değişkenler için **Production** dahil "All" seçin
+- Env ekledikten sonra **mutlaka Redeploy** yapın (eski deploy env görmez)
+- `ADMIN_USERNAME` ve `ADMIN_PASSWORD` Production'da yoksa giriş DB'ye düşer ve timeout olabilir
+- Deploy sonrası teşhis: `GET /api/health/db?key=ADMIN_SECRET_KEY` (gizli değer dönmez)
 - Özellikle `NEXT_PUBLIC_` ile başlayanlar client-side'da görünür olacak
 - JWT_SECRET mutlaka güçlü ve random olmalı!
 

@@ -5,8 +5,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import nextDynamic from 'next/dynamic';
 
-// 5 dk ISR: Vercel'de her ziyaretçi için MSSQL beklemesin
+// Build sırasında DB denemesi yapılmasın (Vercel log timeout); runtime'da ISR
 export const revalidate = 300;
+
+const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
 
 // Dynamic imports for better code splitting and performance
 const ModernHeroSlider = nextDynamic(() => import('@/components/ModernHeroSlider'), {
@@ -102,10 +104,15 @@ export default async function Home() {
     buttonLink: string;
   }> = [];
 
-  const [slidesSettled, productsSettled] = await Promise.allSettled([
-    HomeSlidersRepository.findActive(),
-    ProductsRepository.findFeaturedForHome(),
-  ]);
+  const [slidesSettled, productsSettled] = isBuildTime
+    ? [
+        { status: 'fulfilled' as const, value: [] },
+        { status: 'fulfilled' as const, value: { products: [], total: 0 } },
+      ]
+    : await Promise.allSettled([
+        HomeSlidersRepository.findActive(),
+        ProductsRepository.findFeaturedForHome(),
+      ]);
 
   if (slidesSettled.status === 'fulfilled') {
     homeSlides = slidesSettled.value.map((slide) => ({

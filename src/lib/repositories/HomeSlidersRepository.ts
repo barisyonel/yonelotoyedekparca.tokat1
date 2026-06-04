@@ -84,6 +84,9 @@ class HomeSlidersRepository {
   static async findActive(): Promise<PlainHomeSlider[]> {
     return unstable_cache(
       async () => {
+        if (process.env.NEXT_PHASE === 'phase-production-build') {
+          return [];
+        }
         try {
           const pool = await getConnection();
           const result = await pool

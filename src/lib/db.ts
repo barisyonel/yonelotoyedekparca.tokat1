@@ -2,8 +2,19 @@
 import sql from 'mssql';
 
 const isProductionBuild = process.env.NEXT_PHASE === 'phase-production-build';
-/** Vercel serverless: env 15000 ile uyumlu üst sınır */
-const MAX_SERVERLESS_DB_TIMEOUT_MS = 15_000;
+
+/** Vercel/Next build: static üretimde MSSQL'e bağlanma (15sn timeout loglarını önler) */
+export function isDatabaseSkippedAtBuild(): boolean {
+  return isProductionBuild;
+}
+/** Vercel Hobby: serverless fonksiyon ~10s; bağlantı + sorgu için pay bırak */
+const MAX_SERVERLESS_DB_TIMEOUT_MS = 8_000;
+
+type SqlGlobal = typeof globalThis & {
+  __yonelMssqlPool?: sql.ConnectionPool | null;
+};
+
+const sqlGlobal = globalThis as SqlGlobal;
 
 /** Build/deploy sırasında uzun DB beklemesi static page timeout'a yol açar */
 function resolveDbTimeout(envKey: string, buildMs: number, defaultMs: number): number {
@@ -25,7 +36,7 @@ function parseDbServerConfig(): { server: string; instanceName?: string } {
   const explicitInstance = process.env.DB_INSTANCE?.trim();
 
   if (explicitInstance) {
-    return { server: raw, instanceName: explicitInstance };
+    return { server: raw.replace(/\\+$/, ''), instanceName: explicitInstance };
   }
 
   const normalized = raw.replace(/\\\\/g, '\\');
@@ -40,36 +51,63 @@ function parseDbServerConfig(): { server: string; instanceName?: string } {
   return { server: normalized };
 }
 
-const { server: dbHost, instanceName: dbInstance } = parseDbServerConfig();
+const { server: dbHost, instanceName: parsedInstance } = parseDbServerConfig();
+const explicitPort = process.env.DB_PORT?.trim();
+const dbPort = explicitPort ? parseInt(explicitPort, 10) : 1433;
+
+/**
+ * Vercel serverless: SQL Browser (UDP 1434) çoğu zaman erişilemez.
+ * DB_PORT tanımlıysa doğrudan TCP ile bağlan (instanceName kullanma).
+ */
+const useDirectTcpPort = Boolean(explicitPort);
+const dbInstance = useDirectTcpPort ? undefined : parsedInstance;
 
 const config: sql.config = {
   server: dbHost,
   database: process.env.DB_NAME || '',
   user: process.env.DB_USER || '',
   password: process.env.DB_PASSWORD || '',
-  port: parseInt(process.env.DB_PORT || '1433'),
+  port: dbPort,
   options: {
     encrypt: true,
     trustServerCertificate: true,
     enableArithAbort: true,
     connectTimeout: connectTimeoutMs,
     requestTimeout: requestTimeoutMs,
-    instanceName: dbInstance,
+    ...(dbInstance ? { instanceName: dbInstance } : {}),
   },
   pool: {
-    max: 10,
+    max: process.env.VERCEL ? 1 : 10,
     min: 0,
-    idleTimeoutMillis: 30000,
+    idleTimeoutMillis: 10000,
     acquireTimeoutMillis: connectionTimeoutMs,
     createTimeoutMillis: connectionTimeoutMs,
   },
   connectionTimeout: connectionTimeoutMs,
 };
 
-let pool: sql.ConnectionPool | null = null;
+function getPoolRef(): sql.ConnectionPool | null {
+  if (process.env.VERCEL) {
+    return sqlGlobal.__yonelMssqlPool ?? null;
+  }
+  return modulePool;
+}
+
+function setPoolRef(pool: sql.ConnectionPool | null): void {
+  if (process.env.VERCEL) {
+    sqlGlobal.__yonelMssqlPool = pool;
+  } else {
+    modulePool = pool;
+  }
+}
+
+let modulePool: sql.ConnectionPool | null = null;
 
 export async function getConnection(): Promise<sql.ConnectionPool> {
-  // Check if database credentials are available
+  if (isDatabaseSkippedAtBuild()) {
+    throw new Error('DATABASE_SKIP_BUILD');
+  }
+
   if (!config.server || !config.database || !config.user || !config.password) {
     const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
     const missingVars = [];
@@ -77,24 +115,32 @@ export async function getConnection(): Promise<sql.ConnectionPool> {
     if (!config.database) missingVars.push('DB_NAME');
     if (!config.user) missingVars.push('DB_USER');
     if (!config.password) missingVars.push('DB_PASSWORD');
-    
+
     console.error('❌ Eksik veritabanı environment variables:', missingVars.join(', '));
-    
+
     if (isBuildTime) {
       console.error('⚠️  Build zamanında veritabanı bağlantısı yapılmamalı!');
       console.error('💡 Çözüm: Admin sayfalarında "export const dynamic = \'force-dynamic\'" kullanın');
     }
-    
+
     throw new Error(`Database configuration incomplete. Missing: ${missingVars.join(', ')}`);
   }
-  
-  if (!pool) {
+
+  if (!getPoolRef()) {
     try {
       console.log('🔄 SQL Server\'a bağlanılıyor...');
       console.log('📍 Server:', config.server);
       console.log('📂 Database:', config.database);
-      
-      pool = await sql.connect(config);
+      if (dbInstance) console.log('🔧 Instance:', dbInstance);
+      if (useDirectTcpPort) console.log('🔌 Port (TCP):', dbPort);
+      if (process.env.VERCEL && dbInstance && !useDirectTcpPort) {
+        console.warn(
+          '⚠️ Vercel: named instance SQL Browser (UDP) genelde çalışmaz. Hosting panelinden TCP portunu alıp DB_PORT olarak ekleyin.',
+        );
+      }
+
+      const pool = await sql.connect(config);
+      setPoolRef(pool);
       console.log('✅ SQL Server bağlantısı başarılı!');
     } catch (error) {
       console.error('❌ SQL Server bağlantı hatası:', error);
@@ -103,38 +149,35 @@ export async function getConnection(): Promise<sql.ConnectionPool> {
         database: config.database,
         user: config.user,
         hasPassword: !!config.password,
+        port: dbPort,
+        instanceName: dbInstance ?? '(direct TCP)',
+        vercel: !!process.env.VERCEL,
       });
-      
-      // Connection hatası detayları
+
       if (error instanceof Error) {
         console.error('📋 Hata mesajı:', error.message);
-        
-        // Yaygın hatalar için öneriler
+
         if (error.message.includes('ESOCKET') || error.message.includes('connect')) {
-          console.error('💡 Öneri: SQL Server firewall\'unda Vercel IP\'lerini whitelist edin:');
-          console.error('   - 76.76.21.0/24');
-          console.error('   - 76.76.19.0/24');
-          console.error('   Veya Azure SQL kullanıyorsanız:');
-          console.error('   1. Azure Portal > SQL Server > Firewalls and virtual networks');
-          console.error('   2. "Allow Azure services and resources to access this server" açın');
-          console.error('   3. Vercel IP aralıklarını ekleyin');
+          console.error('💡 Öneri: SQL Server firewall\'unda Vercel IP aralıklarını whitelist edin.');
+          console.error('   DB_PORT ile sabit TCP portu kullanın (named instance yerine).');
         }
       }
-      
-      pool = null;
+
+      setPoolRef(null);
       throw error;
     }
   }
-  return pool;
+
+  return getPoolRef()!;
 }
 
 /** Bağlantı koptuğunda sonraki istek yeni pool açar */
 export function resetConnectionPool(): void {
+  const pool = getPoolRef();
   if (pool) {
     pool.close().catch(() => undefined);
-    pool = null;
+    setPoolRef(null);
   }
 }
 
 export { sql };
-

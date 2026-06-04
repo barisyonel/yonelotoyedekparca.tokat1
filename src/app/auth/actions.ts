@@ -5,6 +5,7 @@ import { generateToken } from '@/lib/auth/auth';
 import {
   hasEnvAdminCredentials,
   verifyEnvAdminCredentials,
+  getMissingAdminEnvVars,
 } from '@/lib/auth/adminCredentials';
 import { setAuthCookie, deleteAuthCookie } from '@/lib/auth/cookies';
 import { revalidatePath } from 'next/cache';
@@ -30,6 +31,33 @@ async function completeLogin(username: string) {
   return { success: true as const };
 }
 
+function buildDbLoginError(dbError: unknown): string {
+  const missingAdmin = getMissingAdminEnvVars();
+
+  if (hasEnvAdminCredentials()) {
+    return 'Kullanıcı adı veya şifre hatalı. (Vercel: ADMIN_USERNAME / ADMIN_PASSWORD kontrol edin)';
+  }
+
+  if (missingAdmin.length > 0 && process.env.VERCEL) {
+    return (
+      `Admin giriş bilgileri Vercel'de yüklü değil (eksik: ${missingAdmin.join(', ')}). ` +
+      'Settings → Environment Variables → Production işaretleyip yeniden Deploy edin. ' +
+      'Geçici olarak DB üzerinden giriş de denendi ancak bağlantı kurulamadı.'
+    );
+  }
+
+  const hint =
+    process.env.VERCEL && !process.env.DB_PORT
+      ? ' Vercel için DB_PORT (hosting TCP portu) eklemeniz gerekebilir; DB_SERVER içindeki \\INSTANCE serverless ortamda çalışmayabilir.'
+      : '';
+
+  return (
+    'Veritabanına bağlanılamadı.' +
+    hint +
+    ' Vercel ortam değişkenlerinde DB_* ve ADMIN_USERNAME / ADMIN_PASSWORD tanımlayıp redeploy edin.'
+  );
+}
+
 // POST - Login
 export async function login(formData: FormData) {
   try {
@@ -40,13 +68,19 @@ export async function login(formData: FormData) {
       return { success: false, error: 'Kullanıcı adı ve şifre gerekli.' };
     }
 
-    // 1) Vercel env: ADMIN_USERNAME + ADMIN_PASSWORD (deploy için)
+    // 1) Vercel env: ADMIN_USERNAME + ADMIN_PASSWORD (deploy için — DB gerekmez)
     if (hasEnvAdminCredentials()) {
       if (verifyEnvAdminCredentials(username, password)) {
         return await completeLogin(username);
       }
-      // Env tanımlıysa DB'ye gitme (Vercel'de timeout'a takılmasın)
       return { success: false, error: 'Kullanıcı adı veya şifre hatalı.' };
+    }
+
+    if (process.env.VERCEL) {
+      console.error(
+        '[login] Vercel ortamında ADMIN_USERNAME/ADMIN_PASSWORD okunamadı. Eksik:',
+        getMissingAdminEnvVars().join(', ') || '(bilinmiyor)',
+      );
     }
 
     // 2) Veritabanındaki Admins tablosu (localhost / tam kurulum)
@@ -67,17 +101,9 @@ export async function login(formData: FormData) {
 
       console.error('Login DB error:', dbError);
 
-      if (hasEnvAdminCredentials()) {
-        return {
-          success: false,
-          error: 'Kullanıcı adı veya şifre hatalı. (Vercel: ADMIN_USERNAME / ADMIN_PASSWORD kontrol edin)',
-        };
-      }
-
       return {
         success: false,
-        error:
-          'Veritabanına bağlanılamadı. Vercel ortam değişkenlerinde DB_* veya ADMIN_USERNAME / ADMIN_PASSWORD tanımlayın.',
+        error: buildDbLoginError(dbError),
       };
     }
   } catch (error) {
@@ -131,4 +157,3 @@ export async function logout() {
   revalidatePath('/');
   redirect('/auth/login');
 }
-
