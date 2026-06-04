@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { SliderImage } from '@/lib/models/SliderImage';
+import type { PlainSliderImage } from '@/lib/serializeDb';
 import { getSliderImageUrl } from '@/lib/utils/sliderImage';
 
 interface Props {
-  sliders: SliderImage[];
+  sliders: PlainSliderImage[];
 }
 
 export default function ProductsCarousel({ sliders }: Props) {

@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Link from 'next/link';
 import AddIcon from '@mui/icons-material/Add';
 import ProductsRepository from '@/lib/repositories/ProductsRepository';
+import { toPlainProduct } from '@/lib/serializeDb';
 import ProductsTable from './ProductsTable';
 import ProductsSearch from './ProductsSearch';
 import ProductsPagination from './ProductsPagination';
@@ -21,11 +22,22 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
   const limit = 100; // Her sayfada 100 ürün
   const search = (searchParams.search as string) || '';
   
-  const { products, total } = await ProductsRepository.findAll({ 
-    page,
-    limit,
-    search: search || undefined,
-  });
+  let products: ReturnType<typeof toPlainProduct>[] = [];
+  let total = 0;
+  let dbError = false;
+
+  try {
+    const result = await ProductsRepository.findAll({
+      page,
+      limit,
+      search: search || undefined,
+    });
+    products = result.products.map(toPlainProduct);
+    total = result.total;
+  } catch (error) {
+    console.error('Admin products page DB error:', error);
+    dbError = true;
+  }
 
   const totalPages = Math.ceil(total / limit);
 
@@ -49,6 +61,12 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           Yeni Ürün
         </Button>
       </Box>
+
+      {dbError && (
+        <Box sx={{ mb: 3, p: 2, bgcolor: '#fff8e1', borderRadius: 1, color: '#7a5c00' }}>
+          Veritabanına bağlanılamadı. Ürün listesi yüklenemedi.
+        </Box>
+      )}
 
       {/* Arama Input */}
       <Box sx={{ mb: 3 }}>

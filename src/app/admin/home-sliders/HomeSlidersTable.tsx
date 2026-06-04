@@ -22,11 +22,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Image from 'next/image';
 import CloudinaryUpload from '@/components/CloudinaryUpload';
-import { HomeSlider } from '@/lib/models/HomeSlider';
+import type { PlainHomeSlider } from '@/lib/serializeDb';
 import { createHomeSlider, deleteHomeSlider, updateHomeSlider } from './actions';
 
 interface Props {
-  sliders: HomeSlider[];
+  sliders: PlainHomeSlider[];
 }
 
 interface HomeSliderFormData {
@@ -60,7 +60,7 @@ export default function HomeSlidersTable({ sliders }: Props) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<HomeSliderFormData>(initialForm);
 
-  const handleOpenDialog = (slider?: HomeSlider) => {
+  const handleOpenDialog = (slider?: PlainHomeSlider) => {
     if (slider) {
       setFormData({
         id: slider.Id,

@@ -4,19 +4,30 @@ import CategoriesRepository from '@/lib/repositories/CategoriesRepository';
 import SliderImagesRepository from '@/lib/repositories/SliderImagesRepository';
 import { logout } from '../auth/actions';
 
-// Force dynamic rendering to avoid build-time database connection
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
-  // Get counts
-  const { total: productsCount } = await ProductsRepository.findAll({ limit: 1 });
-  const categories = await CategoriesRepository.findAll();
-  const sliders = await SliderImagesRepository.findAll();
+  const [productsResult, categoriesResult, slidersResult] = await Promise.allSettled([
+    ProductsRepository.findAll({ limit: 1 }),
+    CategoriesRepository.findAll(),
+    SliderImagesRepository.findAll(),
+  ]);
+
+  const productsCount =
+    productsResult.status === 'fulfilled' ? productsResult.value.total : 0;
+  const categoriesCount =
+    categoriesResult.status === 'fulfilled' ? categoriesResult.value.length : 0;
+  const slidersCount =
+    slidersResult.status === 'fulfilled' ? slidersResult.value.length : 0;
+
+  const dbOffline =
+    productsResult.status === 'rejected' ||
+    categoriesResult.status === 'rejected' ||
+    slidersResult.status === 'rejected';
 
   return (
     <main className="min-h-screen bg-gray-100">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold">Admin Paneli</h1>
           <form action={logout}>
@@ -29,7 +40,14 @@ export default async function AdminDashboard() {
           </form>
         </div>
 
-        {/* Stats */}
+        {dbOffline && (
+          <div className="mb-6 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-amber-900">
+            Veritabanına şu an ulaşılamıyor. Panel açık; istatistikler 0 görünebilir. Hosting
+            firewall&apos;unda Vercel IP erişimini ve{' '}
+            <code className="text-sm">DB_SERVER</code> ayarını kontrol edin.
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-gray-600 text-sm font-medium mb-2">Toplam Ürün</h2>
@@ -37,15 +55,14 @@ export default async function AdminDashboard() {
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-gray-600 text-sm font-medium mb-2">Toplam Kategori</h2>
-            <p className="text-4xl font-bold text-primary">{categories.length}</p>
+            <p className="text-4xl font-bold text-primary">{categoriesCount}</p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-gray-600 text-sm font-medium mb-2">Slider Görselleri</h2>
-            <p className="text-4xl font-bold text-primary">{sliders.length}</p>
+            <p className="text-4xl font-bold text-primary">{slidersCount}</p>
           </div>
         </div>
 
-        {/* Quick Links */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Link
             href="/admin/products"
@@ -75,7 +92,6 @@ export default async function AdminDashboard() {
           </Link>
         </div>
 
-        {/* Back to Site */}
         <div className="mt-8 text-center">
           <Link
             href="/"
@@ -88,4 +104,3 @@ export default async function AdminDashboard() {
     </main>
   );
 }
-

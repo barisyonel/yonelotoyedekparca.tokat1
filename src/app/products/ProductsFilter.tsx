@@ -15,14 +15,14 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
-import { Category } from '@/lib/models/Category';
+import type { PlainCategory } from '@/lib/serializeDb';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { slugify } from '@/lib/utils/slugify';
 
 interface Props {
-  categories: Category[];
-  activeCategory?: Category | null;
+  categories: PlainCategory[];
+  activeCategory?: PlainCategory | null;
   onClose?: () => void; // Drawer'ı kapatma callback'i
 }
 
@@ -40,7 +40,7 @@ export default function ProductsFilter({ categories, activeCategory, onClose }: 
   };
 
   // Bir kategorinin parent'ını bul
-  const findParentCategory = (category: Category): Category | null => {
+  const findParentCategory = (category: PlainCategory): PlainCategory | null => {
     for (const cat of categories) {
       if (cat.SubCategories) {
         for (const sub of cat.SubCategories) {
@@ -53,7 +53,7 @@ export default function ProductsFilter({ categories, activeCategory, onClose }: 
     return null;
   };
 
-  const handleCategoryFilter = (category?: Category) => {
+  const handleCategoryFilter = (category?: PlainCategory) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete('page');
     

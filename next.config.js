@@ -46,9 +46,6 @@ const nextConfig = {
   },
   
   images: {
-    // Cloudinary için domain izni
-    domains: ['res.cloudinary.com'],
-    // Modern remotePatterns (Next.js 14+)
     remotePatterns: [
       {
         protocol: 'https',

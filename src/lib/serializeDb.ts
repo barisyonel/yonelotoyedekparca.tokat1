@@ -1,5 +1,7 @@
+import type { Category } from './models/Category';
 import type { HomeSlider } from './models/HomeSlider';
 import type { Product } from './models/Product';
+import type { SliderImage } from './models/SliderImage';
 
 /** unstable_cache ve Client Component props için JSON-serializable ürün */
 export type PlainProduct = {
@@ -32,6 +34,36 @@ export function toPlainProduct(row: Product): PlainProduct {
     ImageUrl: row.ImageUrl ?? undefined,
     CategoryName: row.CategoryName ?? undefined,
     SubCategoryName: row.SubCategoryName ?? undefined,
+  };
+}
+
+export type PlainSliderImage = {
+  Id: number;
+  ImageUrl: string;
+  CloudinaryPublicId: string;
+};
+
+export type PlainCategory = {
+  Id: number;
+  Name: string;
+  ParentId?: number;
+  SubCategories?: PlainCategory[];
+};
+
+export function toPlainSliderImage(row: SliderImage): PlainSliderImage {
+  return {
+    Id: row.Id,
+    ImageUrl: row.ImageUrl,
+    CloudinaryPublicId: row.CloudinaryPublicId,
+  };
+}
+
+export function toPlainCategory(row: Category): PlainCategory {
+  return {
+    Id: row.Id,
+    Name: row.Name,
+    ParentId: row.ParentId ?? undefined,
+    SubCategories: row.SubCategories?.map(toPlainCategory),
   };
 }
 

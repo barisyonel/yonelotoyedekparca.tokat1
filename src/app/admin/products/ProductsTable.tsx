@@ -12,12 +12,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Product } from '@/lib/models/Product';
+import type { PlainProduct } from '@/lib/serializeDb';
 import { deleteProduct } from './actions';
 import { useRouter } from 'next/navigation';
 
 interface Props {
-  products: Product[];
+  products: PlainProduct[];
 }
 
 export default function ProductsTable({ products }: Props) {

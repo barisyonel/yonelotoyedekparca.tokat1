@@ -9,13 +9,13 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Category } from '@/lib/models/Category';
+import type { PlainCategory } from '@/lib/serializeDb';
 import { Product } from '@/lib/models/Product';
 import { createProduct, updateProduct } from './actions';
 import CloudinaryUpload from '@/components/CloudinaryUpload';
 
 interface Props {
-  categories: Category[];
+  categories: PlainCategory[];
   product?: Product;
 }
 

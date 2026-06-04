@@ -61,18 +61,23 @@ class HomeSlidersRepository {
     }
   }
 
-  static async findAll(): Promise<HomeSlider[]> {
+  static async findAll(): Promise<PlainHomeSlider[]> {
     return unstable_cache(
       async () => {
-        await this.ensureTable();
-        const pool = await getConnection();
-        const result = await pool
-          .request()
-          .query('SELECT * FROM HomeSliders ORDER BY SortOrder ASC, Id DESC');
-        return result.recordset;
+        try {
+          await this.ensureTable();
+          const pool = await getConnection();
+          const result = await pool
+            .request()
+            .query('SELECT * FROM HomeSliders ORDER BY SortOrder ASC, Id DESC');
+          return (result.recordset as HomeSlider[]).map(toPlainHomeSlider);
+        } catch (error) {
+          console.error('HomeSliders findAll error:', error);
+          return [];
+        }
       },
       ['home-sliders-all'],
-      { tags: [CACHE_TAGS.HOME_SLIDERS], revalidate: CACHE_REVALIDATE.SLIDERS }
+      { tags: [CACHE_TAGS.HOME_SLIDERS], revalidate: CACHE_REVALIDATE.SLIDERS },
     )();
   }
 

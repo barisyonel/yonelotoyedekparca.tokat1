@@ -2,8 +2,8 @@
 import sql from 'mssql';
 
 const isProductionBuild = process.env.NEXT_PHASE === 'phase-production-build';
-/** Vercel serverless: uzun timeout = her sayfa 2 dk bekler */
-const MAX_SERVERLESS_DB_TIMEOUT_MS = 12_000;
+/** Vercel serverless: env 15000 ile uyumlu üst sınır */
+const MAX_SERVERLESS_DB_TIMEOUT_MS = 15_000;
 
 /** Build/deploy sırasında uzun DB beklemesi static page timeout'a yol açar */
 function resolveDbTimeout(envKey: string, buildMs: number, defaultMs: number): number {
@@ -19,8 +19,31 @@ const connectTimeoutMs = resolveDbTimeout('DB_CONNECT_TIMEOUT', 8000, 30000);
 const requestTimeoutMs = resolveDbTimeout('DB_REQUEST_TIMEOUT', 8000, 30000);
 const connectionTimeoutMs = resolveDbTimeout('DB_CONNECTION_TIMEOUT', 8000, 30000);
 
+/** DB_SERVER=host\\INSTANCE veya host\INSTANCE → host + instanceName */
+function parseDbServerConfig(): { server: string; instanceName?: string } {
+  const raw = (process.env.DB_SERVER || '').trim();
+  const explicitInstance = process.env.DB_INSTANCE?.trim();
+
+  if (explicitInstance) {
+    return { server: raw, instanceName: explicitInstance };
+  }
+
+  const normalized = raw.replace(/\\\\/g, '\\');
+  const slashIndex = normalized.indexOf('\\');
+  if (slashIndex > 0) {
+    return {
+      server: normalized.slice(0, slashIndex),
+      instanceName: normalized.slice(slashIndex + 1) || undefined,
+    };
+  }
+
+  return { server: normalized };
+}
+
+const { server: dbHost, instanceName: dbInstance } = parseDbServerConfig();
+
 const config: sql.config = {
-  server: process.env.DB_SERVER || '',
+  server: dbHost,
   database: process.env.DB_NAME || '',
   user: process.env.DB_USER || '',
   password: process.env.DB_PASSWORD || '',
@@ -31,7 +54,7 @@ const config: sql.config = {
     enableArithAbort: true,
     connectTimeout: connectTimeoutMs,
     requestTimeout: requestTimeoutMs,
-    instanceName: process.env.DB_INSTANCE || undefined,
+    instanceName: dbInstance,
   },
   pool: {
     max: 10,

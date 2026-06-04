@@ -15,13 +15,13 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import Link from 'next/link';
-import { Product } from '@/lib/models/Product';
+import type { PlainProduct } from '@/lib/serializeDb';
 import { generateProductUrl } from '@/lib/utils/slugify';
 import QuickViewModal from '@/components/QuickViewModal';
 import OptimizedImage from '@/components/OptimizedImage';
 
 interface Props {
-  product: Product;
+  product: PlainProduct;
 }
 
 export default function ProductCard({ product }: Props) {

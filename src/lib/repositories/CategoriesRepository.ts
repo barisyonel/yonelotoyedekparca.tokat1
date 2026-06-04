@@ -2,6 +2,7 @@ import { getConnection, sql } from '../db';
 import { Category, CreateCategoryDto, UpdateCategoryDto } from '../models/Category';
 import { unstable_cache } from 'next/cache';
 import { CACHE_TAGS, CACHE_REVALIDATE } from '../cache';
+import { toPlainCategory, type PlainCategory } from '../serializeDb';
 
 class CategoriesRepository {
   // Helper to build category tree
@@ -15,7 +16,7 @@ class CategoriesRepository {
   }
 
   // GET - All categories (hierarchical) with cache
-  static async findAll(): Promise<Category[]> {
+  static async findAll(): Promise<PlainCategory[]> {
     return unstable_cache(
       async () => {
         try {
@@ -23,21 +24,19 @@ class CategoriesRepository {
           const result = await pool
             .request()
             .query('SELECT * FROM Categories ORDER BY Name');
-          
+
           const categories = this.buildTree(result.recordset);
-          console.log(`✅ Categories fetched from DB: ${categories.length} categories`);
-          return categories;
+          return categories.map(toPlainCategory);
         } catch (error) {
           console.error('❌ Error fetching categories from database:', error);
-          // Return empty array instead of throwing - let the page handle it
           return [];
         }
       },
       ['categories-all'],
       {
         tags: [CACHE_TAGS.CATEGORIES],
-        revalidate: CACHE_REVALIDATE.CATEGORIES, // 1 hour
-      }
+        revalidate: CACHE_REVALIDATE.CATEGORIES,
+      },
     )();
   }
 

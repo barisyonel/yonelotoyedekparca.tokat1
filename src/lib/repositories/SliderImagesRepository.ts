@@ -2,23 +2,29 @@ import { getConnection, sql } from '../db';
 import { SliderImage, CreateSliderImageDto, UpdateSliderImageDto } from '../models/SliderImage';
 import { unstable_cache } from 'next/cache';
 import { CACHE_TAGS, CACHE_REVALIDATE } from '../cache';
+import { toPlainSliderImage, type PlainSliderImage } from '../serializeDb';
 
 class SliderImagesRepository {
   // GET - All slider images with cache
-  static async findAll(): Promise<SliderImage[]> {
+  static async findAll(): Promise<PlainSliderImage[]> {
     return unstable_cache(
       async () => {
-        const pool = await getConnection();
-        const result = await pool
-          .request()
-          .query('SELECT * FROM SliderImages ORDER BY Id DESC');
-        return result.recordset;
+        try {
+          const pool = await getConnection();
+          const result = await pool
+            .request()
+            .query('SELECT * FROM SliderImages ORDER BY Id DESC');
+          return (result.recordset as SliderImage[]).map(toPlainSliderImage);
+        } catch (error) {
+          console.error('SliderImages findAll error:', error);
+          return [];
+        }
       },
       ['sliders-all'],
       {
         tags: [CACHE_TAGS.SLIDERS],
-        revalidate: CACHE_REVALIDATE.SLIDERS, // 10 minutes
-      }
+        revalidate: CACHE_REVALIDATE.SLIDERS,
+      },
     )();
   }
 

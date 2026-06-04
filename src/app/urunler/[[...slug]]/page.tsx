@@ -9,9 +9,8 @@ import ProductsHeader from '@/app/products/ProductsHeader';
 import { Metadata } from 'next';
 import { slugify, generateProductUrl } from '@/lib/utils/slugify';
 import { notFound } from 'next/navigation';
-import { SliderImage } from '@/lib/models/SliderImage';
-import { Category } from '@/lib/models/Category';
-import { Product } from '@/lib/models/Product';
+import type { PlainCategory, PlainProduct, PlainSliderImage } from '@/lib/serializeDb';
+import { toPlainProduct } from '@/lib/serializeDb';
 import ClientOnly from '@/components/ClientOnly';
 import Link from 'next/link';
 
@@ -57,7 +56,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   const limit = Number.isNaN(limitParsed) || limitParsed < 1 ? 12 : limitParsed;
 
   // KATEGORİLERİ ÇEKME (Bu kısım bozulmuş olabilir)
-  let categories: Category[] = [];
+  let categories: PlainCategory[] = [];
   try {
     categories = await CategoriesRepository.findAll();
   } catch (error) {
@@ -99,14 +98,14 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   }
 
   // ÜRÜNLERİ ÇEKME
-  let products: Product[] = [];
+  let products: PlainProduct[] = [];
   let total = 0;
-  let sliders: SliderImage[] = [];
+  let sliders: PlainSliderImage[] = [];
   
   // Promise.all kullanmıyoruz: slider sorgusu patlarsa ürünler de komple boş dönmesin.
   try {
     const productResult = await ProductsRepository.findAll({ page, limit, search, categoryId, sort });
-    products = productResult.products;
+    products = productResult.products.map(toPlainProduct);
     total = productResult.total;
   } catch (error) {
     console.error('Ürünleri çekerken hata:', error);

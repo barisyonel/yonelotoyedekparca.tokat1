@@ -16,12 +16,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import SortIcon from '@mui/icons-material/Sort';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ProductsFilter from './ProductsFilter';
-import { Category } from '@/lib/models/Category';
+import type { PlainCategory } from '@/lib/serializeDb';
 import { slugify } from '@/lib/utils/slugify';
 
 interface Props {
-  categories: Category[];
-  activeCategory?: Category | null;
+  categories: PlainCategory[];
+  activeCategory?: PlainCategory | null;
 }
 
 export default function ProductsToolbar({ categories, activeCategory }: Props) {
@@ -33,7 +33,7 @@ export default function ProductsToolbar({ categories, activeCategory }: Props) {
   const currentLimit = searchParams.get('limit') || '12';
 
   // Bir kategorinin parent'ını bul
-  const findParentCategory = (category: Category): Category | null => {
+  const findParentCategory = (category: PlainCategory): PlainCategory | null => {
     for (const cat of categories) {
       if (cat.SubCategories) {
         for (const sub of cat.SubCategories) {

@@ -15,7 +15,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { SliderImage } from '@/lib/models/SliderImage';
+import type { PlainSliderImage } from '@/lib/serializeDb';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createSliderImage, updateSliderImage, deleteSliderImage } from './actions';
@@ -23,7 +23,7 @@ import CloudinaryUpload from '@/components/CloudinaryUpload';
 import Image from 'next/image';
 
 interface Props {
-  sliders: SliderImage[];
+  sliders: PlainSliderImage[];
 }
 
 interface SliderFormData {
@@ -41,7 +41,7 @@ export default function SlidersTable({ sliders }: Props) {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleOpenDialog = (slider?: SliderImage) => {
+  const handleOpenDialog = (slider?: PlainSliderImage) => {
     if (slider) {
       setFormData({
         id: slider.Id,
@@ -188,11 +188,6 @@ export default function SlidersTable({ sliders }: Props) {
                   <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
                     Public ID: {slider.CloudinaryPublicId}
                   </Typography>
-                  {slider.CreatedAt && (
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
-                      Oluşturulma: {new Date(slider.CreatedAt).toLocaleDateString('tr-TR')}
-                    </Typography>
-                  )}
                 </CardContent>
                 <CardActions sx={{ justifyContent: 'flex-end', p: 2, pt: 0 }}>
                   <IconButton

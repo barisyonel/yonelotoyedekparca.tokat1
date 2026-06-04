@@ -20,13 +20,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
-import { Category } from '@/lib/models/Category';
+import type { PlainCategory } from '@/lib/serializeDb';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createCategory, updateCategory, deleteCategory } from './actions';
 
 interface Props {
-  categories: Category[];
+  categories: PlainCategory[];
 }
 
 interface CategoryFormData {
@@ -105,7 +105,7 @@ export default function CategoriesTable({ categories }: Props) {
     }
   };
 
-  const handleEditCategory = (category: Category) => {
+  const handleEditCategory = (category: PlainCategory) => {
     handleOpenDialog({
       id: category.Id,
       name: category.Name,
