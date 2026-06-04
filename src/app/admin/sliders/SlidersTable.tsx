@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import { createSliderImage, updateSliderImage, deleteSliderImage } from './actions';
 import CloudinaryUpload from '@/components/CloudinaryUpload';
 import Image from 'next/image';
+import { getSliderImageUrl } from '@/lib/utils/sliderImage';
 
 interface Props {
   sliders: PlainSliderImage[];
@@ -172,12 +173,12 @@ export default function SlidersTable({ sliders }: Props) {
                   },
                 }}
               >
-                <Box sx={{ position: 'relative', paddingTop: '56.25%', bgcolor: '#f3f4f6' }}>
+                <Box sx={{ position: 'relative', paddingTop: '56.25%', bgcolor: '#0a1628' }}>
                   <Image
-                    src={slider.ImageUrl}
+                    src={getSliderImageUrl(slider.ImageUrl)}
                     alt={`Slider ${slider.Id}`}
                     fill
-                    style={{ objectFit: 'cover' }}
+                    style={{ objectFit: 'contain', objectPosition: 'center' }}
                     unoptimized
                   />
                 </Box>

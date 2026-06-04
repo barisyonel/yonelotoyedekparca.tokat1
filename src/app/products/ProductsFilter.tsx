@@ -17,16 +17,23 @@ import SearchIcon from '@mui/icons-material/Search';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import type { PlainCategory } from '@/lib/serializeDb';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { slugify } from '@/lib/utils/slugify';
 
 interface Props {
   categories: PlainCategory[];
   activeCategory?: PlainCategory | null;
-  onClose?: () => void; // Drawer'ı kapatma callback'i
+  /** Sadece marka URL'sinde alt menüyü açmak için (filtre uygulanmaz) */
+  expandedParentCategory?: PlainCategory | null;
+  onClose?: () => void;
 }
 
-export default function ProductsFilter({ categories, activeCategory, onClose }: Props) {
+export default function ProductsFilter({
+  categories,
+  activeCategory,
+  expandedParentCategory,
+  onClose,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [openCategories, setOpenCategories] = useState<Record<number, boolean>>({});
@@ -39,7 +46,6 @@ export default function ProductsFilter({ categories, activeCategory, onClose }: 
     setOpenCategories((prev) => ({ ...prev, [categoryId]: !prev[categoryId] }));
   };
 
-  // Bir kategorinin parent'ını bul
   const findParentCategory = (category: PlainCategory): PlainCategory | null => {
     for (const cat of categories) {
       if (cat.SubCategories) {
@@ -52,6 +58,24 @@ export default function ProductsFilter({ categories, activeCategory, onClose }: 
     }
     return null;
   };
+
+  // Alt kategori veya marka URL'sinde ilgili marka menüsünü aç
+  useEffect(() => {
+    const toOpen: number[] = [];
+    if (expandedParentCategory?.SubCategories?.length) {
+      toOpen.push(expandedParentCategory.Id);
+    }
+    if (activeCategory) {
+      const parent = findParentCategory(activeCategory);
+      if (parent) toOpen.push(parent.Id);
+    }
+    if (toOpen.length === 0) return;
+    setOpenCategories((prev) => {
+      const next = { ...prev };
+      for (const id of toOpen) next[id] = true;
+      return next;
+    });
+  }, [activeCategory, expandedParentCategory, categories]);
 
   const handleCategoryFilter = (category?: PlainCategory) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -336,15 +360,20 @@ export default function ProductsFilter({ categories, activeCategory, onClose }: 
           />
         </ListItemButton>
         {categories.map((category) => {
-          const isCategoryActive = activeCategory?.Id === category.Id;
+          const hasSubs = Boolean(category.SubCategories && category.SubCategories.length > 0);
+          // Marka (ana kategori) seçili görünmesin; sadece alt kategori veya altı olmayan marka
+          const isCategoryActive =
+            activeCategory?.Id === category.Id && !hasSubs;
           return (
             <div key={category.Id}>
               <ListItemButton
-                onClick={() =>
-                  category.SubCategories && category.SubCategories.length > 0
-                    ? handleCategoryClick(category.Id)
-                    : handleCategoryFilter(category)
-                }
+                onClick={() => {
+                  if (hasSubs) {
+                    handleCategoryClick(category.Id);
+                  } else {
+                    handleCategoryFilter(category);
+                  }
+                }}
                 selected={isCategoryActive}
                 sx={{
                   '&.Mui-selected': {

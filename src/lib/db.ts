@@ -77,9 +77,9 @@ const config: sql.config = {
     ...(dbInstance ? { instanceName: dbInstance } : {}),
   },
   pool: {
-    max: process.env.VERCEL ? 1 : 10,
+    max: process.env.VERCEL ? 3 : 10,
     min: 0,
-    idleTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000,
     acquireTimeoutMillis: connectionTimeoutMs,
     createTimeoutMillis: connectionTimeoutMs,
   },
@@ -128,20 +128,19 @@ export async function getConnection(): Promise<sql.ConnectionPool> {
 
   if (!getPoolRef()) {
     try {
-      console.log('🔄 SQL Server\'a bağlanılıyor...');
-      console.log('📍 Server:', config.server);
-      console.log('📂 Database:', config.database);
-      if (dbInstance) console.log('🔧 Instance:', dbInstance);
-      if (useDirectTcpPort) console.log('🔌 Port (TCP):', dbPort);
+      const isDev = process.env.NODE_ENV === 'development';
+      if (isDev) {
+        console.log('🔄 SQL Server\'a bağlanılıyor...', config.server);
+      }
       if (process.env.VERCEL && dbInstance && !useDirectTcpPort) {
         console.warn(
-          '⚠️ Vercel: named instance SQL Browser (UDP) genelde çalışmaz. Hosting panelinden TCP portunu alıp DB_PORT olarak ekleyin.',
+          '⚠️ Vercel: DB_PORT tanımlayın (named instance SQL Browser çalışmaz).',
         );
       }
 
       const pool = await sql.connect(config);
       setPoolRef(pool);
-      console.log('✅ SQL Server bağlantısı başarılı!');
+      if (isDev) console.log('✅ SQL Server bağlantısı başarılı');
     } catch (error) {
       console.error('❌ SQL Server bağlantı hatası:', error);
       console.error('🔍 Config:', {

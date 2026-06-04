@@ -22,9 +22,14 @@ import { slugify } from '@/lib/utils/slugify';
 interface Props {
   categories: PlainCategory[];
   activeCategory?: PlainCategory | null;
+  expandedParentCategory?: PlainCategory | null;
 }
 
-export default function ProductsToolbar({ categories, activeCategory }: Props) {
+export default function ProductsToolbar({
+  categories,
+  activeCategory,
+  expandedParentCategory,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -227,7 +232,12 @@ export default function ProductsToolbar({ categories, activeCategory }: Props) {
 
         {/* Drawer Content */}
         <Box sx={{ p: 2 }}>
-          <ProductsFilter categories={categories} activeCategory={activeCategory} onClose={() => setDrawerOpen(false)} />
+          <ProductsFilter
+            categories={categories}
+            activeCategory={activeCategory}
+            expandedParentCategory={expandedParentCategory}
+            onClose={() => setDrawerOpen(false)}
+          />
         </Box>
       </Drawer>
     </>

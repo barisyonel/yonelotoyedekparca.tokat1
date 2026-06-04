@@ -2,6 +2,7 @@
 
 import SliderImagesRepository from '@/lib/repositories/SliderImagesRepository';
 import { revalidatePath } from 'next/cache';
+import { revalidateSliders } from '@/lib/cache';
 import crypto from 'crypto';
 
 // Cloudinary'den görsel silme fonksiyonu
@@ -80,8 +81,9 @@ export async function createSliderImage(formData: FormData) {
       CloudinaryPublicId: cloudinaryPublicId,
     });
 
+    await revalidateSliders();
     revalidatePath('/admin/sliders');
-    revalidatePath('/');
+    revalidatePath('/urunler');
 
     return { success: true, message: 'Slider görseli başarıyla eklendi!' };
   } catch (error) {
@@ -105,8 +107,9 @@ export async function updateSliderImage(id: number, formData: FormData) {
       CloudinaryPublicId: cloudinaryPublicId,
     });
 
+    await revalidateSliders();
     revalidatePath('/admin/sliders');
-    revalidatePath('/');
+    revalidatePath('/urunler');
 
     return { success: true, message: 'Slider görseli başarıyla güncellendi!' };
   } catch (error) {
@@ -135,8 +138,9 @@ export async function deleteSliderImage(id: number) {
       return { success: false, error: 'Slider görseli veritabanından silinemedi' };
     }
 
+    await revalidateSliders();
     revalidatePath('/admin/sliders');
-    revalidatePath('/');
+    revalidatePath('/urunler');
 
     return { success: true, message: 'Slider görseli başarıyla silindi!' };
   } catch (error: unknown) {

@@ -2,6 +2,7 @@
 
 import ProductsRepository from '@/lib/repositories/ProductsRepository';
 import { revalidatePath } from 'next/cache';
+import { revalidateProducts } from '@/lib/cache';
 
 // GET - All products (with pagination and filters)
 export async function getProducts(params?: {
@@ -57,6 +58,7 @@ export async function createProduct(formData: FormData) {
       SubCategoryId: subCategoryId ? parseInt(subCategoryId) : undefined,
     });
 
+    await revalidateProducts();
     revalidatePath('/admin/products');
     revalidatePath('/urunler');
     revalidatePath('/urunler/urun');
@@ -88,6 +90,7 @@ export async function updateProduct(id: number, formData: FormData) {
       SubCategoryId: subCategoryId ? parseInt(subCategoryId) : undefined,
     });
 
+    await revalidateProducts();
     revalidatePath('/admin/products');
     revalidatePath('/urunler');
     revalidatePath('/urunler/urun');
@@ -108,6 +111,7 @@ export async function deleteProduct(id: number) {
       return { success: false, error: 'Ürün bulunamadı' };
     }
 
+    await revalidateProducts();
     revalidatePath('/admin/products');
     revalidatePath('/urunler');
     revalidatePath('/urunler/urun');

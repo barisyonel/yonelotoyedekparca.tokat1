@@ -23,6 +23,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Image from 'next/image';
 import CloudinaryUpload from '@/components/CloudinaryUpload';
 import type { PlainHomeSlider } from '@/lib/serializeDb';
+import { getSliderImageUrl } from '@/lib/utils/sliderImage';
 import { createHomeSlider, deleteHomeSlider, updateHomeSlider } from './actions';
 
 interface Props {
@@ -162,8 +163,21 @@ export default function HomeSlidersTable({ sliders }: Props) {
           sliders.map((slider) => (
             <Grid item key={slider.Id} xs={12} md={6}>
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <Box sx={{ position: 'relative', paddingTop: '42%', bgcolor: '#f3f4f6' }}>
-                  <Image src={slider.ImageUrl} alt={slider.Title} fill style={{ objectFit: 'cover' }} unoptimized />
+                <Box
+                  sx={{
+                    position: 'relative',
+                    paddingTop: '56.25%',
+                    bgcolor: '#0a1628',
+                    borderRadius: 1,
+                  }}
+                >
+                  <Image
+                    src={getSliderImageUrl(slider.ImageUrl)}
+                    alt={slider.Title}
+                    fill
+                    style={{ objectFit: 'contain', objectPosition: 'center' }}
+                    unoptimized
+                  />
                 </Box>
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>

@@ -3,18 +3,9 @@ import { Category, CreateCategoryDto, UpdateCategoryDto } from '../models/Catego
 import { unstable_cache } from 'next/cache';
 import { CACHE_TAGS, CACHE_REVALIDATE } from '../cache';
 import { toPlainCategory, type PlainCategory } from '../serializeDb';
+import { buildCategoryTree, type CategoryRow } from './categoryTree';
 
 class CategoriesRepository {
-  // Helper to build category tree
-  private static buildTree(categories: Category[], parentId: number | null = null): Category[] {
-    return categories
-      .filter(cat => cat.ParentId === parentId)
-      .map(cat => ({
-        ...cat,
-        SubCategories: this.buildTree(categories, cat.Id),
-      }));
-  }
-
   // GET - All categories (hierarchical) with cache
   static async findAll(): Promise<PlainCategory[]> {
     return unstable_cache(
@@ -23,9 +14,11 @@ class CategoriesRepository {
           const pool = await getConnection();
           const result = await pool
             .request()
-            .query('SELECT * FROM Categories ORDER BY Name');
+            .query<CategoryRow>(
+              'SELECT Id, Name, ParentId, CreatedAt FROM Categories ORDER BY Name',
+            );
 
-          const categories = this.buildTree(result.recordset);
+          const categories = buildCategoryTree(result.recordset);
           return categories.map(toPlainCategory);
         } catch (error) {
           console.error('❌ Error fetching categories from database:', error);

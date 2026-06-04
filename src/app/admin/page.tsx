@@ -1,29 +1,35 @@
 import Link from 'next/link';
 import ProductsRepository from '@/lib/repositories/ProductsRepository';
 import CategoriesRepository from '@/lib/repositories/CategoriesRepository';
+import HomeSlidersRepository from '@/lib/repositories/HomeSlidersRepository';
 import SliderImagesRepository from '@/lib/repositories/SliderImagesRepository';
 import { logout } from '../auth/actions';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
-  const [productsResult, categoriesResult, slidersResult] = await Promise.allSettled([
-    ProductsRepository.findAll({ limit: 1 }),
-    CategoriesRepository.findAll(),
-    SliderImagesRepository.findAll(),
-  ]);
+  const [productsResult, categoriesResult, homeSlidersResult, productSlidersResult] =
+    await Promise.allSettled([
+      ProductsRepository.findAll({ limit: 1 }),
+      CategoriesRepository.findAll(),
+      HomeSlidersRepository.findAll(),
+      SliderImagesRepository.findAll(),
+    ]);
 
   const productsCount =
     productsResult.status === 'fulfilled' ? productsResult.value.total : 0;
   const categoriesCount =
     categoriesResult.status === 'fulfilled' ? categoriesResult.value.length : 0;
-  const slidersCount =
-    slidersResult.status === 'fulfilled' ? slidersResult.value.length : 0;
+  const homeSlidersCount =
+    homeSlidersResult.status === 'fulfilled' ? homeSlidersResult.value.length : 0;
+  const productSlidersCount =
+    productSlidersResult.status === 'fulfilled' ? productSlidersResult.value.length : 0;
 
   const dbOffline =
     productsResult.status === 'rejected' ||
     categoriesResult.status === 'rejected' ||
-    slidersResult.status === 'rejected';
+    homeSlidersResult.status === 'rejected' ||
+    productSlidersResult.status === 'rejected';
 
   return (
     <main className="min-h-screen bg-gray-100">
@@ -42,13 +48,15 @@ export default async function AdminDashboard() {
 
         {dbOffline && (
           <div className="mb-6 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-amber-900">
-            Veritabanına şu an ulaşılamıyor. Panel açık; istatistikler 0 görünebilir. Hosting
-            firewall&apos;unda Vercel IP erişimini ve{' '}
-            <code className="text-sm">DB_SERVER</code> ayarını kontrol edin.
+            Veritabanına şu an ulaşılamıyor. Panel açık; istatistikler 0 görünebilir. Vercel&apos;de{' '}
+            <code className="text-sm">DB_INSTANCE</code> tek başına çalışmaz — hosting panelinden
+            MSSQL TCP portunu alıp <code className="text-sm">DB_PORT</code> olarak ekleyin; firewall&apos;da
+            bu portu Vercel çıkış IP&apos;lerine açın (veya Vercel Static IPs). Teşhis:{' '}
+            <code className="text-sm">/api/health/db?key=ADMIN_SECRET_KEY</code>
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-gray-600 text-sm font-medium mb-2">Toplam Ürün</h2>
             <p className="text-4xl font-bold text-primary">{productsCount}</p>
@@ -58,12 +66,16 @@ export default async function AdminDashboard() {
             <p className="text-4xl font-bold text-primary">{categoriesCount}</p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-gray-600 text-sm font-medium mb-2">Slider Görselleri</h2>
-            <p className="text-4xl font-bold text-primary">{slidersCount}</p>
+            <h2 className="text-gray-600 text-sm font-medium mb-2">Anasayfa Slider</h2>
+            <p className="text-4xl font-bold text-primary">{homeSlidersCount}</p>
+          </div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-gray-600 text-sm font-medium mb-2">Ürün Sayfası Slider</h2>
+            <p className="text-4xl font-bold text-primary">{productSlidersCount}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Link
             href="/admin/products"
             className="bg-white rounded-lg shadow p-8 hover:shadow-lg transition text-center"
@@ -83,12 +95,21 @@ export default async function AdminDashboard() {
           </Link>
 
           <Link
+            href="/admin/home-sliders"
+            className="bg-white rounded-lg shadow p-8 hover:shadow-lg transition text-center"
+          >
+            <div className="text-5xl mb-4">🏠</div>
+            <h2 className="text-2xl font-bold mb-2">Anasayfa Slider</h2>
+            <p className="text-gray-600">Sitedeki hero slider (üst banner)</p>
+          </Link>
+
+          <Link
             href="/admin/sliders"
             className="bg-white rounded-lg shadow p-8 hover:shadow-lg transition text-center"
           >
             <div className="text-5xl mb-4">🖼️</div>
-            <h2 className="text-2xl font-bold mb-2">Slider Görselleri</h2>
-            <p className="text-gray-600">Ana sayfa slider yönetimi</p>
+            <h2 className="text-2xl font-bold mb-2">Ürün Sayfası Slider</h2>
+            <p className="text-gray-600">Ürünler sayfası carousel</p>
           </Link>
         </div>
 

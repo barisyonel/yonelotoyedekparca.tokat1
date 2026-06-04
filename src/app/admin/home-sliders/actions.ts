@@ -2,6 +2,7 @@
 
 import crypto from 'crypto';
 import { revalidatePath } from 'next/cache';
+import { revalidateHomeSliders } from '@/lib/cache';
 import HomeSlidersRepository from '@/lib/repositories/HomeSlidersRepository';
 
 async function deleteFromCloudinary(publicId: string): Promise<void> {
@@ -33,7 +34,8 @@ async function deleteFromCloudinary(publicId: string): Promise<void> {
   }
 }
 
-function revalidateHomeSliderPaths() {
+async function revalidateHomeSliderPaths() {
+  await revalidateHomeSliders();
   revalidatePath('/admin/home-sliders');
   revalidatePath('/');
 }
@@ -66,7 +68,7 @@ export async function createHomeSlider(formData: FormData) {
       IsActive: isActive,
     });
 
-    revalidateHomeSliderPaths();
+    await revalidateHomeSliderPaths();
     return { success: true, message: 'Anasayfa sliderı eklendi.' };
   } catch (error) {
     console.error('createHomeSlider error:', error);
@@ -102,7 +104,7 @@ export async function updateHomeSlider(id: number, formData: FormData) {
       IsActive: isActive,
     });
 
-    revalidateHomeSliderPaths();
+    await revalidateHomeSliderPaths();
     return { success: true, message: 'Anasayfa sliderı güncellendi.' };
   } catch (error) {
     console.error('updateHomeSlider error:', error);
@@ -122,7 +124,7 @@ export async function deleteHomeSlider(id: number) {
     }
 
     await HomeSlidersRepository.delete(id);
-    revalidateHomeSliderPaths();
+    await revalidateHomeSliderPaths();
     return { success: true, message: 'Anasayfa sliderı silindi.' };
   } catch (error) {
     console.error('deleteHomeSlider error:', error);

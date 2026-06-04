@@ -88,6 +88,7 @@ class HomeSlidersRepository {
           return [];
         }
         try {
+          await this.ensureTable();
           const pool = await getConnection();
           const result = await pool
             .request()

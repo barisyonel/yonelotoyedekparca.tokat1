@@ -14,9 +14,9 @@ export const CACHE_TAGS = {
 } as const;
 
 export const CACHE_REVALIDATE = {
-  PRODUCTS: 60 * 5, // 5 minutes
+  PRODUCTS: 60 * 10, // 10 minutes — katalog listesi
   CATEGORIES: 60 * 60, // 1 hour
-  SLIDERS: 60 * 10, // 10 minutes
+  SLIDERS: 60 * 30, // 30 minutes
   PRODUCT_DETAIL: 60 * 15, // 15 minutes
 } as const;
 
@@ -67,6 +67,11 @@ export async function revalidateCategories() {
 export async function revalidateSliders() {
   const { revalidateTag } = await import('next/cache');
   revalidateTag(CACHE_TAGS.SLIDERS);
+}
+
+export async function revalidateHomeSliders() {
+  const { revalidateTag } = await import('next/cache');
+  revalidateTag(CACHE_TAGS.HOME_SLIDERS);
 }
 
 export async function revalidateProductDetail(productId: number) {

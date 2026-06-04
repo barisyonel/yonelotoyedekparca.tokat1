@@ -1,6 +1,6 @@
 import { unstable_cache } from 'next/cache';
 import { getConnection, sql } from '../db';
-import { CACHE_REVALIDATE, CACHE_TAGS } from '../cache';
+import { CACHE_REVALIDATE, CACHE_TAGS, generateCacheKey } from '../cache';
 import { Product, CreateProductDto, UpdateProductDto } from '../models/Product';
 import { toPlainProduct, type PlainProduct } from '../serializeDb';
 
@@ -30,6 +30,8 @@ class ProductsRepository {
     limit?: number;
     search?: string;
     categoryId?: number;
+    /** Ana kategori + alt kategoriler dahil filtre (categoryId yerine öncelikli) */
+    categoryIds?: number[];
     subCategory?: string;
     sort?: string;
   }): Promise<{ products: Product[]; total: number }> {
@@ -58,11 +60,23 @@ class ProductsRepository {
       request.input('search', sql.NVarChar, params.search);
     }
 
-    // Kategori filtreleme - HEM CategoryId HEM SubCategoryId alanlarında ara
-    // Böylece ana kategori veya alt kategori fark etmez, her ikisinde de bulur
-    if (params?.categoryId) {
+    // Kategori filtreleme — tek ID veya ana+alt kategori listesi
+    const filterIds =
+      params?.categoryIds && params.categoryIds.length > 0
+        ? params.categoryIds
+        : params?.categoryId
+          ? [params.categoryId]
+          : [];
+
+    if (filterIds.length === 1) {
       queryStr += ` AND (p.CategoryId = @categoryId OR p.SubCategoryId = @categoryId)`;
-      request.input('categoryId', sql.Int, params.categoryId);
+      request.input('categoryId', sql.Int, filterIds[0]);
+    } else if (filterIds.length > 1) {
+      const placeholders = filterIds.map((_, i) => `@catId${i}`).join(', ');
+      queryStr += ` AND (p.CategoryId IN (${placeholders}) OR p.SubCategoryId IN (${placeholders}))`;
+      filterIds.forEach((id, i) => {
+        request.input(`catId${i}`, sql.Int, id);
+      });
     }
 
     if (params?.subCategory && params.subCategory !== 'all') {
@@ -100,6 +114,36 @@ class ProductsRepository {
 
     const result = await request.query(queryStr);
     return { products: result.recordset, total };
+  }
+
+  /** Ürünler sayfası — kısa süreli cache (Vercel'de tekrarlayan DB yükünü azaltır) */
+  static async findAllForCatalog(params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    categoryIds?: number[];
+    sort?: string;
+  }): Promise<{ products: Product[]; total: number }> {
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+      return { products: [], total: 0 };
+    }
+
+    const cacheKey = generateCacheKey('catalog-products', {
+      page: params?.page ?? 1,
+      limit: params?.limit ?? 12,
+      search: params?.search ?? '',
+      categoryIds: (params?.categoryIds ?? []).join(','),
+      sort: params?.sort ?? 'newest',
+    });
+
+    return unstable_cache(
+      () => ProductsRepository.findAll(params),
+      [cacheKey],
+      {
+        tags: [CACHE_TAGS.PRODUCTS],
+        revalidate: CACHE_REVALIDATE.PRODUCTS,
+      },
+    )();
   }
 
   // GET - Single product by ID
