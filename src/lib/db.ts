@@ -2,13 +2,17 @@
 import sql from 'mssql';
 
 const isProductionBuild = process.env.NEXT_PHASE === 'phase-production-build';
+/** Vercel serverless: uzun timeout = her sayfa 2 dk bekler */
+const MAX_SERVERLESS_DB_TIMEOUT_MS = 12_000;
 
 /** Build/deploy sırasında uzun DB beklemesi static page timeout'a yol açar */
 function resolveDbTimeout(envKey: string, buildMs: number, defaultMs: number): number {
   const fromEnv = process.env[envKey];
-  if (fromEnv) return parseInt(fromEnv, 10);
-  if (isProductionBuild) return buildMs;
-  return defaultMs;
+  let ms = fromEnv ? parseInt(fromEnv, 10) : isProductionBuild ? buildMs : defaultMs;
+  if (process.env.VERCEL && ms > MAX_SERVERLESS_DB_TIMEOUT_MS) {
+    ms = MAX_SERVERLESS_DB_TIMEOUT_MS;
+  }
+  return ms;
 }
 
 const connectTimeoutMs = resolveDbTimeout('DB_CONNECT_TIMEOUT', 8000, 30000);
@@ -94,10 +98,19 @@ export async function getConnection(): Promise<sql.ConnectionPool> {
         }
       }
       
+      pool = null;
       throw error;
     }
   }
   return pool;
+}
+
+/** Bağlantı koptuğunda sonraki istek yeni pool açar */
+export function resetConnectionPool(): void {
+  if (pool) {
+    pool.close().catch(() => undefined);
+    pool = null;
+  }
 }
 
 export { sql };

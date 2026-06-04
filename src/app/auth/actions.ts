@@ -27,7 +27,7 @@ async function completeLogin(username: string) {
 
   await setAuthCookie(token);
   revalidatePath('/admin');
-  redirect('/admin');
+  return { success: true as const };
 }
 
 // POST - Login
@@ -43,7 +43,7 @@ export async function login(formData: FormData) {
     // 1) Vercel env: ADMIN_USERNAME + ADMIN_PASSWORD (deploy için)
     if (hasEnvAdminCredentials()) {
       if (verifyEnvAdminCredentials(username, password)) {
-        await completeLogin(username);
+        return await completeLogin(username);
       }
       // Env tanımlıysa DB'ye gitme (Vercel'de timeout'a takılmasın)
       return { success: false, error: 'Kullanıcı adı veya şifre hatalı.' };
@@ -61,7 +61,7 @@ export async function login(formData: FormData) {
         return { success: false, error: 'Kullanıcı adı veya şifre hatalı.' };
       }
 
-      await completeLogin(admin.Username);
+      return await completeLogin(admin.Username);
     } catch (dbError) {
       if (isNextRedirect(dbError)) throw dbError;
 

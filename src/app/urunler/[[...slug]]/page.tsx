@@ -27,8 +27,7 @@ const ProductsCarousel = nextDynamic(() => import('@/components/ProductsCarousel
 });
 const ProductsInfoCards = nextDynamic(() => import('@/components/ProductsInfoCards'), { ssr: false });
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 120;
 
 interface PageProps {
   params: { slug?: string[] };

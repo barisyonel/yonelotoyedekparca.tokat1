@@ -5,12 +5,15 @@ const MAX_AGE = 60 * 60 * 24; // 1 day
 
 // Set auth cookie
 export async function setAuthCookie(token: string) {
+  const isProd = process.env.NODE_ENV === 'production';
   (await cookies()).set(TOKEN_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: isProd,
     sameSite: 'lax',
     maxAge: MAX_AGE,
     path: '/',
+    // www ve apex (yonelotoyedekparca.com) arasında oturum paylaşımı
+    ...(isProd ? { domain: '.yonelotoyedekparca.com' } : {}),
   });
 }
 
@@ -21,6 +24,11 @@ export async function getAuthCookie(): Promise<string | undefined> {
 
 // Delete auth cookie
 export async function deleteAuthCookie() {
-  (await cookies()).delete(TOKEN_NAME);
+  const isProd = process.env.NODE_ENV === 'production';
+  (await cookies()).delete({
+    name: TOKEN_NAME,
+    path: '/',
+    ...(isProd ? { domain: '.yonelotoyedekparca.com' } : {}),
+  });
 }
 

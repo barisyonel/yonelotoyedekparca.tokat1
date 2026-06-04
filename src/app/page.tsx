@@ -5,9 +5,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import nextDynamic from 'next/dynamic';
 
-// Build sırasında DB'ye bağlanıp static generation timeout olmasın
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// 5 dk ISR: Vercel'de her ziyaretçi için MSSQL beklemesin
+export const revalidate = 300;
 
 // Dynamic imports for better code splitting and performance
 const ModernHeroSlider = nextDynamic(() => import('@/components/ModernHeroSlider'), {
@@ -103,9 +102,13 @@ export default async function Home() {
     buttonLink: string;
   }> = [];
 
-  try {
-    const activeSlides = await HomeSlidersRepository.findActive();
-    homeSlides = activeSlides.map((slide) => ({
+  const [slidesSettled, productsSettled] = await Promise.allSettled([
+    HomeSlidersRepository.findActive(),
+    ProductsRepository.findFeaturedForHome(),
+  ]);
+
+  if (slidesSettled.status === 'fulfilled') {
+    homeSlides = slidesSettled.value.map((slide) => ({
       id: slide.Id,
       title: slide.Title,
       subtitle: slide.Subtitle,
@@ -114,25 +117,15 @@ export default async function Home() {
       buttonText: slide.ButtonText,
       buttonLink: slide.ButtonLink,
     }));
-  } catch {
-    homeSlides = [];
   }
 
   // Server-side data fetching (SSR) - İveco Products with Stable Order
   let featuredProducts: Array<{ Id: number; Name: string; Description?: string; ImageUrl?: string; CategoryName?: string; SubCategoryName?: string }> = [];
-  
-  try {
-    const result = await ProductsRepository.findAll({ 
-      limit: 6, // 6 ürün direkt çekiyoruz
-      search: 'iveco'
-    });
-    
-    // Ürünleri direkt kullan (stable order for hydration)
-    featuredProducts = result.products;
-  } catch {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('⚠️ Products could not be loaded (database not configured)');
-    }
+
+  if (productsSettled.status === 'fulfilled') {
+    featuredProducts = productsSettled.value.products;
+  } else if (process.env.NODE_ENV === 'development') {
+    console.log('⚠️ Products could not be loaded (database not configured)');
   }
 
   // Kategori ID'den slug'a mapping (sabit değerler - hydration hatası önleme ve performans optimizasyonu)

@@ -1,4 +1,6 @@
+import { unstable_cache } from 'next/cache';
 import { getConnection, sql } from '../db';
+import { CACHE_REVALIDATE, CACHE_TAGS } from '../cache';
 import { Product, CreateProductDto, UpdateProductDto } from '../models/Product';
 
 class ProductsRepository {
@@ -165,6 +167,15 @@ class ProductsRepository {
     `);
 
     return result.recordset[0] || null;
+  }
+
+  /** Ana sayfa — cache ile (her istekte DB'ye gitmez) */
+  static async findFeaturedForHome(): Promise<{ products: Product[]; total: number }> {
+    return unstable_cache(
+      async () => this.findAll({ limit: 6, search: 'iveco' }),
+      ['home-featured-iveco'],
+      { tags: [CACHE_TAGS.PRODUCTS], revalidate: CACHE_REVALIDATE.PRODUCTS },
+    )();
   }
 
   // DELETE - Delete product

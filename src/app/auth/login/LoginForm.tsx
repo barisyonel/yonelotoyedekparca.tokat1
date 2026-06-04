@@ -2,28 +2,30 @@
 
 import { login } from '../actions';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     setError('');
 
-    const result = await login(formData);
+    try {
+      const result = await login(formData);
 
-    if (result && !result.success) {
-      setError(result.error || 'Giriş başarısız');
+      if (!result?.success) {
+        setError(result?.error || 'Giriş başarısız');
+        return;
+      }
+
+      // Tam sayfa yönlendirme: cookie + middleware güvenilir çalışır
+      window.location.assign('/admin');
+    } catch {
+      setError('Sunucuya ulaşılamadı. Lütfen tekrar deneyin.');
+    } finally {
       setLoading(false);
-      return;
     }
-
-    // Başarılı: server action redirect('/admin') — istisna fırlatır, sayfa gider
-    router.push('/admin');
-    router.refresh();
   }
 
   return (
@@ -43,6 +45,7 @@ export default function LoginForm() {
           id="username"
           name="username"
           required
+          autoComplete="username"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
         />
       </div>
@@ -56,6 +59,7 @@ export default function LoginForm() {
           id="password"
           name="password"
           required
+          autoComplete="current-password"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
         />
       </div>
@@ -70,4 +74,3 @@ export default function LoginForm() {
     </form>
   );
 }
-
