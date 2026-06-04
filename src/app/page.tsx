@@ -119,8 +119,15 @@ export default async function Home() {
     }));
   }
 
-  // Server-side data fetching (SSR) - İveco Products with Stable Order
-  let featuredProducts: Array<{ Id: number; Name: string; Description?: string; ImageUrl?: string; CategoryName?: string; SubCategoryName?: string }> = [];
+  // Server-side data fetching (SSR) - İveco Products with Stable Order (Date alanı yok — RSC uyumlu)
+  let featuredProducts: Array<{
+    Id: number;
+    Name: string;
+    Description?: string;
+    ImageUrl?: string;
+    CategoryName?: string;
+    SubCategoryName?: string;
+  }> = [];
 
   if (productsSettled.status === 'fulfilled') {
     featuredProducts = productsSettled.value.products;

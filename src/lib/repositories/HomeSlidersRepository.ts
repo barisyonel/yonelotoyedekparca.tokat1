@@ -3,6 +3,7 @@ import { getConnection, sql } from '../db';
 import { CACHE_REVALIDATE, CACHE_TAGS } from '../cache';
 import { CreateHomeSliderDto, HomeSlider, UpdateHomeSliderDto } from '../models/HomeSlider';
 import { HOME_SLIDER_DEFAULTS } from '../homeSliderDefaults';
+import { toPlainHomeSlider, type PlainHomeSlider } from '../serializeDb';
 
 class HomeSlidersRepository {
   private static async ensureTable(): Promise<void> {
@@ -75,16 +76,21 @@ class HomeSlidersRepository {
     )();
   }
 
-  static async findActive(): Promise<HomeSlider[]> {
+  static async findActive(): Promise<PlainHomeSlider[]> {
     return unstable_cache(
       async () => {
-        const pool = await getConnection();
-        const result = await pool
-          .request()
-          .query(
-            'SELECT * FROM HomeSliders WHERE IsActive = 1 ORDER BY SortOrder ASC, Id DESC',
-          );
-        return result.recordset as HomeSlider[];
+        try {
+          const pool = await getConnection();
+          const result = await pool
+            .request()
+            .query(
+              'SELECT * FROM HomeSliders WHERE IsActive = 1 ORDER BY SortOrder ASC, Id DESC',
+            );
+          return (result.recordset as HomeSlider[]).map(toPlainHomeSlider);
+        } catch (error) {
+          console.error('HomeSliders findActive error:', error);
+          return [];
+        }
       },
       ['home-sliders-active'],
       { tags: [CACHE_TAGS.HOME_SLIDERS], revalidate: CACHE_REVALIDATE.SLIDERS },
