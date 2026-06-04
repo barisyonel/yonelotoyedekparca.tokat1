@@ -149,6 +149,13 @@ const nextConfig = {
   // Redirects - trailing slash ve eski URL'ler için
   async redirects() {
     return [
+      // www olmayan adresi www'ye yönlendir (JWT, cookie, manifest uyumu)
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'yonelotoyedekparca.com' }],
+        destination: 'https://www.yonelotoyedekparca.com/:path*',
+        permanent: true,
+      },
       // Trailing slash redirects - /urunler/ -> /urunler
       {
         source: '/urunler/',

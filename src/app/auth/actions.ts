@@ -2,48 +2,89 @@
 
 import AdminsRepository from '@/lib/repositories/AdminsRepository';
 import { generateToken } from '@/lib/auth/auth';
+import {
+  hasEnvAdminCredentials,
+  verifyEnvAdminCredentials,
+} from '@/lib/auth/adminCredentials';
 import { setAuthCookie, deleteAuthCookie } from '@/lib/auth/cookies';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+function isNextRedirect(error: unknown): boolean {
+  return (
+    error !== null &&
+    typeof error === 'object' &&
+    'digest' in error &&
+    String((error as { digest?: string }).digest).startsWith('NEXT_REDIRECT')
+  );
+}
+
+async function completeLogin(username: string) {
+  const token = await generateToken({
+    username,
+    role: 'admin',
+  });
+
+  await setAuthCookie(token);
+  revalidatePath('/admin');
+  redirect('/admin');
+}
+
 // POST - Login
 export async function login(formData: FormData) {
   try {
-    const username = formData.get('username') as string;
+    const username = (formData.get('username') as string)?.trim();
     const password = formData.get('password') as string;
 
     if (!username || !password) {
       return { success: false, error: 'Kullanıcı adı ve şifre gerekli.' };
     }
 
-    // Find admin
-    const admin = await AdminsRepository.findByUsername(username);
-    if (!admin) {
+    // 1) Vercel env: ADMIN_USERNAME + ADMIN_PASSWORD (deploy için)
+    if (hasEnvAdminCredentials()) {
+      if (verifyEnvAdminCredentials(username, password)) {
+        await completeLogin(username);
+      }
+      // Env tanımlıysa DB'ye gitme (Vercel'de timeout'a takılmasın)
       return { success: false, error: 'Kullanıcı adı veya şifre hatalı.' };
     }
 
-    // Verify password
-    const isValid = await AdminsRepository.verifyPassword(password, admin.PasswordHash);
-    if (!isValid) {
-      return { success: false, error: 'Kullanıcı adı veya şifre hatalı.' };
+    // 2) Veritabanındaki Admins tablosu (localhost / tam kurulum)
+    try {
+      const admin = await AdminsRepository.findByUsername(username);
+      if (!admin) {
+        return { success: false, error: 'Kullanıcı adı veya şifre hatalı.' };
+      }
+
+      const isValid = await AdminsRepository.verifyPassword(password, admin.PasswordHash);
+      if (!isValid) {
+        return { success: false, error: 'Kullanıcı adı veya şifre hatalı.' };
+      }
+
+      await completeLogin(admin.Username);
+    } catch (dbError) {
+      if (isNextRedirect(dbError)) throw dbError;
+
+      console.error('Login DB error:', dbError);
+
+      if (hasEnvAdminCredentials()) {
+        return {
+          success: false,
+          error: 'Kullanıcı adı veya şifre hatalı. (Vercel: ADMIN_USERNAME / ADMIN_PASSWORD kontrol edin)',
+        };
+      }
+
+      return {
+        success: false,
+        error:
+          'Veritabanına bağlanılamadı. Vercel ortam değişkenlerinde DB_* veya ADMIN_USERNAME / ADMIN_PASSWORD tanımlayın.',
+      };
     }
-
-    // Generate token
-    const token = await generateToken({
-      username: admin.Username,
-      role: 'admin',
-    });
-
-    // Set cookie
-    await setAuthCookie(token);
-
-    // Revalidate and return success
-    revalidatePath('/admin');
-    
-    return { success: true };
   } catch (error) {
+    if (isNextRedirect(error)) throw error;
+
     console.error('Login error:', error);
-    return { success: false, error: 'Giriş yapılamadı.' };
+    return { success: false, error: 'Giriş yapılamadı. JWT_SECRET tanımlı mı kontrol edin.' };
   }
 }
 

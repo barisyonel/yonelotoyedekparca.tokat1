@@ -14,15 +14,16 @@ export default function LoginForm() {
     setError('');
 
     const result = await login(formData);
-    
+
     if (result && !result.success) {
       setError(result.error || 'Giriş başarısız');
       setLoading(false);
-    } else if (result && result.success) {
-      // Başarılı giriş - admin paneline yönlendir
-      router.push('/admin');
-      router.refresh();
+      return;
     }
+
+    // Başarılı: server action redirect('/admin') — istisna fırlatır, sayfa gider
+    router.push('/admin');
+    router.refresh();
   }
 
   return (
