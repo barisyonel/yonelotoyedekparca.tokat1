@@ -78,6 +78,9 @@ const nextConfig = {
   poweredByHeader: false,
   
   // Experimental optimizations
+  // Static sayfa üretimi (build) için üst süre — DB sayfaları force-dynamic ile atlanır
+  staticPageGenerationTimeout: 120,
+
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['@mui/material', '@mui/icons-material'],

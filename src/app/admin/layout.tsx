@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { logout } from '../auth/actions';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'Admin Panel | Yönel Oto Yedek Parça',
   description: 'Yönel Oto Yedek Parça - Admin Yönetim Paneli',

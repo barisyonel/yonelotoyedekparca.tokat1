@@ -1,6 +1,20 @@
 // MSSQL Connection - Vercel optimized
 import sql from 'mssql';
 
+const isProductionBuild = process.env.NEXT_PHASE === 'phase-production-build';
+
+/** Build/deploy sırasında uzun DB beklemesi static page timeout'a yol açar */
+function resolveDbTimeout(envKey: string, buildMs: number, defaultMs: number): number {
+  const fromEnv = process.env[envKey];
+  if (fromEnv) return parseInt(fromEnv, 10);
+  if (isProductionBuild) return buildMs;
+  return defaultMs;
+}
+
+const connectTimeoutMs = resolveDbTimeout('DB_CONNECT_TIMEOUT', 8000, 30000);
+const requestTimeoutMs = resolveDbTimeout('DB_REQUEST_TIMEOUT', 8000, 30000);
+const connectionTimeoutMs = resolveDbTimeout('DB_CONNECTION_TIMEOUT', 8000, 30000);
+
 const config: sql.config = {
   server: process.env.DB_SERVER || '',
   database: process.env.DB_NAME || '',
@@ -11,18 +25,18 @@ const config: sql.config = {
     encrypt: true,
     trustServerCertificate: true,
     enableArithAbort: true,
-    connectTimeout: parseInt(process.env.DB_CONNECT_TIMEOUT || '120000'), // 120 seconds for Vercel
-    requestTimeout: parseInt(process.env.DB_REQUEST_TIMEOUT || '120000'),
-    instanceName: process.env.DB_INSTANCE || undefined, // For named instances
+    connectTimeout: connectTimeoutMs,
+    requestTimeout: requestTimeoutMs,
+    instanceName: process.env.DB_INSTANCE || undefined,
   },
   pool: {
-    max: 20, // Increased connection pool
-    min: 2, // Keep minimum 2 connections ready
+    max: 10,
+    min: 0,
     idleTimeoutMillis: 30000,
-    acquireTimeoutMillis: 30000,
-    createTimeoutMillis: 30000,
+    acquireTimeoutMillis: connectionTimeoutMs,
+    createTimeoutMillis: connectionTimeoutMs,
   },
-  connectionTimeout: parseInt(process.env.DB_CONNECTION_TIMEOUT || '120000'),
+  connectionTimeout: connectionTimeoutMs,
 };
 
 let pool: sql.ConnectionPool | null = null;

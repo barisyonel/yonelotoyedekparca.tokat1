@@ -3,28 +3,32 @@ import HomeSlidersRepository from '@/lib/repositories/HomeSlidersRepository';
 import { generateProductUrl } from '@/lib/utils/slugify';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
+
+// Build sırasında DB'ye bağlanıp static generation timeout olmasın
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // Dynamic imports for better code splitting and performance
-const ModernHeroSlider = dynamic(() => import('@/components/ModernHeroSlider'), {
+const ModernHeroSlider = nextDynamic(() => import('@/components/ModernHeroSlider'), {
   ssr: true,
   loading: () => <div style={{ height: '60vh', backgroundColor: '#1f2937' }} />,
 });
-const ScrollFadeIn = dynamic(() => import('@/components/ScrollFadeIn'), {
+const ScrollFadeIn = nextDynamic(() => import('@/components/ScrollFadeIn'), {
   ssr: true,
 });
-const ModernProductCard = dynamic(() => import('@/components/ModernProductCard'), {
+const ModernProductCard = nextDynamic(() => import('@/components/ModernProductCard'), {
   ssr: true,
 });
-const ModernBrandCard = dynamic(() => import('@/components/ModernBrandCard'), {
+const ModernBrandCard = nextDynamic(() => import('@/components/ModernBrandCard'), {
   ssr: true,
   loading: () => <div style={{ minHeight: '200px' }} />,
 });
-const FAQ = dynamic(() => import('@/components/FAQ'), {
+const FAQ = nextDynamic(() => import('@/components/FAQ'), {
   ssr: false,
   loading: () => <div style={{ minHeight: '400px' }} />,
 });
-const Testimonials = dynamic(() => import('@/components/Testimonials'), {
+const Testimonials = nextDynamic(() => import('@/components/Testimonials'), {
   ssr: false,
   loading: () => <div style={{ minHeight: '300px' }} />,
 });
