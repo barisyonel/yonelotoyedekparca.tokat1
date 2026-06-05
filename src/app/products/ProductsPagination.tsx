@@ -2,28 +2,28 @@
 
 import Pagination from '@mui/material/Pagination';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { buildUrunlerUrl } from '@/lib/utils/urunlerUrls';
 
 interface Props {
   currentPage: number;
   totalPages: number;
-  categorySlug?: string;
+  categoryPath?: string;
 }
 
-export default function ProductsPagination({ currentPage, totalPages, categorySlug }: Props) {
+export default function ProductsPagination({ currentPage, totalPages, categoryPath }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', page.toString());
-    
-    let url = '/urunler';
-    if (categorySlug) {
-      url += `/${categorySlug}`;
-    }
-    url += `?${params.toString()}`;
-    
-    router.push(url);
+
+    router.push(
+      buildUrunlerUrl({
+        categoryPath,
+        searchParams: params,
+      }),
+    );
   };
 
   return (
@@ -36,4 +36,3 @@ export default function ProductsPagination({ currentPage, totalPages, categorySl
     />
   );
 }
-

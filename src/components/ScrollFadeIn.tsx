@@ -1,8 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
+import { useRef, useEffect, useState, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -12,6 +10,14 @@ interface Props {
   className?: string;
 }
 
+const directionClass: Record<NonNullable<Props['direction']>, string> = {
+  up: 'scroll-fade-from-up',
+  down: 'scroll-fade-from-down',
+  left: 'scroll-fade-from-left',
+  right: 'scroll-fade-from-right',
+  none: '',
+};
+
 export default function ScrollFadeIn({
   children,
   delay = 0,
@@ -19,45 +25,37 @@ export default function ScrollFadeIn({
   duration = 0.6,
   className = '',
 }: Props) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
-  const directionOffset = {
-    up: { y: 40 },
-    down: { y: -40 },
-    left: { x: 40 },
-    right: { x: -40 },
-    none: {},
-  };
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '-100px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{
-        opacity: 0,
-        ...directionOffset[direction],
+      className={`scroll-fade-in ${directionClass[direction]} ${visible ? 'scroll-fade-in--visible' : ''} ${className}`}
+      style={{
+        transitionDuration: `${duration}s`,
+        transitionDelay: `${delay}s`,
       }}
-      animate={
-        isInView
-          ? {
-              opacity: 1,
-              x: 0,
-              y: 0,
-            }
-          : {
-              opacity: 0,
-              ...directionOffset[direction],
-            }
-      }
-      transition={{
-        duration,
-        delay,
-        ease: [0.4, 0, 0.2, 1],
-      }}
-      className={className}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
-

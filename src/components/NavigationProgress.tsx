@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Box, LinearProgress } from '@mui/material';
 
 export default function NavigationProgress() {
   const pathname = usePathname();
@@ -21,25 +20,12 @@ export default function NavigationProgress() {
   if (!loading) return null;
 
   return (
-    <Box
-      sx={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 9999,
-        height: '3px',
-      }}
+    <div
+      className="fixed top-0 left-0 right-0 z-[9999] h-[3px] overflow-hidden bg-transparent"
+      role="progressbar"
+      aria-hidden
     >
-      <LinearProgress
-        sx={{
-          height: '3px',
-          '& .MuiLinearProgress-bar': {
-            backgroundColor: '#a80000',
-          },
-        }}
-      />
-    </Box>
+      <div className="nav-progress-bar h-full bg-primary" />
+    </div>
   );
 }
-

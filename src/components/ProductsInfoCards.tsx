@@ -1,217 +1,108 @@
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+const features = [
+  'Orijinal ve Yan Sanayi Parçalar',
+  '5000+ Ürün Çeşidi',
+  'Türkiye Geneli Hızlı Kargo',
+  '50 Yıllık Tecrübe',
+  'Teknik Destek ve Danışmanlık',
+  'Mutlu Akü Yetkili Bayi',
+];
+
+const tags = [
+  'İveco Daily 65-9',
+  'İveco 85-12',
+  'İveco 120-14',
+  'Ducato 2.3',
+  'Ducato 3.0',
+  'Foton 504',
+  'Foton 604',
+  'Karataş Traktör',
+  'Mutlu Akü',
+  'Motor Yağı',
+  'Fren Balatası',
+  'Yağ Filtresi',
+  'Hava Filtresi',
+  'Hidrolik Parça',
+  'Debriyaj Seti',
+  'Amortisör',
+];
 
 export default function ProductsInfoCards() {
-  const features = [
-    '✓ Orijinal ve Yan Sanayi Parçalar',
-    '✓ 5000+ Ürün Çeşidi',
-    '✓ Türkiye Geneli Hızlı Kargo',
-    '✓ 50 Yıllık Tecrübe',
-    '✓ Teknik Destek ve Danışmanlık',
-    '✓ Mutlu Akü Yetkili Bayi',
-  ];
-
   return (
-    <Box sx={{ mt: 8, mb: 4 }}>
-      {/* Neden Yönel Oto Kartı */}
-      <Card 
-        sx={{ 
-          mb: 4, 
-          bgcolor: '#fef2f2', 
-          border: '2px solid #dc2626',
-          boxShadow: 3
-        }}
-      >
-        <CardContent sx={{ p: 4 }}>
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              fontWeight: 700, 
-              mb: 3, 
-              color: '#dc2626', 
-              textAlign: 'center',
-              fontSize: { xs: '1.5rem', md: '2rem' }
-            }}
-          >
-            Neden Yönel Oto Yedek Parça?
-          </Typography>
-          <Grid container spacing={2}>
-            {features.map((feature, idx) => (
-              <Grid item xs={12} sm={6} md={4} key={idx}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                  <CheckCircleIcon sx={{ color: '#16a34a', fontSize: 24, flexShrink: 0 }} />
-                  <Typography variant="body1" sx={{ fontWeight: 500, color: '#1a1a1a' }}>
-                    {feature}
-                  </Typography>
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </CardContent>
-      </Card>
+    <div className="mt-12 mb-8 space-y-8">
+      <section className="rounded-2xl border-2 border-red-600 bg-red-50 p-6 md:p-8 shadow-md">
+        <h2 className="text-2xl md:text-3xl font-bold text-red-600 text-center mb-6">
+          Neden Yönel Oto Yedek Parça?
+        </h2>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {features.map((feature) => (
+            <li key={feature} className="flex items-center gap-3">
+              <svg className="w-6 h-6 text-green-600 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden>
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span className="font-medium text-gray-900">{feature}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      {/* Ürün Etiketleri/Tags */}
-      <Box sx={{ mb: 4, textAlign: 'center' }}>
-        <Typography 
-          variant="h5" 
-          sx={{ 
-            fontWeight: 700, 
-            mb: 3, 
-            color: '#1a1a1a',
-            fontSize: { xs: '1.25rem', md: '1.5rem' }
-          }}
-        >
+      <section className="text-center">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
           Popüler Ürün Kategorilerimiz
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
-          {[
-            'İveco Daily 65-9',
-            'İveco 85-12',
-            'İveco 120-14',
-            'Ducato 2.3',
-            'Ducato 3.0',
-            'Foton 504',
-            'Foton 604',
-            'Karataş Traktör',
-            'Mutlu Akü',
-            'Motor Yağı',
-            'Fren Balatası',
-            'Yağ Filtresi',
-            'Hava Filtresi',
-            'Hidrolik Parça',
-            'Debriyaj Seti',
-            'Amortisör',
-          ].map((tag, idx) => (
-            <Box
-              key={idx}
-              sx={{
-                px: 3,
-                py: 1.5,
-                bgcolor: '#dc2626',
-                color: 'white',
-                borderRadius: '25px',
-                fontSize: '0.875rem',
-                fontWeight: 600,
-                boxShadow: 2,
-                transition: 'all 0.3s',
-                cursor: 'default',
-                '&:hover': {
-                  bgcolor: '#b91c1c',
-                  transform: 'translateY(-2px)',
-                  boxShadow: 4,
-                },
-              }}
+        </h2>
+        <div className="flex flex-wrap gap-3 justify-center">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-4 py-2 bg-primary text-white rounded-full text-sm font-semibold shadow hover:bg-red-800 transition-colors"
             >
               {tag}
-            </Box>
+            </span>
           ))}
-        </Box>
-      </Box>
+        </div>
+      </section>
 
-      {/* SEO Zengin İçerik Kartı */}
-      <Card sx={{ bgcolor: '#f9fafb', boxShadow: 2 }}>
-        <CardContent sx={{ p: 4 }}>
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              fontWeight: 700, 
-              mb: 3, 
-              color: '#1a1a1a',
-              fontSize: { xs: '1.5rem', md: '2rem' }
-            }}
-          >
-            Yönel Oto Yedek Parça - Türkiye&apos;nin Güvenilir Tedarikçisi
-          </Typography>
-          
-          <Typography 
-            variant="body1" 
-            color="text.secondary" 
-            paragraph 
-            sx={{ lineHeight: 2, mb: 3, fontSize: '1rem' }}
-          >
-            <strong>İveco Daily yedek parça</strong>, <strong>Fiat Ducato yedek parça</strong>, 
-            <strong> Foton traktör yedek parça</strong> ve <strong>Karataş traktör</strong> parçaları 
-            konusunda 50 yıllık tecrübemizle hizmet vermekteyiz. Tokat merkezli firmamız, Türkiye 
-            geneline hızlı kargo ile ulaşmaktadır.
-          </Typography>
+      <section className="rounded-2xl bg-gray-50 p-6 md:p-8 shadow">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+          Yönel Oto Yedek Parça - Türkiye&apos;nin Güvenilir Tedarikçisi
+        </h2>
 
-          <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#dc2626' }}>
-                🚗 İveco Daily & Fiat Ducato Yedek Parça
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.9 }}>
-                İveco Daily <strong>65-9 VOLAN DİŞLİSİ</strong>, <strong>85-12 fren balatası</strong>, 
-                <strong> 120-14 motor parçaları</strong> ve <strong>50NC yağ filtresi</strong> gibi 
-                tüm İveco Daily modelleri için orijinal ve yan sanayi yedek parçalar stoklarımızda. 
-                Fiat Ducato <strong>2.3 motor</strong> ve <strong>3.0 motor serisi</strong> için 
-                filtre sistemleri, fren balatası, hidrolik parçalar mevcuttur.
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#dc2626' }}>
-                🚜 Foton & Karataş Traktör Yedek Parça
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.9 }}>
-                <strong>Foton 504</strong>, <strong>Foton 604</strong> traktör modelleri ve tüm 
-                Foton traktör serisi için motor parçaları, hidrolik sistem, filtre takımları, 
-                debriyaj ve şanzıman yedek parçaları. <strong>Karataş traktör</strong> yedek 
-                parçaları, <strong>Karataş motor yağları</strong>, hidrolik yağlar ve 
-                <strong> Mutlu akü</strong> yetkili bayi olarak hizmetinizdeyiz.
-              </Typography>
-            </Grid>
-          </Grid>
+        <p className="text-gray-600 leading-relaxed mb-6">
+          <strong>İveco Daily yedek parça</strong>, <strong>Fiat Ducato yedek parça</strong>,
+          <strong> Foton traktör yedek parça</strong> ve <strong>Karataş traktör</strong> parçaları
+          konusunda 50 yıllık tecrübemizle hizmet vermekteyiz. Tokat merkezli firmamız, Türkiye
+          geneline hızlı kargo ile ulaşmaktadır.
+        </p>
 
-          <Box 
-            sx={{ 
-              p: 3, 
-              bgcolor: '#fff', 
-              borderRadius: 2,
-              border: '1px solid #e5e7eb'
-            }}
-          >
-            <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 2, fontSize: '0.95rem' }}>
-              <strong>Geniş ürün yelpazemizde:</strong> Motor yağları, yağ filtreleri, hava filtreleri, 
-              yakıt filtreleri, fren balatası, fren diski, debriyaj seti, amortisör, rot balans, 
-              hidrolik parçalar, şanzıman parçaları, motor contaları, kayışlar, rulmanlar, 
-              <strong> Mutlu akü</strong> ve daha fazlası bulunmaktadır. Orijinal ve yan sanayi 
-              seçenekleriyle, aynı gün kargo ve teknik destek hizmetimizle yanınızdayız.
-            </Typography>
-          </Box>
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <h3 className="text-lg font-bold text-red-600 mb-2">İveco Daily & Fiat Ducato Yedek Parça</h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              İveco Daily modelleri ve Fiat Ducato 2.3 / 3.0 motor serisi için orijinal ve yan sanayi
+              yedek parçalar stoklarımızda mevcuttur.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-red-600 mb-2">Foton & Karataş Traktör Yedek Parça</h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Foton ve Karataş traktör modelleri için motor, hidrolik, filtre ve şanzıman parçaları.
+              <strong> Mutlu akü</strong> yetkili bayi olarak hizmetinizdeyiz.
+            </p>
+          </div>
+        </div>
 
-          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
-            <Box sx={{ textAlign: 'center', px: 3, py: 2, bgcolor: '#fff', borderRadius: 2, minWidth: '150px' }}>
-              <Typography variant="h4" sx={{ fontWeight: 700, color: '#dc2626' }}>
-                5000+
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Ürün Çeşidi
-              </Typography>
-            </Box>
-            <Box sx={{ textAlign: 'center', px: 3, py: 2, bgcolor: '#fff', borderRadius: 2, minWidth: '150px' }}>
-              <Typography variant="h4" sx={{ fontWeight: 700, color: '#dc2626' }}>
-                50 Yıl
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Tecrübe
-              </Typography>
-            </Box>
-            <Box sx={{ textAlign: 'center', px: 3, py: 2, bgcolor: '#fff', borderRadius: 2, minWidth: '150px' }}>
-              <Typography variant="h4" sx={{ fontWeight: 700, color: '#dc2626' }}>
-                7/24
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Destek
-              </Typography>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
-    </Box>
+        <div className="flex flex-wrap justify-center gap-4 mt-6">
+          {[
+            { value: '5000+', label: 'Ürün Çeşidi' },
+            { value: '50 Yıl', label: 'Tecrübe' },
+            { value: '7/24', label: 'Destek' },
+          ].map((stat) => (
+            <div key={stat.label} className="text-center px-6 py-4 bg-white rounded-xl min-w-[140px] border border-gray-200">
+              <div className="text-3xl font-bold text-primary">{stat.value}</div>
+              <div className="text-sm text-gray-600">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }
-

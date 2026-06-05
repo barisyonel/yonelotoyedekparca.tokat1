@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import type { PlainSliderImage } from '@/lib/serializeDb';
 import { getSliderImageUrl } from '@/lib/utils/sliderImage';
+import { IMAGE_QUALITY, PRODUCTS_CAROUSEL_SIZES } from '@/lib/imageConfig';
 
 interface Props {
   sliders: PlainSliderImage[];
@@ -73,8 +74,8 @@ export default function ProductsCarousel({ sliders }: Props) {
               className="products-carousel-img object-contain object-center"
               priority={index === 0}
               loading={index === 0 ? 'eager' : 'lazy'}
-              quality={90}
-              sizes="(max-width: 768px) 96vw, (max-width: 1200px) 88vw, 1200px"
+              quality={IMAGE_QUALITY.hero}
+              sizes={PRODUCTS_CAROUSEL_SIZES}
             />
             <div
               className="absolute inset-0 bg-gradient-to-t from-[#0f274a]/20 via-transparent to-transparent pointer-events-none"

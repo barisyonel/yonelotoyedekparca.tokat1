@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { BRAND_CARD_SIZES, IMAGE_QUALITY } from '@/lib/imageConfig';
 
 interface Brand {
   name: string;
@@ -20,18 +21,18 @@ export default function ModernBrandCard({ brand }: Props) {
   return (
     <Link href={brand.link} className="block group h-full">
       <div
-        className="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-primary/30 h-full transition-all duration-300 hover:-translate-y-2"
-        style={{
-          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-        }}
+        className="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-primary/30 h-full transition-all duration-300 hover:-translate-y-2 shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)]"
       >
           {/* Brand Image */}
           <div className="relative w-full h-40 bg-gradient-to-br from-gray-50 to-white flex items-center justify-center p-6 overflow-hidden">
             <div className="relative w-full h-full">
               <Image
                 src={brand.image}
-                alt={`${brand.name} Yedek Parça`}
+                alt={`${brand.name} yedek parça kataloğu - Yönel Oto`}
                 fill
+                sizes={BRAND_CARD_SIZES}
+                quality={IMAGE_QUALITY.card}
+                loading="lazy"
                 className="object-contain transition-transform duration-500 group-hover:scale-110"
               />
             </div>
@@ -81,12 +82,6 @@ export default function ModernBrandCard({ brand }: Props) {
             </div>
           </div>
 
-        {/* Hover Shadow Effect */}
-        <style jsx>{`
-          .group:hover > div {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
-          }
-        `}</style>
       </div>
     </Link>
   );

@@ -2,7 +2,32 @@ import { unstable_cache } from 'next/cache';
 import { getConnection, sql } from '../db';
 import { CACHE_REVALIDATE, CACHE_TAGS, generateCacheKey } from '../cache';
 import { Product, CreateProductDto, UpdateProductDto } from '../models/Product';
-import { toPlainProduct, type PlainProduct } from '../serializeDb';
+import { toPlainProduct, type PlainCategory, type PlainProduct } from '../serializeDb';
+import CategoriesRepository from './CategoriesRepository';
+
+/** Türkçe İ/ı dahil "iveco" eşleşmesi */
+function categoryMatchesIveco(name: string): boolean {
+  return name
+    .toLocaleLowerCase('tr-TR')
+    .normalize('NFD')
+    .replace(/\u0307/g, '')
+    .includes('iveco');
+}
+
+function collectIvecoCategoryIds(categories: PlainCategory[]): number[] {
+  const ids = new Set<number>();
+  for (const cat of categories) {
+    if (categoryMatchesIveco(cat.Name)) {
+      ids.add(cat.Id);
+      cat.SubCategories?.forEach((sub) => ids.add(sub.Id));
+    } else {
+      cat.SubCategories?.forEach((sub) => {
+        if (categoryMatchesIveco(sub.Name)) ids.add(sub.Id);
+      });
+    }
+  }
+  return [...ids];
+}
 
 async function fetchFeaturedIvecoForHome(): Promise<{
   products: PlainProduct[];
@@ -12,7 +37,31 @@ async function fetchFeaturedIvecoForHome(): Promise<{
     return { products: [], total: 0 };
   }
   try {
-    const result = await ProductsRepository.findAll({ limit: 6, search: 'iveco' });
+    const categories = await CategoriesRepository.findAll();
+    const ivecoIds = collectIvecoCategoryIds(categories);
+
+    let result = { products: [] as Product[], total: 0 };
+
+    if (ivecoIds.length > 0) {
+      result = await ProductsRepository.findAll({
+        limit: 6,
+        categoryIds: ivecoIds,
+        sort: 'newest',
+      });
+    }
+
+    if (result.products.length === 0) {
+      result = await ProductsRepository.findAll({
+        limit: 6,
+        search: 'iveco',
+        sort: 'newest',
+      });
+    }
+
+    if (result.products.length === 0) {
+      result = await ProductsRepository.findAll({ limit: 6, sort: 'newest' });
+    }
+
     return {
       products: result.products.map(toPlainProduct),
       total: result.total,
@@ -56,7 +105,12 @@ class ProductsRepository {
     const request = pool.request();
 
     if (params?.search) {
-      queryStr += ` AND (p.Name LIKE '%' + @search + '%' OR p.Description LIKE '%' + @search + '%' OR c.Name LIKE '%' + @search + '%' OR sc.Name LIKE '%' + @search + '%')`;
+      queryStr += ` AND (
+        p.Name COLLATE Latin1_General_CI_AI LIKE '%' + @search + '%'
+        OR p.Description COLLATE Latin1_General_CI_AI LIKE '%' + @search + '%'
+        OR c.Name COLLATE Latin1_General_CI_AI LIKE '%' + @search + '%'
+        OR sc.Name COLLATE Latin1_General_CI_AI LIKE '%' + @search + '%'
+      )`;
       request.input('search', sql.NVarChar, params.search);
     }
 
@@ -235,7 +289,7 @@ class ProductsRepository {
 
   /** Ana sayfa — cache ile (her istekte DB'ye gitmez) */
   static async findFeaturedForHome(): Promise<{ products: PlainProduct[]; total: number }> {
-    return unstable_cache(fetchFeaturedIvecoForHome, ['home-featured-iveco'], {
+    return unstable_cache(fetchFeaturedIvecoForHome, ['home-featured-v3'], {
       tags: [CACHE_TAGS.PRODUCTS],
       revalidate: CACHE_REVALIDATE.PRODUCTS,
     })();

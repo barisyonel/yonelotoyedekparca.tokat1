@@ -1,90 +1,30 @@
 import { MetadataRoute } from 'next';
 import ProductsRepository from '@/lib/repositories/ProductsRepository';
 import CategoriesRepository from '@/lib/repositories/CategoriesRepository';
-import { slugify, generateProductUrl } from '@/lib/utils/slugify';
+import { collectCategoryPathsFromTree } from '@/lib/utils/categoryUrls';
+import { getProductCanonicalUrl } from '@/lib/utils/productUrls';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.yonelotoyedekparca.com';
-  const currentDate = new Date('2025-11-18');
+  const fallbackDate = new Date();
 
-  // Static pages with high priority
   const staticPages: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/urunler`,
-      lastModified: currentDate,
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/hakkimizda`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/iletisim`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/kvkk`,
-      lastModified: currentDate,
-      changeFrequency: 'yearly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/gizlilik-politikasi`,
-      lastModified: currentDate,
-      changeFrequency: 'yearly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/kullanim-kosullari`,
-      lastModified: currentDate,
-      changeFrequency: 'yearly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/mesafeli-satis-sozlesmesi`,
-      lastModified: currentDate,
-      changeFrequency: 'yearly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/iade-ve-degisim`,
-      lastModified: currentDate,
-      changeFrequency: 'yearly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/organic-seo`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
+    { url: baseUrl, lastModified: fallbackDate, changeFrequency: 'weekly', priority: 1.0 },
+    { url: `${baseUrl}/urunler`, lastModified: fallbackDate, changeFrequency: 'daily', priority: 0.9 },
+    { url: `${baseUrl}/hakkimizda`, lastModified: fallbackDate, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${baseUrl}/iletisim`, lastModified: fallbackDate, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${baseUrl}/blog`, lastModified: fallbackDate, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${baseUrl}/kvkk`, lastModified: fallbackDate, changeFrequency: 'yearly', priority: 0.5 },
+    { url: `${baseUrl}/gizlilik-politikasi`, lastModified: fallbackDate, changeFrequency: 'yearly', priority: 0.5 },
+    { url: `${baseUrl}/kullanim-kosullari`, lastModified: fallbackDate, changeFrequency: 'yearly', priority: 0.5 },
+    { url: `${baseUrl}/mesafeli-satis-sozlesmesi`, lastModified: fallbackDate, changeFrequency: 'yearly', priority: 0.5 },
+    { url: `${baseUrl}/iade-ve-degisim`, lastModified: fallbackDate, changeFrequency: 'yearly', priority: 0.5 },
+    { url: `${baseUrl}/organic-seo`, lastModified: fallbackDate, changeFrequency: 'monthly', priority: 0.6 },
   ];
 
-  let categoryPages: MetadataRoute.Sitemap = [];
-  let productPages: MetadataRoute.Sitemap = [];
-  let blogPages: MetadataRoute.Sitemap = [];
-
-  // Blog posts - Static list (matches blog/page.tsx)
   const blogPosts = [
     'iveco-daily-yedek-parca-secimi-rehberi',
     'fiat-ducato-motor-bakimi-ipuclari',
@@ -97,81 +37,52 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'traktor-filtre-bakimi-rehberi',
   ];
 
-  blogPages = blogPosts.map((slug) => ({
+  const blogPages: MetadataRoute.Sitemap = blogPosts.map((slug) => ({
     url: `${baseUrl}/blog/${slug}`,
-    lastModified: currentDate,
+    lastModified: fallbackDate,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
+  let categoryPages: MetadataRoute.Sitemap = [];
+  let productPages: MetadataRoute.Sitemap = [];
+
   try {
-    // Fetch all categories
     const categories = await CategoriesRepository.findAll();
+    const categoryPaths = collectCategoryPathsFromTree(categories);
 
-    // Helper function to find parent category
-    const findParentCategory = (categoryId: number): { Id: number; Name: string; SubCategories?: Array<{ Id: number; Name: string }> } | null => {
-      for (const cat of categories) {
-        if (cat.SubCategories) {
-          for (const sub of cat.SubCategories) {
-            if (sub.Id === categoryId) {
-              return cat;
-            }
-          }
-        }
-      }
-      return null;
-    };
+    categoryPages = categoryPaths.map((path) => ({
+      url: `${baseUrl}/urunler/${path}`,
+      lastModified: fallbackDate,
+      changeFrequency: 'daily' as const,
+      priority: path.includes('/') ? 0.9 : 0.85,
+    }));
 
-    // Generate category URLs
-    const allCategories: Array<{ Id: number; Name: string; SubCategories?: Array<{ Id: number; Name: string }> }> = [];
-    categories.forEach((cat) => {
-      allCategories.push(cat);
-      if (cat.SubCategories) {
-        allCategories.push(...cat.SubCategories);
-      }
-    });
-
-    categoryPages = allCategories.map((category) => {
-      const parentCat = findParentCategory(category.Id);
-      let url = `${baseUrl}/urunler/${slugify(category.Name)}`;
-      
-      // If this is a subcategory, include parent in URL
-      if (parentCat) {
-        url = `${baseUrl}/urunler/${slugify(parentCat.Name)}/${slugify(category.Name)}`;
-      }
-
-      return {
-        url,
-        lastModified: currentDate,
-        changeFrequency: 'daily' as const,
-        priority: parentCat ? 0.9 : 0.85,
-      };
-    });
-
-    // Fetch all products
     const { products } = await ProductsRepository.findAll({ limit: 10000 });
 
-    // Generate product URLs with SEO-friendly format (kategori/urun-id)
     productPages = products
       .filter((product) => product.Id && product.Name)
       .map((product) => ({
-        url: `${baseUrl}/urunler/urun/${generateProductUrl(product)}`,
-        lastModified: product.CreatedAt || currentDate,
+        url: getProductCanonicalUrl(
+          {
+            Id: product.Id,
+            Name: product.Name,
+            CategoryName: product.CategoryName,
+            SubCategoryName: product.SubCategoryName,
+          },
+          baseUrl,
+        ),
+        lastModified: product.CreatedAt ? new Date(product.CreatedAt) : fallbackDate,
         changeFrequency: 'weekly' as const,
         priority: 0.7,
       }));
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`✅ Sitemap generated: ${staticPages.length} static, ${categoryPages.length} categories, ${productPages.length} products, ${blogPages.length} blog posts`);
-    }
+    console.log(
+      `✅ Sitemap: ${staticPages.length} statik, ${categoryPages.length} kategori, ${productPages.length} ürün, ${blogPages.length} blog`,
+    );
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('❌ Sitemap generation error:', error);
-    }
-    // Return at least static pages if database fails
+    console.error('❌ Sitemap oluşturulamadı:', error);
   }
 
-  // Combine all pages
   return [...staticPages, ...categoryPages, ...productPages, ...blogPages];
 }
-

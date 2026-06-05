@@ -59,21 +59,98 @@ a {
   }
 }
 
-/* Animate.css Custom Delays */
-.animate__delay-200ms {
-  animation-delay: 0.2s;
+/* Scroll fade-in (ScrollFadeIn bileşeni) */
+.scroll-fade-in {
+  opacity: 0;
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.animate__delay-300ms {
-  animation-delay: 0.3s;
+.scroll-fade-from-up {
+  transform: translateY(40px);
 }
 
-.animate__delay-400ms {
-  animation-delay: 0.4s;
+.scroll-fade-from-down {
+  transform: translateY(-40px);
 }
 
-.animate__delay-500ms {
-  animation-delay: 0.5s;
+.scroll-fade-from-left {
+  transform: translateX(40px);
+}
+
+.scroll-fade-from-right {
+  transform: translateX(-40px);
+}
+
+.scroll-fade-in--visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Navbar giriş animasyonları */
+@keyframes navSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes navBarEnter {
+  from {
+    transform: translateY(-100px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mobileOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes mobilePanelIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes navProgress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.nav-top-bar-enter {
+  animation: navSlideDown 0.3s ease-out both;
+}
+
+.nav-bar-enter {
+  animation: navBarEnter 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.nav-logo-enter {
+  animation: navSlideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.mobile-overlay-enter {
+  animation: mobileOverlayIn 0.3s ease-out both;
+}
+
+.mobile-panel-enter {
+  animation: mobilePanelIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.nav-progress-bar {
+  animation: navProgress 0.8s ease-out forwards;
 }
 
 /* Blog Content Styles */
@@ -526,15 +603,52 @@ a {
     0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
+/* Hero slider — sabit yükseklik, CLS önleme (grid stack) */
+.hero-slider-track {
+  display: grid;
+  grid-template-areas: 'stack';
+  width: 100%;
+  min-height: 480px;
+}
+
+@media (min-width: 768px) {
+  .hero-slider-track {
+    min-height: 540px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-slider-track {
+    min-height: 0;
+    height: 100%;
+  }
+}
+
+.hero-slider-slide {
+  grid-area: stack;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease-in-out;
+  visibility: hidden;
+}
+
+.hero-slider-slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
 .hero-slide-media {
   line-height: 0;
 }
 
 .hero-slide-image-card {
   isolation: isolate;
+  contain: layout style paint;
 }
 
-.hero-slide-image-card img {
+.hero-slide-image-card img,
+.hero-slide-image-card .hero-slide-img {
   object-fit: contain;
   object-position: center;
 }

@@ -1,9 +1,11 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import CenterLogoNavbar from './CenterLogoNavbar';
-import Footer from './Footer';
-import WhatsAppFloatButton from './WhatsAppFloatButton';
+import dynamic from 'next/dynamic';
+
+const CenterLogoNavbar = dynamic(() => import('./CenterLogoNavbar'), { ssr: true });
+const Footer = dynamic(() => import('./Footer'), { ssr: true });
+const WhatsAppFloatButton = dynamic(() => import('./WhatsAppFloatButton'), { ssr: false });
 
 export default function ConditionalLayout({
   children,
@@ -12,7 +14,6 @@ export default function ConditionalLayout({
 }) {
   const pathname = usePathname();
 
-  // Admin, auth ve organic-seo sayfalarında Navbar, Footer ve WhatsApp gösterme
   const isAdminOrAuth = pathname.startsWith('/admin') || pathname.startsWith('/auth');
   const isOrganicSEO = pathname === '/organic-seo';
 
@@ -29,4 +30,3 @@ export default function ConditionalLayout({
     </div>
   );
 }
-

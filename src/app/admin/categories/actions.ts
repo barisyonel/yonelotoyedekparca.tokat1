@@ -49,6 +49,7 @@ export async function createCategory(formData: FormData) {
     revalidatePath('/admin/categories');
     revalidatePath('/urunler/urun');
     revalidatePath('/urunler');
+    revalidatePath('/sitemap.xml');
 
     return { success: true, message: 'Kategori başarıyla oluşturuldu!' };
   } catch (error) {
@@ -73,6 +74,7 @@ export async function updateCategory(id: number, formData: FormData) {
     revalidatePath('/admin/categories');
     revalidatePath('/urunler/urun');
     revalidatePath('/urunler');
+    revalidatePath('/sitemap.xml');
 
     return { success: true, message: 'Kategori başarıyla güncellendi!' };
   } catch (error) {
@@ -94,6 +96,7 @@ export async function deleteCategory(id: number) {
     revalidatePath('/admin/categories');
     revalidatePath('/urunler/urun');
     revalidatePath('/urunler');
+    revalidatePath('/sitemap.xml');
 
     return { success: true, message: 'Kategori başarıyla silindi!' };
   } catch (error) {

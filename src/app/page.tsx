@@ -138,8 +138,8 @@ export default async function Home() {
 
   if (productsSettled.status === 'fulfilled') {
     featuredProducts = productsSettled.value.products;
-  } else if (process.env.NODE_ENV === 'development') {
-    console.log('⚠️ Products could not be loaded (database not configured)');
+  } else {
+    console.error('Öne çıkan ürünler yüklenemedi:', productsSettled.reason);
   }
 
   // Kategori ID'den slug'a mapping (sabit değerler - hydration hatası önleme ve performans optimizasyonu)
@@ -417,31 +417,42 @@ export default async function Home() {
       {/* Modern Hero Slider - Komatsu Style */}
       <ModernHeroSlider slides={homeSlides} />
 
-      {/* Featured Products moved under hero (includes main H1) */}
+      {/* Sayfa H1 — her zaman görünür (öne çıkan ürünler yüklenmese bile) */}
+      <section
+        className="py-12 md:py-16 bg-gradient-to-br from-gray-50 via-white to-gray-100"
+        aria-labelledby="home-main-heading"
+      >
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto text-center">
+            <h1
+              id="home-main-heading"
+              className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-primary mb-6 leading-tight"
+            >
+              İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parçaları
+            </h1>
+            <p className="text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-5xl mx-auto font-medium mb-4">
+              <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus), <strong>Fiat Ducato</strong> (2.3, 3.0),
+              <strong> Foton Traktör</strong>, <strong>Karataş Traktör</strong> yedek parçaları ve <strong>Mutlu Akü</strong>
+              satışında Türkiye&apos;nin güvenilir adresi. <strong>Tüm Türkiye&apos;ye online yedek parça satışı</strong> ve hızlı teslimat. 50+ yıllık tecrübe ile orijinal ve kaliteli yan sanayi ürünleri.
+            </p>
+            <p className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-5xl mx-auto font-semibold">
+              Türkiye Geneli Orijinal Yedek Parça ve Teknik Destek Hizmeti
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Öne çıkan ürünler */}
       {featuredProducts.length > 0 && (
-        <section 
-          className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden"
-          itemScope 
+        <section
+          className="py-12 md:py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden border-t border-gray-100"
+          itemScope
           itemType="https://schema.org/ItemList"
         >
-          {/* Decorative Background Elements */}
           <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-500/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
 
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-6xl mx-auto text-center mb-16">
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-primary mb-6 leading-tight">
-                İveco Daily, Fiat Ducato, Foton ve Karataş Traktör Yedek Parçaları
-              </h1>
-              <p className="text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-5xl mx-auto font-medium mb-4">
-                <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus), <strong>Fiat Ducato</strong> (2.3, 3.0), 
-                <strong> Foton Traktör</strong>, <strong>Karataş Traktör</strong> yedek parçaları ve <strong>Mutlu Akü</strong> 
-                satışında Türkiye&apos;nin güvenilir adresi. <strong>Tüm Türkiye&apos;ye online yedek parça satışı</strong> ve hızlı teslimat. 50+ yıllık tecrübe ile orijinal ve kaliteli yan sanayi ürünleri.
-              </p>
-              <h2 className="text-xl md:text-2xl text-gray-600 leading-relaxed max-w-5xl mx-auto font-semibold">
-                Türkiye Geneli Orijinal Yedek Parça ve Teknik Destek Hizmeti
-              </h2>
-            </div>
 
             <ScrollFadeIn>
               <div className="text-center mb-16">
@@ -796,9 +807,9 @@ export default async function Home() {
           <ScrollFadeIn>
             <div className="mt-16 bg-gradient-to-br from-gray-50 to-white rounded-3xl p-8 md:p-12 border border-gray-200">
               <div className="max-w-4xl mx-auto">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
+                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
                   Yedek Parça Kategorilerimiz
-                </h2>
+                </h3>
                 <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
                   <p className="mb-4">
                     <strong>İveco (Daily, 120-14, 85-12, 65-9, 50NC, Eurobus), Fiat Ducato, Foton ve Karataş Traktör</strong> araçlarınız için ihtiyaç duyduğunuz 

@@ -1,6 +1,5 @@
 import SliderImagesRepository from '@/lib/repositories/SliderImagesRepository';
 import ProductsCarousel from '@/components/ProductsCarousel';
-import ClientOnly from '@/components/ClientOnly';
 
 /** Slider ayrı Suspense ile yüklenir — ürün listesi bekletilmez */
 export default async function ProductsPageSlider() {
@@ -12,12 +11,13 @@ export default async function ProductsPageSlider() {
   }
 
   if (sliders.length === 0) {
-    return <div style={{ height: 'clamp(280px, 35vh, 400px)', backgroundColor: '#f3f4f6' }} />;
+    return (
+      <div
+        className="mb-4 rounded-2xl bg-gray-100"
+        style={{ height: 'clamp(280px, 35vh, 400px)' }}
+      />
+    );
   }
 
-  return (
-    <ClientOnly>
-      <ProductsCarousel sliders={sliders} />
-    </ClientOnly>
-  );
+  return <ProductsCarousel sliders={sliders} />;
 }

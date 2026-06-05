@@ -1,12 +1,10 @@
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import { Suspense } from 'react';
 import nextDynamic from 'next/dynamic';
 import Breadcrumb from '@/components/Breadcrumb';
 import ProductsHeader from '@/app/products/ProductsHeader';
 import { Metadata } from 'next';
-import ClientOnly from '@/components/ClientOnly';
 import { fetchUrunlerPageData } from '@/lib/catalog/fetchUrunlerPage';
+import { getCategoryPathFromSlug } from '@/lib/utils/urunlerUrls';
 import type { PlainCategory, PlainProduct } from '@/lib/serializeDb';
 import ProductsPageSlider from '@/app/urunler/ProductsPageSlider';
 
@@ -17,7 +15,6 @@ const ProductsToolbar = nextDynamic(() => import('@/app/products/ProductsToolbar
 const ScrollToTop = nextDynamic(() => import('@/components/ScrollToTop'), { ssr: false });
 const ProductsInfoCards = nextDynamic(() => import('@/components/ProductsInfoCards'), { ssr: false });
 
-/** searchParams kullanıldığı için dinamik; veri unstable_cache ile önbelleklenir */
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
@@ -34,7 +31,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 function SliderFallback() {
   return (
-    <div style={{ height: 'clamp(280px, 35vh, 400px)', backgroundColor: '#f3f4f6' }} />
+    <div
+      className="mb-4 rounded-2xl bg-gray-100"
+      style={{ height: 'clamp(280px, 35vh, 400px)' }}
+    />
   );
 }
 
@@ -51,6 +51,7 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   const search = (searchRaw as string) || '';
   const sort = (sortRaw as string) || 'newest';
   const limit = Number.isNaN(limitParsed) || limitParsed < 1 ? 12 : limitParsed;
+  const categoryPath = getCategoryPathFromSlug(params.slug);
 
   let categories: PlainCategory[] = [];
   let products: PlainProduct[] = [];
@@ -78,95 +79,64 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        maxWidth: '100vw',
-        margin: '0 auto',
-        px: { xs: '3%', md: '3%', lg: '2%' },
-        py: { xs: 2, md: 3 },
-      }}
-    >
-      <Box sx={{ mb: 2 }}>
+    <div className="w-full max-w-[100vw] mx-auto px-[3%] lg:px-[2%] py-4 md:py-6">
+      <div className="mb-4">
         <Breadcrumb items={[{ label: 'Ürünler', href: '/urunler' }]} />
-      </Box>
-      <Box sx={{ mb: 3 }}>
-        <ProductsHeader activeCategory={activeCategory} searchQuery={search || undefined} />
-      </Box>
+      </div>
 
-      <Box sx={{ mb: 4 }}>
+      <ProductsHeader activeCategory={activeCategory} searchQuery={search || undefined} />
+
+      <div className="mb-6 md:mb-8">
         <Suspense fallback={<SliderFallback />}>
           <ProductsPageSlider />
         </Suspense>
-      </Box>
+      </div>
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', lg: 'row' },
-          gap: { xs: 2, md: 3 },
-        }}
-      >
-        <Box sx={{ width: { xs: '100%', lg: '24%' }, display: { xs: 'none', lg: 'block' } }}>
-          <ClientOnly>
-            <ProductsFilter
-              categories={categories}
-              activeCategory={activeCategory}
-              expandedParentCategory={parentCategory}
-            />
-          </ClientOnly>
-        </Box>
+      <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
+        <aside className="hidden lg:block w-full lg:w-[24%]">
+          <ProductsFilter
+            categories={categories}
+            activeCategory={activeCategory}
+            expandedParentCategory={parentCategory}
+          />
+        </aside>
 
-        <Box sx={{ width: { xs: '100%', lg: '76%' } }}>
-          <Box sx={{ mb: 3 }}>
-            <ProductsToolbar
-              categories={categories}
-              activeCategory={activeCategory}
-              expandedParentCategory={parentCategory}
-            />
-          </Box>
+        <div className="w-full lg:w-[76%]">
+          <ProductsToolbar
+            categories={categories}
+            activeCategory={activeCategory}
+            expandedParentCategory={parentCategory}
+          />
 
           {products.length === 0 ? (
-            <Box sx={{ textAlign: 'center', py: 6, bgcolor: '#f9f9f9', borderRadius: 2 }}>
-              <Typography variant="h6" color="text.secondary">
-                Ürün bulunamadı
-              </Typography>
-            </Box>
+            <div className="text-center py-12 bg-gray-50 rounded-xl">
+              <p className="text-lg text-gray-600 font-medium">Ürün bulunamadı</p>
+            </div>
           ) : (
             <>
-              <Box
-                sx={{
-                  display: 'grid',
-                  gridTemplateColumns: {
-                    xs: '1fr',
-                    sm: 'repeat(2, 1fr)',
-                    md: 'repeat(2, 1fr)',
-                    lg: 'repeat(3, 1fr)',
-                    xl: 'repeat(4, 1fr)',
-                  },
-                  gap: { xs: 1.5, md: 2 },
-                }}
-              >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
                 {products.map((product) => (
                   <ProductCard key={product.Id} product={product} />
                 ))}
-              </Box>
+              </div>
               {totalPages > 1 && (
-                <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-                  <ProductsPagination currentPage={page} totalPages={totalPages} />
-                </Box>
+                <div className="mt-8 flex justify-center">
+                  <ProductsPagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    categoryPath={categoryPath || undefined}
+                  />
+                </div>
               )}
             </>
           )}
-        </Box>
-      </Box>
+        </div>
+      </div>
 
-      <Box sx={{ mt: 5 }}>
+      <div className="mt-10">
         <ProductsInfoCards />
-      </Box>
-      <ClientOnly>
-        <ScrollToTop />
-      </ClientOnly>
-    </Box>
+      </div>
+      <ScrollToTop />
+    </div>
   );
 }

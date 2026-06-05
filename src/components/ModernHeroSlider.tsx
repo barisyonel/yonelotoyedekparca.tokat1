@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { HOME_SLIDER_DEFAULTS } from '@/lib/homeSliderDefaults';
 import { getSliderImageUrl } from '@/lib/utils/sliderImage';
+import { HERO_SLIDE_SIZES, IMAGE_QUALITY } from '@/lib/imageConfig';
 
 type SlideItem = {
   id: number;
@@ -80,68 +81,75 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
           </defs>
         </svg>
 
-        <div className="slider md:max-w-[760px] lg:max-w-[1000px] xl:max-w-[1200px] 2xl:max-w-[1440px] mx-auto relative lg:top-[46%] lg:-translate-y-1/2 h-[90vh] md:h-[640px] lg:h-full w-full lg:flex items-center z-[3]">
-          <div className="slides relative w-full h-full">
-            {slides.map((slide, index) => (
-              <div
-                key={slide.id}
-                className={`slide ${
-                  index === currentSlide ? 'active' : ''
-                } max-w-[350px] md:max-w-full w-full flex flex-col lg:flex-row justify-start lg:justify-center gap-6 md:gap-8 lg:gap-5 pb-40 md:pb-36 lg:pb-0`}
-              >
-                <div className="hero-slide-copy lg:w-[46%] xl:w-[42%] mt-0 md:mt-2 lg:mt-[52px] xl:mt-[60px] lg:-translate-y-6 xl:-translate-y-8 lg:pb-4 pl-1 md:pl-2 lg:pl-3">
-                  <p className="inline-flex items-center gap-2 uppercase text-white/95 text-xs md:text-sm tracking-[0.2em] font-semibold px-3 py-1 rounded-full bg-white/10 border border-white/25">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#f5c542] animate-pulse" />
-                    Yönel Oto
-                  </p>
-                  <div className="mt-3 md:mt-4 lg:mt-8 xl:mt-12">
-                    <div className="flex flex-col md:flex-row md:max-w-[620px] lg:max-w-[560px] 2xl:max-w-[650px] gap-4 md:gap-6 lg:gap-8">
-                      <div className="mt-2 shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#f5c542]/80 bg-white/10 flex items-center justify-center shadow-lg shadow-black/20">
-                        <span className="text-white font-bold text-sm md:text-base">{String(index + 1).padStart(2, '0')}</span>
-                      </div>
-                      <div className="brand-glass-panel rounded-2xl md:rounded-3xl p-4 md:p-5">
-                        <h2 className="text-[24px] leading-[30px] md:text-[30px] md:leading-[36px] lg:text-[36px] 2xl:text-[44px] 2xl:leading-[52px] text-white font-semibold lg:leading-[42px] tracking-[-0.64px] drop-shadow-[0_2px_12px_rgba(0,0,0,0.2)]">
-                          {slide.title}
-                        </h2>
-                        {slide.subtitle ? (
-                          <p className="text-white/95 mt-3 text-lg md:text-xl font-medium">{slide.subtitle}</p>
-                        ) : null}
-                        {slide.description ? (
-                          <p className="text-white/90 mt-3 md:mt-4 max-w-[520px] text-[15px] md:text-base">{slide.description}</p>
-                        ) : null}
-                        {slide.buttonText ? (
-                          <Link
-                            href={slide.buttonLink || '/'}
-                            className="brand-cta-btn inline-flex items-center gap-2 mt-4 md:mt-5 px-6 py-3 rounded-xl font-bold"
-                          >
-                            {slide.buttonText}
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          </Link>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div className="hero-slider-viewport md:max-w-[760px] lg:max-w-[1000px] xl:max-w-[1200px] 2xl:max-w-[1440px] mx-auto relative lg:top-[46%] lg:-translate-y-1/2 w-full lg:flex lg:items-center z-[3] min-h-[500px] md:min-h-[580px] lg:min-h-0 lg:h-full">
+          <div className="hero-slider-track w-full">
+            {slides.map((slide, index) => {
+              const isActive = index === currentSlide;
+              if (!isActive) return null;
 
-                <div className="lg:w-[54%] xl:w-[58%] flex lg:justify-end w-full">
-                  <div className="hero-slide-media w-full max-w-[350px] sm:max-w-none md:w-[92%] md:mx-auto lg:w-full lg:max-w-[560px] xl:max-w-none xl:w-[700px] 2xl:w-[820px]">
-                    <div className="hero-slide-image-card relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl lg:rounded-[2rem] bg-[#0a1628] shadow-[0_20px_50px_rgba(0,0,0,0.35)] ring-1 ring-white/50">
-                      <Image
-                        src={getSliderImageUrl(slide.image)}
-                        alt={slide.title}
-                        fill
-                        className="hero-slide-img"
-                        sizes="(max-width: 640px) 350px, (max-width: 1024px) 560px, 820px"
-                        quality={90}
-                        priority={index === 0}
-                      />
+              return (
+                <div key={slide.id} className="hero-slider-slide is-active">
+                  <div className="w-full max-w-[350px] md:max-w-full mx-auto flex flex-col lg:flex-row justify-start lg:justify-center gap-6 md:gap-8 lg:gap-5 pb-36 md:pb-32 lg:pb-0">
+                    <div className="hero-slide-copy lg:w-[46%] xl:w-[42%] mt-0 md:mt-2 lg:mt-[52px] xl:mt-[60px] lg:-translate-y-6 xl:-translate-y-8 lg:pb-4 pl-1 md:pl-2 lg:pl-3">
+                      <p className="inline-flex items-center gap-2 uppercase text-white/95 text-xs md:text-sm tracking-[0.2em] font-semibold px-3 py-1 rounded-full bg-white/10 border border-white/25">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#f5c542] animate-pulse" />
+                        Yönel Oto
+                      </p>
+                      <div className="mt-3 md:mt-4 lg:mt-8 xl:mt-12">
+                        <div className="flex flex-col md:flex-row md:max-w-[620px] lg:max-w-[560px] 2xl:max-w-[650px] gap-4 md:gap-6 lg:gap-8">
+                          <div className="mt-2 shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-[#f5c542]/80 bg-white/10 flex items-center justify-center shadow-lg shadow-black/20">
+                            <span className="text-white font-bold text-sm md:text-base">
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                          </div>
+                          <div className="brand-glass-panel rounded-2xl md:rounded-3xl p-4 md:p-5">
+                            <p className="text-[24px] leading-[30px] md:text-[30px] md:leading-[36px] lg:text-[36px] 2xl:text-[44px] 2xl:leading-[52px] text-white font-semibold lg:leading-[42px] tracking-[-0.64px] drop-shadow-[0_2px_12px_rgba(0,0,0,0.2)] m-0">
+                              {slide.title}
+                            </p>
+                            {slide.subtitle ? (
+                              <p className="text-white/95 mt-3 text-lg md:text-xl font-medium">{slide.subtitle}</p>
+                            ) : null}
+                            {slide.description ? (
+                              <p className="text-white/90 mt-3 md:mt-4 max-w-[520px] text-[15px] md:text-base">
+                                {slide.description}
+                              </p>
+                            ) : null}
+                            {slide.buttonText ? (
+                              <Link
+                                href={slide.buttonLink || '/'}
+                                className="brand-cta-btn inline-flex items-center gap-2 mt-4 md:mt-5 px-6 py-3 rounded-xl font-bold"
+                              >
+                                {slide.buttonText}
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                              </Link>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="lg:w-[54%] xl:w-[58%] flex lg:justify-end w-full">
+                      <div className="hero-slide-media w-full max-w-[350px] sm:max-w-none md:w-[92%] md:mx-auto lg:w-full lg:max-w-[560px] xl:max-w-none xl:w-[700px] 2xl:w-[820px]">
+                        <div className="hero-slide-image-card relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl lg:rounded-[2rem] bg-[#0a1628] shadow-[0_20px_50px_rgba(0,0,0,0.35)] ring-1 ring-white/50">
+                          <Image
+                            src={getSliderImageUrl(slide.image)}
+                            alt={`${slide.title} - Yönel Oto yedek parça`}
+                            fill
+                            className="hero-slide-img object-contain object-center"
+                            sizes={HERO_SLIDE_SIZES}
+                            quality={IMAGE_QUALITY.hero}
+                            priority={index === 0}
+                            loading={index === 0 ? 'eager' : 'lazy'}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -163,7 +171,9 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
                     }`}
                   />
                 </div>
-                <p className="mt-2 uppercase text-white tracking-[2px] text-sm font-medium">{String(index + 1).padStart(2, '0')}</p>
+                <p className="mt-2 uppercase text-white tracking-[2px] text-sm font-medium">
+                  {String(index + 1).padStart(2, '0')}
+                </p>
               </button>
             ))}
           </div>
@@ -171,49 +181,6 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
       </div>
 
       <style jsx>{`
-        .slide {
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          opacity: 0;
-          transition: opacity 1s ease-in-out;
-          pointer-events: none;
-        }
-
-        .slide.active {
-          opacity: 1;
-          pointer-events: auto;
-        }
-
-        @media screen and (max-width: 1023px) {
-          .slide {
-            top: 44%;
-            transform: translateY(-48%);
-          }
-
-          .hero-slide-copy {
-            transform: translateY(-12px);
-          }
-        }
-
-        @media screen and (max-width: 760px) {
-          .slide {
-            top: 42%;
-            transform: translateY(-46%);
-          }
-
-          .hero-slide-copy {
-            transform: translateY(-20px);
-          }
-        }
-
-        @media screen and (min-width: 1024px) {
-          .hero-slide-copy {
-            padding-bottom: 4.5rem;
-          }
-        }
-
         .pagination-tabs {
           width: 75px;
           opacity: 0.5;
@@ -237,16 +204,7 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
             width: 300px;
           }
         }
-
-        .hero-slide-image-card :global(img),
-        .hero-slide-image-card :global(.hero-slide-img) {
-          width: 100% !important;
-          height: 100% !important;
-          object-fit: contain !important;
-          object-position: center !important;
-        }
       `}</style>
     </section>
   );
 }
-

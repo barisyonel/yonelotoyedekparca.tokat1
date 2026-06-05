@@ -17,7 +17,7 @@ import SortIcon from '@mui/icons-material/Sort';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ProductsFilter from './ProductsFilter';
 import type { PlainCategory } from '@/lib/serializeDb';
-import { slugify } from '@/lib/utils/slugify';
+import { buildUrunlerUrl } from '@/lib/utils/urunlerUrls';
 
 interface Props {
   categories: PlainCategory[];
@@ -37,62 +37,28 @@ export default function ProductsToolbar({
   const currentSort = searchParams.get('sort') || 'newest';
   const currentLimit = searchParams.get('limit') || '12';
 
-  // Bir kategorinin parent'ını bul
-  const findParentCategory = (category: PlainCategory): PlainCategory | null => {
-    for (const cat of categories) {
-      if (cat.SubCategories) {
-        for (const sub of cat.SubCategories) {
-          if (sub.Id === category.Id) {
-            return cat;
-          }
-        }
-      }
+  const updateQuery = (updates: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    for (const [key, value] of Object.entries(updates)) {
+      params.set(key, value);
     }
-    return null;
+    params.delete('page');
+
+    router.push(
+      buildUrunlerUrl({
+        category: activeCategory,
+        categories,
+        searchParams: params,
+      }),
+    );
   };
 
   const handleSortChange = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('sort', value);
-    params.delete('page'); // Reset to first page
-    
-    let url = '/urunler';
-    if (activeCategory) {
-      const parentCat = findParentCategory(activeCategory);
-      
-      if (parentCat) {
-        // Alt kategori ise: /urunler/parent-slug/sub-slug
-        url += `/${slugify(parentCat.Name)}/${slugify(activeCategory.Name)}`;
-      } else {
-        // Ana kategori ise: /urunler/parent-slug
-        url += `/${slugify(activeCategory.Name)}`;
-      }
-    }
-    url += `?${params.toString()}`;
-    
-    router.push(url);
+    updateQuery({ sort: value });
   };
 
   const handleLimitChange = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('limit', value);
-    params.delete('page'); // Reset to first page
-    
-    let url = '/urunler';
-    if (activeCategory) {
-      const parentCat = findParentCategory(activeCategory);
-      
-      if (parentCat) {
-        // Alt kategori ise: /urunler/parent-slug/sub-slug
-        url += `/${slugify(parentCat.Name)}/${slugify(activeCategory.Name)}`;
-      } else {
-        // Ana kategori ise: /urunler/parent-slug
-        url += `/${slugify(activeCategory.Name)}`;
-      }
-    }
-    url += `?${params.toString()}`;
-    
-    router.push(url);
+    updateQuery({ limit: value });
   };
 
   return (

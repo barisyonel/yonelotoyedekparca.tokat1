@@ -17,8 +17,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import type { PlainCategory } from '@/lib/serializeDb';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { slugify } from '@/lib/utils/slugify';
+import { useState, useEffect, useCallback } from 'react';
+import { buildUrunlerUrl, findParentCategory } from '@/lib/utils/urunlerUrls';
 
 interface Props {
   categories: PlainCategory[];
@@ -46,18 +46,24 @@ export default function ProductsFilter({
     setOpenCategories((prev) => ({ ...prev, [categoryId]: !prev[categoryId] }));
   };
 
-  const findParentCategory = (category: PlainCategory): PlainCategory | null => {
-    for (const cat of categories) {
-      if (cat.SubCategories) {
-        for (const sub of cat.SubCategories) {
-          if (sub.Id === category.Id) {
-            return cat;
-          }
-        }
-      }
-    }
-    return null;
-  };
+  const getParent = useCallback(
+    (category: PlainCategory) => findParentCategory(category, categories),
+    [categories],
+  );
+
+  const pushUrunler = useCallback(
+    (options: { category?: PlainCategory | null; params?: URLSearchParams }) => {
+      router.push(
+        buildUrunlerUrl({
+          category: options.category ?? undefined,
+          categories,
+          searchParams: options.params,
+        }),
+      );
+      onClose?.();
+    },
+    [router, categories, onClose],
+  );
 
   // Alt kategori veya marka URL'sinde ilgili marka menüsünü aç
   useEffect(() => {
@@ -66,7 +72,7 @@ export default function ProductsFilter({
       toOpen.push(expandedParentCategory.Id);
     }
     if (activeCategory) {
-      const parent = findParentCategory(activeCategory);
+      const parent = getParent(activeCategory);
       if (parent) toOpen.push(parent.Id);
     }
     if (toOpen.length === 0) return;
@@ -75,36 +81,12 @@ export default function ProductsFilter({
       for (const id of toOpen) next[id] = true;
       return next;
     });
-  }, [activeCategory, expandedParentCategory, categories]);
+  }, [activeCategory, expandedParentCategory, getParent]);
 
   const handleCategoryFilter = (category?: PlainCategory) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete('page');
-    
-    let url = '/urunler';
-    if (category) {
-      // Alt kategori mi yoksa ana kategori mi kontrol et
-      const parentCat = findParentCategory(category);
-      
-      if (parentCat) {
-        // Alt kategori ise: /urunler/parent-slug/sub-slug
-        url += `/${slugify(parentCat.Name)}/${slugify(category.Name)}`;
-      } else {
-        // Ana kategori ise: /urunler/parent-slug
-        url += `/${slugify(category.Name)}`;
-      }
-    }
-    
-    if (params.toString()) {
-      url += `?${params.toString()}`;
-    }
-    
-    router.push(url);
-    
-    // Mobil drawer'ı kapat
-    if (onClose) {
-      onClose();
-    }
+    pushUrunler({ category: category ?? null, params });
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -113,72 +95,24 @@ export default function ProductsFilter({
     if (searchTerm) {
       params.set('search', searchTerm);
     }
-    
-    let url = '/urunler';
-    if (activeCategory) {
-      const parentCat = findParentCategory(activeCategory);
-      
-      if (parentCat) {
-        // Alt kategori ise: /urunler/parent-slug/sub-slug
-        url += `/${slugify(parentCat.Name)}/${slugify(activeCategory.Name)}`;
-      } else {
-        // Ana kategori ise: /urunler/parent-slug
-        url += `/${slugify(activeCategory.Name)}`;
-      }
-    }
-    
-    if (params.toString()) {
-      url += `?${params.toString()}`;
-    }
-    
-    router.push(url);
-    
-    // Mobil drawer'ı kapat
-    if (onClose) {
-      onClose();
-    }
+    pushUrunler({ category: activeCategory, params });
   };
 
-  // Tüm filtreleri temizle
   const clearAllFilters = () => {
     setSearchTerm('');
     router.push('/urunler');
-    
-    // Mobil drawer'ı kapat
-    if (onClose) {
-      onClose();
-    }
+    onClose?.();
   };
 
-  // Tek bir filtreyi kaldır
   const removeFilter = (filterType: 'search' | 'category') => {
     if (filterType === 'search') {
       setSearchTerm('');
-      let url = '/urunler';
-      if (activeCategory) {
-        const parentCat = findParentCategory(activeCategory);
-        
-        if (parentCat) {
-          // Alt kategori ise: /urunler/parent-slug/sub-slug
-          url += `/${slugify(parentCat.Name)}/${slugify(activeCategory.Name)}`;
-        } else {
-          // Ana kategori ise: /urunler/parent-slug
-          url += `/${slugify(activeCategory.Name)}`;
-        }
-      }
-      router.push(url);
+      pushUrunler({ category: activeCategory });
     } else if (filterType === 'category') {
       const params = new URLSearchParams();
-      if (searchParams.get('search')) {
-        params.set('search', searchParams.get('search')!);
-      }
-      const url = params.toString() ? `/urunler?${params.toString()}` : '/urunler';
-      router.push(url);
-    }
-    
-    // Mobil drawer'ı kapat
-    if (onClose) {
-      onClose();
+      const search = searchParams.get('search');
+      if (search) params.set('search', search);
+      pushUrunler({ params });
     }
   };
 

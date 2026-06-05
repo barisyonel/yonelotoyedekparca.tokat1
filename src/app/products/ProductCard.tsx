@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -15,10 +16,12 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { PlainProduct } from '@/lib/serializeDb';
-import { generateProductUrl } from '@/lib/utils/slugify';
-import QuickViewModal from '@/components/QuickViewModal';
-import OptimizedImage from '@/components/OptimizedImage';
+import { getProductPagePath } from '@/lib/utils/productUrls';
+import { IMAGE_QUALITY, PRODUCT_CARD_SIZES } from '@/lib/imageConfig';
+
+const QuickViewModal = dynamic(() => import('@/components/QuickViewModal'), { ssr: false });
 
 interface Props {
   product: PlainProduct;
@@ -26,20 +29,18 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
   const [quickViewOpen, setQuickViewOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  
+
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '905542597273';
   const whatsappMessage = `Merhaba, "${product.Name}" ürünü hakkında bilgi almak istiyorum.`;
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
-  const productUrl = `/urunler/urun/${generateProductUrl(product)}`;
+  const productUrl = getProductPagePath(product);
 
   return (
-    <Card 
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      sx={{ 
-        height: '100%', 
-        display: 'flex', 
+    <Card
+      className="group"
+      sx={{
+        height: '100%',
+        display: 'flex',
         flexDirection: 'column',
         borderRadius: { xs: '0.75rem', md: '1rem' },
         overflow: 'hidden',
@@ -56,11 +57,10 @@ export default function ProductCard({ product }: Props) {
         background: 'linear-gradient(to bottom, #ffffff 0%, #fafafa 100%)',
       }}
     >
-      {/* Ürün Görseli - Modern Container */}
       <CardActionArea component={Link} href={productUrl}>
         {product.ImageUrl ? (
-          <Box 
-            sx={{ 
+          <Box
+            sx={{
               height: { xs: '16rem', sm: '18rem', md: '17.5rem', lg: '18rem', xl: '16.5rem' },
               position: 'relative',
               overflow: 'hidden',
@@ -71,23 +71,17 @@ export default function ProductCard({ product }: Props) {
               p: { xs: '1rem', md: '1.5rem' },
             }}
           >
-            <OptimizedImage
+            <Image
               src={product.ImageUrl}
               alt={product.Name}
               width={320}
               height={240}
-              objectFit="contain"
-              quality={85}
-              sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
-              style={{
-                transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                transform: isHovered ? 'scale(1.08)' : 'scale(1)',
-                width: '100%',
-                height: '100%',
-              }}
+              quality={IMAGE_QUALITY.product}
+              sizes={PRODUCT_CARD_SIZES}
+              loading="lazy"
+              className="w-full h-full object-contain transition-transform duration-400 group-hover:scale-105"
             />
-            
-            {/* Güven Badge'i */}
+
             <Box
               sx={{
                 position: 'absolute',
@@ -120,40 +114,34 @@ export default function ProductCard({ product }: Props) {
               background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
             }}
           >
-            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: { xs: '0.875rem', md: '0.9375rem' } }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
               Görsel Yok
             </Typography>
           </Box>
         )}
       </CardActionArea>
 
-      {/* Ürün İçeriği - Modern Layout */}
-      <CardContent 
-        sx={{ 
-          flexGrow: 1, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          p: { xs: '1.25rem', sm: '1.5rem', md: '1.5rem', lg: '1.75rem' },
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          p: { xs: '1.25rem', sm: '1.5rem', lg: '1.75rem' },
           bgcolor: 'white',
         }}
       >
-        {/* Kategori Badge'leri - Modern Tasarım */}
         {(product.CategoryName || product.SubCategoryName) && (
-          <Box sx={{ mb: { xs: '1rem', md: '1.25rem' }, display: 'flex', gap: { xs: '0.5rem', md: '0.625rem' }, flexWrap: 'wrap' }}>
+          <Box sx={{ mb: { xs: '1rem', md: '1.25rem' }, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
             {product.CategoryName && (
               <Chip
                 label={product.CategoryName}
                 size="small"
-                sx={{ 
+                sx={{
                   fontSize: { xs: '0.65rem', md: '0.7rem' },
                   fontWeight: 700,
                   height: { xs: '1.375rem', md: '1.5rem' },
                   bgcolor: '#a80000',
                   color: 'white',
-                  letterSpacing: '0.3px',
-                  '&:hover': {
-                    bgcolor: '#8a0000',
-                  },
                 }}
               />
             )}
@@ -161,7 +149,7 @@ export default function ProductCard({ product }: Props) {
               <Chip
                 label={product.SubCategoryName}
                 size="small"
-                sx={{ 
+                sx={{
                   fontSize: { xs: '0.65rem', md: '0.7rem' },
                   fontWeight: 600,
                   height: { xs: '1.375rem', md: '1.5rem' },
@@ -174,19 +162,17 @@ export default function ProductCard({ product }: Props) {
           </Box>
         )}
 
-        {/* Başlık - Modern Typography */}
-        <Typography 
+        <Typography
           component={Link}
           href={productUrl}
-          gutterBottom 
+          gutterBottom
           variant="subtitle1"
-          sx={{ 
+          sx={{
             fontWeight: 700,
-            fontSize: { xs: '0.9375rem', sm: '1rem', md: '1.05rem', lg: '1.0625rem' },
+            fontSize: { xs: '0.9375rem', sm: '1rem', lg: '1.0625rem' },
             lineHeight: 1.4,
             minHeight: { xs: '2.6em', md: '2.8em' },
             overflow: 'hidden',
-            textOverflow: 'ellipsis',
             display: '-webkit-box',
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
@@ -194,15 +180,12 @@ export default function ProductCard({ product }: Props) {
             color: '#2c3e50',
             textDecoration: 'none',
             transition: 'color 0.3s ease',
-            '&:hover': {
-              color: '#a80000',
-            },
+            '&:hover': { color: '#a80000' },
           }}
         >
           {product.Name}
         </Typography>
 
-        {/* Açıklama - Modern Style */}
         <Typography
           variant="body2"
           color="text.secondary"
@@ -210,7 +193,6 @@ export default function ProductCard({ product }: Props) {
             minHeight: { xs: '2.6em', md: '2.8em' },
             lineHeight: 1.5,
             overflow: 'hidden',
-            textOverflow: 'ellipsis',
             display: '-webkit-box',
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
@@ -222,57 +204,44 @@ export default function ProductCard({ product }: Props) {
           {product.Description || 'Orijinal yedek parça. Detaylı bilgi için tıklayın.'}
         </Typography>
 
-        {/* Hızlı Bilgi Banner */}
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
-            gap: { xs: '0.625rem', md: '0.75rem' },
+            gap: 1,
             bgcolor: '#e8f5e9',
             color: '#2e7d32',
             px: { xs: '1rem', md: '1.25rem' },
             py: { xs: '0.75rem', md: '0.875rem' },
-            borderRadius: { xs: '0.5rem', md: '0.625rem' },
+            borderRadius: '0.625rem',
             mb: { xs: '1.25rem', md: '1.5rem' },
             fontSize: { xs: '0.7rem', md: '0.75rem' },
             fontWeight: 600,
           }}
         >
-          <LocalShippingOutlinedIcon sx={{ fontSize: { xs: '0.875rem', md: '1rem' } }} />
+          <LocalShippingOutlinedIcon sx={{ fontSize: '1rem' }} />
           Hızlı Kargo • Güvenli Ödeme
         </Box>
 
-        {/* Spacer */}
         <Box sx={{ flexGrow: 1 }} />
 
-        {/* Butonlar - Modern Layout */}
         <Box sx={{ display: 'flex', gap: { xs: '0.75rem', md: '1rem' }, mt: 'auto' }}>
-          {/* Hızlı Görünüm */}
           <Tooltip title="Hızlı Görünüm">
             <IconButton
               onClick={() => setQuickViewOpen(true)}
               sx={{
                 bgcolor: '#ecf0f1',
                 color: '#a80000',
-                border: '2px solid',
-                borderColor: 'transparent',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  bgcolor: '#a80000',
-                  color: 'white',
-                  borderColor: '#a80000',
-                  transform: 'rotate(360deg)',
-                },
                 width: { xs: '2.5rem', md: '2.75rem' },
                 height: { xs: '2.5rem', md: '2.75rem' },
                 flexShrink: 0,
+                '&:hover': { bgcolor: '#a80000', color: 'white' },
               }}
             >
-              <VisibilityIcon sx={{ fontSize: { xs: '1.125rem', md: '1.25rem' } }} />
+              <VisibilityIcon />
             </IconButton>
           </Tooltip>
 
-          {/* WhatsApp Butonu - Modern */}
           <Button
             variant="contained"
             fullWidth
@@ -284,17 +253,10 @@ export default function ProductCard({ product }: Props) {
               bgcolor: '#25D366',
               color: 'white',
               fontWeight: 700,
-              fontSize: { xs: '0.8125rem', md: '0.875rem' },
               py: { xs: '0.875rem', md: '1rem' },
-              borderRadius: { xs: '0.5rem', md: '0.625rem' },
+              borderRadius: '0.625rem',
               textTransform: 'none',
-              boxShadow: '0 4px 12px rgba(37, 211, 102, 0.3)',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                bgcolor: '#128C7E',
-                boxShadow: '0 6px 16px rgba(37, 211, 102, 0.4)',
-                transform: 'translateY(-2px)',
-              },
+              '&:hover': { bgcolor: '#128C7E' },
             }}
           >
             Sipariş Ver
@@ -302,13 +264,13 @@ export default function ProductCard({ product }: Props) {
         </Box>
       </CardContent>
 
-      {/* Quick View Modal */}
-      <QuickViewModal
-        product={product}
-        open={quickViewOpen}
-        onClose={() => setQuickViewOpen(false)}
-      />
+      {quickViewOpen && (
+        <QuickViewModal
+          product={product}
+          open={quickViewOpen}
+          onClose={() => setQuickViewOpen(false)}
+        />
+      )}
     </Card>
   );
 }
-
