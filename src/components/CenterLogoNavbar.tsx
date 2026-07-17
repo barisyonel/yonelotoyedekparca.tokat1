@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { staticAsset } from '@/lib/cloudinaryAssets';
 
 const leftMenuItems = [
   { label: 'Ana Sayfa', href: '/' },
@@ -124,7 +125,7 @@ export default function CenterLogoNavbar() {
               <Link href="/" className="block brand-logo-ring">
                 <div className="relative h-16 lg:h-20 w-40 lg:w-52 bg-white/90 rounded-xl">
                   <Image
-                    src="/assets/logo1.png"
+                    src={staticAsset('/assets/logo1.png')}
                     alt="Yönel Oto Yedek Parça"
                     fill
                     style={{ objectFit: 'contain' }}
@@ -204,7 +205,7 @@ export default function CenterLogoNavbar() {
                 <div className="flex justify-center mb-8 pt-4">
                   <div className="relative h-20 w-48">
                     <Image
-                      src="/assets/logo1.png"
+                      src={staticAsset('/assets/logo1.png')}
                       alt="Yönel Oto"
                       fill
                       style={{ objectFit: 'contain' }}

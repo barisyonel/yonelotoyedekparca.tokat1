@@ -1,9 +1,11 @@
 import ProductsRepository from '@/lib/repositories/ProductsRepository';
 import HomeSlidersRepository from '@/lib/repositories/HomeSlidersRepository';
 import { generateProductUrl } from '@/lib/utils/slugify';
+import { resolveHomeSliderCta } from '@/lib/utils/homeSliderLinks';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import nextDynamic from 'next/dynamic';
+import { staticAsset } from '@/lib/cloudinaryAssets';
 
 // Build sırasında DB denemesi yapılmasın (Vercel log timeout); runtime'da ISR
 export const revalidate = 300;
@@ -78,7 +80,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.yonelotoyedekparca.com/og-image.jpg',
+        url: staticAsset('https://www.yonelotoyedekparca.com/og-image.jpg'),
         width: 1200,
         height: 630,
         alt: 'Yönel Oto Yedek Parça - İveco, Ducato, Foton, Karataş, Mutlu Akü',
@@ -89,7 +91,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'İveco Daily 120-14, 85-12, 65-9, 50NC, Eurobus | Fiat Ducato 2.3, 3.0 | Foton, Karataş Traktör Yedek Parça',
     description: 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları, Mutlu Akü. Orijinal yedek parça, hızlı teslimat.',
-    images: ['https://www.yonelotoyedekparca.com/twitter-image.jpg'],
+    images: [staticAsset('https://www.yonelotoyedekparca.com/twitter-image.jpg')],
   },
 };
 
@@ -115,15 +117,24 @@ export default async function Home() {
       ]);
 
   if (slidesSettled.status === 'fulfilled') {
-    homeSlides = slidesSettled.value.map((slide) => ({
-      id: slide.Id,
-      title: slide.Title,
-      subtitle: slide.Subtitle,
-      description: slide.Description,
-      image: slide.ImageUrl,
-      buttonText: slide.ButtonText,
-      buttonLink: slide.ButtonLink,
-    }));
+    homeSlides = slidesSettled.value.map((slide) => {
+      const cta = resolveHomeSliderCta({
+        title: slide.Title,
+        subtitle: slide.Subtitle,
+        description: slide.Description,
+        buttonText: slide.ButtonText,
+        buttonLink: slide.ButtonLink,
+      });
+      return {
+        id: slide.Id,
+        title: slide.Title,
+        subtitle: slide.Subtitle,
+        description: slide.Description,
+        image: slide.ImageUrl,
+        buttonText: cta.buttonText,
+        buttonLink: cta.buttonLink,
+      };
+    });
   }
 
   // Server-side data fetching (SSR) - İveco Products with Stable Order (Date alanı yok — RSC uyumlu)
@@ -168,7 +179,7 @@ export default async function Home() {
       name: 'İveco Daily',
       models: ['120-14', '85-12', '65-9', '50NC', 'Daily'],
       icon: '🚐',
-      image: '/assets/dailly.png',
+      image: staticAsset('/assets/dailly.png'),
       description: 'İveco Daily serisi için orijinal yedek parçalar',
       slug: 'iveco/daily', // Parent/Sub category format
     },
@@ -176,7 +187,7 @@ export default async function Home() {
       name: 'Fiat Ducato',
       models: ['Ducato 2.3', 'Ducato 3.0', 'Tüm Modeller'],
       icon: '🚚',
-      image: '/assets/d.png',
+      image: staticAsset('/assets/d.png'),
       description: 'Fiat Ducato ticari araç yedek parçaları',
       slug: 'fiat/ducato', // Parent/Sub category format
     },
@@ -184,7 +195,7 @@ export default async function Home() {
       name: 'Karataş Traktör',
       models: ['Tüm Modeller'],
       icon: '🚜',
-      image: '/assets/karat.png',
+      image: staticAsset('/assets/karat.png'),
       description: 'Karataş traktör yedek parça ve aksesuar çeşitleri',
       slug: 'karatas', // Single category (no subcategory)
     },
@@ -192,7 +203,7 @@ export default async function Home() {
       name: 'Foton Traktör',
       models: ['Tüm Modeller'],
       icon: '🚜',
-      image: '/assets/foton.png',
+      image: staticAsset('/assets/foton.png'),
       description: 'Foton traktör yedek parçaları ve bakım ürünleri',
       slug: 'foton', // Single category (no subcategory)
     },
@@ -200,7 +211,7 @@ export default async function Home() {
       name: 'Mutlu Akü',
       models: ['Tüm Kapasiteler'],
       icon: '🔋',
-      image: '/images/60aku.png',
+      image: staticAsset('/images/60aku.png'),
       description: 'Mutlu akü çeşitleri, güvenilir enerji çözümleri',
       slug: 'mutlu/aku', // Parent/Sub category format
     },
@@ -312,7 +323,7 @@ export default async function Home() {
                 url: 'https://www.yonelotoyedekparca.com',
                 logo: {
                   '@type': 'ImageObject',
-                  url: 'https://www.yonelotoyedekparca.com/assets/logo.jpg',
+                  url: staticAsset('https://www.yonelotoyedekparca.com/assets/logo.jpg'),
                   width: 260,
                   height: 120,
                 },
@@ -334,7 +345,7 @@ export default async function Home() {
                 '@type': 'LocalBusiness',
                 '@id': 'https://www.yonelotoyedekparca.com/#localbusiness',
                 name: 'Yönel Oto Yedek Parça',
-                image: 'https://www.yonelotoyedekparca.com/og-image.jpg',
+                image: staticAsset('https://www.yonelotoyedekparca.com/og-image.jpg'),
                 url: 'https://www.yonelotoyedekparca.com',
                 telephone: '+905542597273',
                 priceRange: '$$',

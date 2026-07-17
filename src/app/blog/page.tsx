@@ -13,6 +13,16 @@ import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
+import { staticAsset } from '@/lib/cloudinaryAssets';
+import {
+  BLOG_EXPERIENCE_SINCE,
+  BLOG_SITE_URL,
+  BLOG_TRUST_LONG,
+  BLOG_TRUST_SHORT,
+  blogImageAbsoluteUrl,
+  blogLocalBusinessSchema,
+  blogOrganizationSchema,
+} from '@/lib/blog/trustCopy';
 
 interface BlogPost {
   slug: string;
@@ -32,14 +42,15 @@ const blogPosts: BlogPost[] = [
   {
     slug: 'iveco-daily-yedek-parca-secimi-rehberi',
     title: 'İveco Daily Yedek Parça Seçimi: Orijinal mi Yan Sanayi mi? Uzman Rehberi',
-    excerpt: 'İveco Daily 120-14, 85-12, 65-9 ve 50NC modelleri için doğru yedek parça seçimi nasıl yapılır? 50 yıllık tecrübemizle tüm detayları açıklıyoruz.',
+    excerpt:
+      'İveco Daily 120-14, 85-12, 65-9 ve 50NC için doğru parça seçimi. 45+ yıldır İveco grubunun tüm yedek parçalarını güvenle ve uygun fiyatla satıyoruz — Tokat merkez, Türkiye geneli.',
     content: '',
     category: 'İveco Daily',
-    tags: ['İveco Daily Rehberi', 'Parça Seçimi'],
+    tags: ['İveco Daily Rehberi', 'İveco Grubu', 'Tokat', 'Parça Seçimi'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '15 Aralık 2024',
     readTime: '8 dk',
-    image: '/assets/dailly.png',
+    image: staticAsset('/assets/dailly.png'),
     featured: true,
   },
   {
@@ -52,7 +63,7 @@ const blogPosts: BlogPost[] = [
     author: 'Yönel Oto Uzman Ekibi',
     date: '10 Aralık 2024',
     readTime: '10 dk',
-    image: '/assets/d.png',
+    image: staticAsset('/assets/d.png'),
     featured: true,
   },
   {
@@ -65,7 +76,7 @@ const blogPosts: BlogPost[] = [
     author: 'Yönel Oto Uzman Ekibi',
     date: '5 Aralık 2024',
     readTime: '7 dk',
-    image: '/assets/foton.png',
+    image: staticAsset('/assets/foton.png'),
     featured: true,
   },
   {
@@ -78,7 +89,7 @@ const blogPosts: BlogPost[] = [
     author: 'Yönel Oto Uzman Ekibi',
     date: '1 Aralık 2024',
     readTime: '9 dk',
-    image: '/assets/karat.png',
+    image: staticAsset('/assets/karat.png'),
     featured: false,
   },
   {
@@ -91,20 +102,21 @@ const blogPosts: BlogPost[] = [
     author: 'Yönel Oto Uzman Ekibi',
     date: '25 Kasım 2024',
     readTime: '6 dk',
-    image: '/images/60aku.png',
+    image: staticAsset('/images/60aku.png'),
     featured: false,
   },
   {
     slug: 'iveco-daily-fren-sistemi-bakimi',
     title: 'İveco Daily Fren Sistemi Bakımı: Balata, Disk ve Hidrolik Sistem Kontrolü',
-    excerpt: 'İveco Daily ticari araçlarda fren sisteminin önemi, balata ve disk değişim zamanları, fren hidroliği bakımı ve güvenli sürüş için kritik kontroller.',
+    excerpt:
+      'İveco Daily fren bakımı: balata, disk ve hidrolik. 45+ yıllık tecrübe ile İveco grubu fren parçalarını güvenli ve uygun fiyatla Tokat’tan Türkiye geneline sunuyoruz.',
     content: '',
     category: 'İveco Daily',
-    tags: ['İveco Fren Sistemi', 'Güvenli Sürüş'],
+    tags: ['İveco Fren Sistemi', 'İveco Grubu', 'Tokat', 'Güvenli Sürüş'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '20 Kasım 2024',
     readTime: '8 dk',
-    image: '/assets/dailly.png',
+    image: staticAsset('/assets/dailly.png'),
     featured: false,
   },
   {
@@ -117,7 +129,7 @@ const blogPosts: BlogPost[] = [
     author: 'Yönel Oto Uzman Ekibi',
     date: '15 Kasım 2024',
     readTime: '12 dk',
-    image: '/assets/logo.webp',
+    image: staticAsset('/assets/logo.webp'),
     featured: true,
   },
   {
@@ -130,7 +142,7 @@ const blogPosts: BlogPost[] = [
     author: 'Yönel Oto Uzman Ekibi',
     date: '10 Kasım 2024',
     readTime: '7 dk',
-    image: '/assets/d.png',
+    image: staticAsset('/assets/d.png'),
     featured: false,
   },
   {
@@ -143,7 +155,7 @@ const blogPosts: BlogPost[] = [
     author: 'Yönel Oto Uzman Ekibi',
     date: '5 Kasım 2024',
     readTime: '9 dk',
-    image: '/assets/foton.png',
+    image: staticAsset('/assets/foton.png'),
     featured: false,
   },
 ];
@@ -220,54 +232,36 @@ export default function BlogPage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Structured Data */}
+      {/* Structured Data — Blog + yerel AutoPartsStore (GEO) */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             '@context': 'https://schema.org',
-            '@type': 'Blog',
-            name: 'Yönel Oto Yedek Parça Blog',
-            description: 'İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parça bakım rehberleri',
-            url: 'https://www.yonelotoyedekparca.com/blog',
-            publisher: {
-              '@type': 'Organization',
-              name: 'Yönel Oto Yedek Parça',
-              logo: {
-                '@type': 'ImageObject',
-                url: 'https://www.yonelotoyedekparca.com/assets/logo.webp',
+            '@graph': [
+              blogLocalBusinessSchema(staticAsset('/assets/logo.webp')),
+              {
+                '@type': 'Blog',
+                name: 'Yönel Oto Yedek Parça Blog',
+                description: BLOG_TRUST_SHORT,
+                url: `${BLOG_SITE_URL}/blog`,
+                inLanguage: 'tr-TR',
+                publisher: blogOrganizationSchema(staticAsset('/assets/logo.webp')),
+                blogPost: blogPosts.map((post) => ({
+                  '@type': 'BlogPosting',
+                  headline: post.title,
+                  description: post.excerpt,
+                  image: blogImageAbsoluteUrl(post.image),
+                  datePublished: post.date,
+                  author: blogOrganizationSchema(staticAsset('/assets/logo.webp')),
+                  publisher: blogOrganizationSchema(staticAsset('/assets/logo.webp')),
+                  mainEntityOfPage: {
+                    '@type': 'WebPage',
+                    '@id': `${BLOG_SITE_URL}/blog/${post.slug}`,
+                  },
+                })),
               },
-            },
-            blogPost: blogPosts.map(post => ({
-              '@type': 'BlogPosting',
-              headline: post.title,
-              description: post.excerpt,
-              datePublished: post.date,
-              author: {
-                '@type': 'Organization',
-                name: post.author,
-                url: 'https://www.yonelotoyedekparca.com',
-                logo: {
-                  '@type': 'ImageObject',
-                  url: 'https://www.yonelotoyedekparca.com/assets/logo.webp',
-                },
-                sameAs: [
-                  'https://www.yonelotoyedekparca.com',
-                ],
-              },
-              publisher: {
-                '@type': 'Organization',
-                name: 'Yönel Oto Yedek Parça',
-                logo: {
-                  '@type': 'ImageObject',
-                  url: 'https://www.yonelotoyedekparca.com/assets/logo.webp',
-                },
-              },
-              mainEntityOfPage: {
-                '@type': 'WebPage',
-                '@id': `https://www.yonelotoyedekparca.com/blog/${post.slug}`,
-              },
-            })),
+            ],
           }),
         }}
       />
@@ -284,12 +278,12 @@ export default function BlogPage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-tight mt-4">
-              Uzman Yedek Parça Bakım Blogu
+              İveco Grubu Yedek Parça Blogu
             </h1>
             <p className="text-xl md:text-2xl text-gray-900 max-w-3xl mx-auto leading-relaxed font-medium">
-              <strong className="text-gray-900">İveco Daily, Fiat Ducato, Foton, Karataş Traktör</strong> ve <strong>Mutlu Akü</strong> için 
-              <strong className="text-gray-900"> 50+ yıllık tecrübemizle </strong> 
-              hazırladığımız profesyonel bakım rehberleri ve uzman tavsiyeleri
+              <strong className="text-gray-900">{BLOG_EXPERIENCE_SINCE}</strong> İveco grubunun tüm yedek parçalarını{' '}
+              <strong className="text-gray-900">güvenle ve uygun fiyatla</strong> satıyoruz.
+              Tokat merkezliyiz; Türkiye geneline teslimat. İveco Daily, Ducato, Foton, Karataş ve Mutlu Akü bakım rehberleri.
             </p>
           </div>
         </div>
@@ -589,26 +583,22 @@ export default function BlogPage() {
           <div className="max-w-6xl mx-auto">
             <div className="prose prose-lg max-w-none">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Bakım Rehberleri ve Uzman Tavsiyeleri
+                İveco Grubu Yedek Parça: Bakım Rehberleri ve Uzman Tavsiyeleri
               </h2>
               
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                <strong>Yönel Oto Yedek Parça</strong> olarak, <strong>İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus), 
-                <strong> Fiat Ducato</strong> (2.3, 3.0), <strong>Foton Traktör</strong>, <strong>Karataş Traktör</strong> yedek parçaları ve 
-                <strong> Mutlu Akü</strong> konusunda 50+ yıllık tecrübemizle, araç sahipleri için kapsamlı <strong>bakım rehberleri</strong> ve 
-                <strong> uzman tavsiyeleri</strong> hazırlıyoruz. Blog sayfamızda, yedek parça seçimi, periyodik bakım, onarım teknikleri ve 
-                bakım ipuçları hakkında detaylı bilgiler bulabilirsiniz.
+                {BLOG_TRUST_LONG} Blogumuzda yedek parça seçimi, periyodik bakım ve onarım ipuçlarını bulabilirsiniz.
               </p>
 
               <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-                İveco Daily Yedek Parça Bakım Rehberleri
+                İveco Grubu ve İveco Daily Yedek Parça
               </h3>
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                <strong>İveco Daily</strong> araçlarınız için <Link href="/urunler/iveco/daily" className="text-primary hover:underline font-semibold">yedek parça kataloğumuz</Link> kapsamında, 
-                motor aksamı, şanzıman, diferansiyel, fren sistemi, elektrik parçaları ve kaporta ürünleri hakkında detaylı rehberler sunuyoruz. 
-                <strong> İveco Daily 120-14, 85-12, 65-9, 50NC</strong> ve <strong>Eurobus</strong> modelleri için özel bakım tavsiyeleri, 
-                yedek parça seçimi, orijinal ve yan sanayi parça farkları hakkında blog yazılarımızda kapsamlı bilgiler bulabilirsiniz. 
-                İveco Daily bakım rehberleri sayesinde, araçlarınızın performansını maksimum seviyede tutabilir ve beklenmedik arızaları önleyebilirsiniz.
+                <strong>45+ yıldır İveco grubunun tüm yedek parçalarını</strong> güvenle ve uygun fiyatla satıyoruz.
+                <strong> İveco Daily</strong> (120-14, 85-12, 65-9, 50NC, Eurobus) için{' '}
+                <Link href="/urunler/iveco/daily" className="text-primary hover:underline font-semibold">yedek parça kataloğumuz</Link> kapsamında
+                motor, şanzıman, fren, elektrik ve kaporta parçalarına dair rehberler sunuyoruz.
+                Tokat’taki merkezimizden Türkiye geneline hızlı tedarik sağlıyoruz.
               </p>
 
               <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
@@ -662,7 +652,7 @@ export default function BlogPage() {
                 <strong>İveco Daily, Fiat Ducato, Foton ve Karataş Traktör</strong> yedek parça bakımında, periyodik bakımın önemi büyüktür. 
                 Motor bakımı, fren sistemi kontrolleri, filtre değişimleri, yağ kontrolleri ve elektrik sistemleri bakımı konularında 
                 blog yazılarımızda uzman tavsiyeleri bulabilirsiniz. Düzenli bakım yaparak, araçlarınızın ömrünü uzatabilir, 
-                beklenmedik arızaları önleyebilir ve yakıt tüketimini optimize edebilirsiniz. 50+ yıllık tecrübemizle, 
+                beklenmedik arızaları önleyebilir ve yakıt tüketimini optimize edebilirsiniz. 45+ yıllık tecrübemizle, 
                 yedek parça bakımı konusunda profesyonel destek sunuyoruz.
               </p>
 
@@ -670,11 +660,11 @@ export default function BlogPage() {
                 Yedek Parça Temini ve Hızlı Teslimat
               </h3>
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                <strong>Yönel Oto Yedek Parça</strong> olarak, tüm Türkiye&apos;ye <strong>aynı gün kargo</strong> hizmeti sunuyoruz. 
-                İveco Daily, Fiat Ducato, Foton ve Karataş Traktör yedek parçaları için geniş stoklarımızla, 
-                ihtiyacınız olan parçayı hızlı bir şekilde tedarik edebiliriz. <Link href="/urunler" className="text-primary hover:underline font-semibold">Online yedek parça kataloğumuz</Link> üzerinden, 
-                aradığınız ürünü kolayca bulabilir ve sipariş verebilirsiniz. <strong>Orijinal ürün garantisi</strong>, 
-                profesyonel destek ve hızlı teslimat ile hizmetinizdeyiz.
+                <strong>Tokat</strong> merkezli <strong>Yönel Oto Yedek Parça</strong> olarak Türkiye geneline{' '}
+                <strong>hızlı kargo</strong> ile teslimat yapıyoruz. İveco grubu, Fiat Ducato, Foton ve Karataş traktör
+                parçalarında geniş stok ve uygun fiyat avantajı sunuyoruz.{' '}
+                <Link href="/urunler" className="text-primary hover:underline font-semibold">Online kataloğumuz</Link> üzerinden
+                ürünleri inceleyebilirsiniz.
               </p>
 
               <div className="bg-gray-50 rounded-2xl p-8 mt-8 border-2 border-gray-200">
@@ -685,7 +675,7 @@ export default function BlogPage() {
                   Blog sayfamızda, <strong>İveco Daily</strong> fren sistemi bakımı, <strong>Fiat Ducato</strong> motor bakımı, 
                   <strong> Foton ve Karataş Traktör</strong> hidrolik sistem bakımı, <strong>Mutlu Akü</strong> bakımı ve 
                   orijinal-yan sanayi yedek parça seçimi gibi konularda detaylı rehberler bulabilirsiniz. 
-                  Her blog yazısı, 50+ yıllık tecrübemizle hazırlanmış uzman tavsiyeleri içermektedir.
+                  Her blog yazısı, 45+ yıllık tecrübemizle hazırlanmış uzman tavsiyeleri içermektedir.
                 </p>
                 <div className="flex flex-wrap gap-3 mt-4">
                   {blogPosts.slice(0, 6).map((post) => (
@@ -712,7 +702,7 @@ export default function BlogPage() {
               Yedek Parça İhtiyacınız mı Var?
             </h2>
             <p className="text-xl text-red-50 mb-8">
-              50+ yıllık tecrübemizle size en doğru yedek parçayı buluyoruz
+              {BLOG_TRUST_SHORT}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a

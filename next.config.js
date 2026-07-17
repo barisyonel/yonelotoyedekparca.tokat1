@@ -78,7 +78,9 @@ const nextConfig = {
   staticPageGenerationTimeout: 120,
 
   experimental: {
-    optimizeCss: true,
+    // optimizeCss (critters) dev'de layout.css 404 / stilless sayfa üretebiliyor;
+    // yalnızca production build'de aç.
+    optimizeCss: process.env.NODE_ENV === 'production',
     optimizePackageImports: ['@mui/material', '@mui/icons-material'],
     // Ensure heavy server-only packages (MSSQL/Tedious) stay external in RSC bundler
     serverComponentsExternalPackages: ['mssql', 'tedious'],
@@ -161,7 +163,12 @@ const nextConfig = {
         destination: '/blog',
         permanent: true,
       },
-      // Eski /products URL'lerini /urunler/urun'a yönlendir
+      // Eski /products URL'leri (sayfa bileşenleri kaldırıldı; yönlendirme burada)
+      {
+        source: '/products',
+        destination: '/urunler',
+        permanent: true,
+      },
       {
         source: '/products/:path*',
         destination: '/urunler/urun/:path*',

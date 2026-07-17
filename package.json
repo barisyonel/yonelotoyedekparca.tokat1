@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "upload:static-assets": "node scripts/upload-static-to-cloudinary.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",

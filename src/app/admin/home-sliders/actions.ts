@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { revalidateHomeSliders } from '@/lib/cache';
 import HomeSlidersRepository from '@/lib/repositories/HomeSlidersRepository';
+import { resolveHomeSliderCta } from '@/lib/utils/homeSliderLinks';
 
 async function deleteFromCloudinary(publicId: string): Promise<void> {
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -51,6 +52,13 @@ export async function createHomeSlider(formData: FormData) {
     const buttonLink = String(formData.get('buttonLink') || '').trim();
     const sortOrder = Number(formData.get('sortOrder') || 0);
     const isActive = String(formData.get('isActive') || 'true') === 'true';
+    const cta = resolveHomeSliderCta({
+      title,
+      subtitle,
+      description,
+      buttonText,
+      buttonLink,
+    });
 
     if (!imageUrl || !cloudinaryPublicId) {
       return { success: false, error: 'Lütfen görsel yükleyin.' };
@@ -62,8 +70,8 @@ export async function createHomeSlider(formData: FormData) {
       Description: description || '',
       ImageUrl: imageUrl,
       CloudinaryPublicId: cloudinaryPublicId,
-      ButtonText: buttonText || '',
-      ButtonLink: buttonLink || '/',
+      ButtonText: cta.buttonText,
+      ButtonLink: cta.buttonLink,
       SortOrder: Number.isNaN(sortOrder) ? 0 : sortOrder,
       IsActive: isActive,
     });
@@ -87,6 +95,13 @@ export async function updateHomeSlider(id: number, formData: FormData) {
     const buttonLink = String(formData.get('buttonLink') || '').trim();
     const sortOrder = Number(formData.get('sortOrder') || 0);
     const isActive = String(formData.get('isActive') || 'true') === 'true';
+    const cta = resolveHomeSliderCta({
+      title,
+      subtitle,
+      description,
+      buttonText,
+      buttonLink,
+    });
 
     if (!imageUrl || !cloudinaryPublicId) {
       return { success: false, error: 'Lütfen görsel yükleyin.' };
@@ -98,8 +113,8 @@ export async function updateHomeSlider(id: number, formData: FormData) {
       Description: description || '',
       ImageUrl: imageUrl,
       CloudinaryPublicId: cloudinaryPublicId,
-      ButtonText: buttonText || '',
-      ButtonLink: buttonLink || '/',
+      ButtonText: cta.buttonText,
+      ButtonLink: cta.buttonLink,
       SortOrder: Number.isNaN(sortOrder) ? 0 : sortOrder,
       IsActive: isActive,
     });

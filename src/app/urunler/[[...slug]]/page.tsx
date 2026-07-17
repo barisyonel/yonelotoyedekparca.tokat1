@@ -4,7 +4,10 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ProductsHeader from '@/app/products/ProductsHeader';
 import { Metadata } from 'next';
 import { fetchUrunlerPageData } from '@/lib/catalog/fetchUrunlerPage';
-import { getCategoryPathFromSlug } from '@/lib/utils/urunlerUrls';
+import { buildUrunlerMetadata } from '@/lib/catalog/buildUrunlerMetadata';
+import { getCategoryPathFromSlug, buildUrunlerUrl } from '@/lib/utils/urunlerUrls';
+import { generateCategoryPagePath } from '@/lib/utils/categoryUrls';
+import CategoriesRepository from '@/lib/repositories/CategoriesRepository';
 import type { PlainCategory, PlainProduct } from '@/lib/serializeDb';
 import ProductsPageSlider from '@/app/urunler/ProductsPageSlider';
 
@@ -22,11 +25,14 @@ interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'Yönel Oto Yedek Parça Kataloğu',
-    description: 'Tüm yedek parça ürünlerimiz.',
-  };
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  let categories: PlainCategory[] = [];
+  try {
+    categories = await CategoriesRepository.findAll();
+  } catch (error) {
+    console.error('Ürünler metadata kategori hatası:', error);
+  }
+  return buildUrunlerMetadata({ slug: params.slug, categories });
 }
 
 function SliderFallback() {
@@ -36,6 +42,39 @@ function SliderFallback() {
       style={{ height: 'clamp(280px, 35vh, 400px)' }}
     />
   );
+}
+
+function buildCatalogBreadcrumbs(
+  activeCategory: PlainCategory | null,
+  parentCategory: PlainCategory | null,
+): { label: string; href?: string }[] {
+  const items: { label: string; href?: string }[] = [
+    { label: 'Ürünler', href: '/urunler' },
+  ];
+
+  if (parentCategory && activeCategory && parentCategory.Id !== activeCategory.Id) {
+    items.push({
+      label: parentCategory.Name,
+      href: buildUrunlerUrl({
+        categoryPath: generateCategoryPagePath(parentCategory, null),
+      }),
+    });
+    items.push({ label: activeCategory.Name });
+    return items;
+  }
+
+  if (activeCategory) {
+    items.push({ label: activeCategory.Name });
+    return items;
+  }
+
+  if (parentCategory) {
+    items.push({ label: parentCategory.Name });
+    return items;
+  }
+
+  // Kök liste: yalnızca "Ürünler" (link yok — mevcut sayfa)
+  return [{ label: 'Ürünler' }];
 }
 
 export default async function UrunlerPage({ params, searchParams }: PageProps) {
@@ -77,14 +116,19 @@ export default async function UrunlerPage({ params, searchParams }: PageProps) {
   }
 
   const totalPages = Math.ceil(total / limit);
+  const breadcrumbItems = buildCatalogBreadcrumbs(activeCategory, parentCategory);
 
   return (
     <div className="w-full max-w-[100vw] mx-auto px-[3%] lg:px-[2%] py-4 md:py-6">
       <div className="mb-4">
-        <Breadcrumb items={[{ label: 'Ürünler', href: '/urunler' }]} />
+        <Breadcrumb items={breadcrumbItems} />
       </div>
 
-      <ProductsHeader activeCategory={activeCategory} searchQuery={search || undefined} />
+      <ProductsHeader
+        activeCategory={activeCategory}
+        parentCategory={parentCategory}
+        searchQuery={search || undefined}
+      />
 
       <div className="mb-6 md:mb-8">
         <Suspense fallback={<SliderFallback />}>

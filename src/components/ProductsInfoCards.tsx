@@ -2,7 +2,7 @@ const features = [
   'Orijinal ve Yan Sanayi Parçalar',
   '5000+ Ürün Çeşidi',
   'Türkiye Geneli Hızlı Kargo',
-  '50 Yıllık Tecrübe',
+  '45+ Yıllık Tecrübe',
   'Teknik Destek ve Danışmanlık',
   'Mutlu Akü Yetkili Bayi',
 ];
@@ -69,8 +69,8 @@ export default function ProductsInfoCards() {
         <p className="text-gray-600 leading-relaxed mb-6">
           <strong>İveco Daily yedek parça</strong>, <strong>Fiat Ducato yedek parça</strong>,
           <strong> Foton traktör yedek parça</strong> ve <strong>Karataş traktör</strong> parçaları
-          konusunda 50 yıllık tecrübemizle hizmet vermekteyiz. Tokat merkezli firmamız, Türkiye
-          geneline hızlı kargo ile ulaşmaktadır.
+          konusunda 45+ yıldır güvenle ve uygun fiyatla hizmet veriyoruz. Tokat merkezli firmamız,
+          Türkiye geneline hızlı kargo ile ulaşmaktadır.
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -93,7 +93,7 @@ export default function ProductsInfoCards() {
         <div className="flex flex-wrap justify-center gap-4 mt-6">
           {[
             { value: '5000+', label: 'Ürün Çeşidi' },
-            { value: '50 Yıl', label: 'Tecrübe' },
+            { value: '45+', label: 'Yıllık Tecrübe' },
             { value: '7/24', label: 'Destek' },
           ].map((stat) => (
             <div key={stat.label} className="text-center px-6 py-4 bg-white rounded-xl min-w-[140px] border border-gray-200">

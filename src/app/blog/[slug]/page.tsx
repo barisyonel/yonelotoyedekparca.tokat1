@@ -8,6 +8,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShareIcon from '@mui/icons-material/Share';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import { staticAsset } from '@/lib/cloudinaryAssets';
+import {
+  BLOG_SITE_URL,
+  BLOG_TRUST_SHORT,
+  blogImageAbsoluteUrl,
+  blogOrganizationSchema,
+} from '@/lib/blog/trustCopy';
 
 interface BlogPost {
   slug: string;
@@ -27,9 +34,12 @@ const blogPosts: Record<string, BlogPost> = {
   'iveco-daily-yedek-parca-secimi-rehberi': {
     slug: 'iveco-daily-yedek-parca-secimi-rehberi',
     title: 'İveco Daily Yedek Parça Seçimi: Orijinal mi Yan Sanayi mi? Uzman Rehberi',
-    excerpt: 'İveco Daily 120-14, 85-12, 65-9 ve 50NC modelleri için doğru yedek parça seçimi nasıl yapılır?',
+    excerpt:
+      'İveco Daily 120-14, 85-12, 65-9 ve 50NC için doğru parça seçimi. 45+ yıldır İveco grubunun tüm yedek parçalarını güvenle ve uygun fiyatla satıyoruz — Tokat merkez, Türkiye geneli.',
     content: `
 # İveco Daily Yedek Parça Seçimi: Kapsamlı Rehber
+
+**Yönel Oto Yedek Parça olarak 45+ yıldır İveco grubunun tüm yedek parçalarını güvenle ve uygun fiyatla satıyoruz.** Merkezimiz Tokat’tadır; Türkiye geneline hızlı teslimat yapıyoruz.
 
 İveco Daily serisi (120-14, 85-12, 65-9, 50NC), Türkiye'de en çok tercih edilen hafif ticari araçlar arasında yer alıyor. Bu araçların performansını ve kullanım ömrünü maksimize etmek için **doğru yedek parça seçimi kritik önem taşıyor**.
 
@@ -133,13 +143,13 @@ Orta segment taşımacılıkta ideal olan bu model:
 - **OEM Onaylı**: Üretici onaylı yan sanayi
 
 ### 3. Satıcı Güvenilirliğini Araştırın
-- 50+ yıllık tecrübeli firmalardan alın
+- 45+ yıllık tecrübeli firmalardan alın
 - Google yorumlarını kontrol edin
 - Fatura ve belgeli satış isteyin
 
 ## Yönel Oto'dan Profesyonel Tavsiyeler
 
-**50+ yıllık tecrübemizle** İveco Daily sahiplerine önerilerimiz:
+**45+ yıllık tecrübemizle** İveco Daily sahiplerine önerilerimiz:
 
 1. **Periyodik Bakımı Aksatmayın**: Motor performansını korur
 2. **Orijinal Yağ Kullanın**: İveco Daily 5W-30 tam sentetik tercih edin
@@ -166,24 +176,24 @@ Orta segment taşımacılıkta ideal olan bu model:
 İveco Daily yedek parça seçiminde **altın kural**: Motor ve güvenlik kritik parçalarda orijinal, bakım ve sarf malzemelerinde kaliteli yan sanayi kullanımı.
 
 Yönel Oto Yedek Parça olarak:
-- ✅ Hem orijinal hem kaliteli yan sanayi ürünleri sunuyoruz
-- ✅ 50+ yıllık tecrübemizle doğru parça seçiminde size yol gösteriyoruz
-- ✅ Türkiye geneline aynı gün kargo ile hızlı teslimat yapıyoruz
-- ✅ Tüm ürünlerimiz belgeli ve sertifikalı
+- ✅ 45+ yıldır İveco grubunun tüm yedek parçalarını güvenle satıyoruz
+- ✅ Uygun fiyat ve kaliteli orijinal / yan sanayi seçenekleri
+- ✅ Tokat merkez, Türkiye geneline hızlı kargo
+- ✅ Doğru parça seçiminde uzman destek
 
 ### İletişim
 📞 **Telefon**: 0554 259 72 73  
-📍 **Adres**: Tokat  
+📍 **Adres**: Tokat (Türkiye geneli teslimat)  
 🌐 **Web**: yonelotoyedekparca.com
 
-**İveco Daily'niz için doğru parça seçiminde profesyonel destek almak için bizi arayın!**
+**İveco Daily ve İveco grubu parçaları için güvenilir ve uygun fiyatlı çözümler için bizi arayın!**
     `,
     category: 'İveco Daily',
-    tags: ['İveco Daily', 'Yedek Parça', 'Orijinal Parça', 'Bakım', '120-14', '85-12'],
+    tags: ['İveco Daily', 'İveco Grubu', 'Tokat', 'Yedek Parça', 'Uygun Fiyat', '120-14', '85-12'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '15 Aralık 2024',
     readTime: '8 dk',
-    image: '/assets/dailly.png',
+    image: staticAsset('/assets/dailly.png'),
     featured: true,
   },
   'fiat-ducato-motor-bakimi-ipuclari': {
@@ -417,13 +427,15 @@ Fiat Ducato motorları **düzenli bakım** ile uzun yıllar sorunsuz çalışabi
 
 ### Yönel Oto'dan Ducato Sahiplerine Özel Hizmetler
 
+45+ yıldır İveco grubu ve Fiat Ducato yedek parçalarını **güvenle ve uygun fiyatla** sunuyoruz (Tokat merkez, Türkiye geneli).
+
 - 📦 Orijinal Fiat ve kaliteli yan sanayi yedek parçaları
-- 🚚 Türkiye geneline aynı gün kargo
-- 💰 Uygun fiyat ve havale indirimi
+- 🚚 Türkiye geneline hızlı kargo
+- 💰 Uygun fiyat
 - ☎️ Uzman kadro ile teknik destek
 
 **Ducato motorunuz için profesyonel bakım ve yedek parça ihtiyaçlarınızda:**  
-📞 **0554 259 72 73**  
+📞 **0554 259 72 73** · 📍 **Tokat**  
 🌐 **yonelotoyedekparca.com**
     `,
     category: 'Fiat Ducato',
@@ -431,7 +443,7 @@ Fiat Ducato motorları **düzenli bakım** ile uzun yıllar sorunsuz çalışabi
     author: 'Yönel Oto Uzman Ekibi',
     date: '10 Aralık 2024',
     readTime: '10 dk',
-    image: '/assets/d.png',
+    image: staticAsset('/assets/d.png'),
     featured: true,
   },
   'foton-traktor-yedek-parca-temini': {
@@ -461,13 +473,13 @@ Foton traktörler, uygun fiyatları ve güçlü motorları ile Türkiye'de tarı
 - Fren silindirleri
 - Debriyaj diskler
 
-Yönel Oto olarak Foton traktör yedek parçalarında geniş stok ve hızlı teslimat avantajı sunuyoruz.`,
+Yönel Oto olarak Foton traktör yedek parçalarında geniş stok, uygun fiyat ve Tokat’tan Türkiye geneline hızlı teslimat sunuyoruz. 45+ yıllık tecrübemizle güvenilir tedarik için yanınızdayız.`,
     category: 'Foton Traktör',
     tags: ['Foton', 'Traktör', 'Yedek Parça', 'Tarım Makinaları'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '5 Aralık 2024',
     readTime: '7 dk',
-    image: '/assets/foton.png',
+    image: staticAsset('/assets/foton.png'),
     featured: true,
   },
   'karatas-traktor-hidrolik-sistem-bakimi': {
@@ -510,7 +522,7 @@ Karataş traktör hidrolik yedek parçaları için bizimle iletişime geçin.`,
     author: 'Yönel Oto Uzman Ekibi',
     date: '1 Aralık 2024',
     readTime: '9 dk',
-    image: '/assets/karat.png',
+    image: staticAsset('/assets/karat.png'),
     featured: false,
   },
   'mutlu-aku-bakim-ve-kullanim-omru': {
@@ -561,14 +573,17 @@ Mutlu akü çeşitleri ve fiyatları için mağazamızı ziyaret edin.`,
     author: 'Yönel Oto Uzman Ekibi',
     date: '25 Kasım 2024',
     readTime: '6 dk',
-    image: '/images/60aku.png',
+    image: staticAsset('/images/60aku.png'),
     featured: false,
   },
   'iveco-daily-fren-sistemi-bakimi': {
     slug: 'iveco-daily-fren-sistemi-bakimi',
     title: 'İveco Daily Fren Sistemi Bakımı: Balata, Disk ve Hidrolik Sistem Kontrolü',
-    excerpt: 'İveco Daily ticari araçlarda fren sisteminin önemi, balata ve disk değişim zamanları, fren hidroliği bakımı ve güvenli sürüş için kritik kontroller.',
+    excerpt:
+      'İveco Daily fren bakımı: balata, disk ve hidrolik. 45+ yıllık tecrübe ile İveco grubu fren parçalarını güvenli ve uygun fiyatla Tokat’tan Türkiye geneline sunuyoruz.',
     content: `# İveco Daily Fren Sistemi Bakımı
+
+**45+ yıldır İveco grubu yedek parçalarını güvenle ve uygun fiyatla satan** Yönel Oto olarak, İveco Daily fren sisteminde kaliteli parça seçiminin can güvenliği kadar önemli olduğunu biliyoruz. Tokat merkezimizden Türkiye geneline hizmet veriyoruz.
 
 İveco Daily gibi ticari araçlarda fren sistemi, hem sürücü hem de yük güvenliği açısından kritik öneme sahiptir. Düzenli bakım hayat kurtarır.
 
@@ -619,13 +634,13 @@ Mutlu akü çeşitleri ve fiyatları için mağazamızı ziyaret edin.`,
 4. Dağ yollarında motor freni kullanın
 5. Yük dağılımına dikkat edin
 
-İveco Daily fren yedek parçaları için Yönel Oto'yu tercih edin.`,
+İveco Daily ve İveco grubu fren yedek parçalarında **güvenilir kalite + uygun fiyat** için Yönel Oto’yu tercih edin — Tokat merkez, Türkiye geneli teslimat.`,
     category: 'İveco Daily',
-    tags: ['İveco', 'Fren Sistemi', 'Güvenlik', 'Balata'],
+    tags: ['İveco', 'İveco Grubu', 'Fren Sistemi', 'Tokat', 'Güvenlik', 'Balata'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '20 Kasım 2024',
     readTime: '8 dk',
-    image: '/assets/dailly.png',
+    image: staticAsset('/assets/dailly.png'),
     featured: false,
   },
   'orijinal-yan-sanayi-yedek-parca-farklari': {
@@ -697,19 +712,19 @@ Araç sahipleri için en büyük ikilemlerden biri: Orijinal mi, yan sanayi mi? 
 
 ## Yönel Oto Önerisi
 
-50+ yıllık tecrübemizle tavsiyemiz: **Hibrit yaklaşım**
+45+ yıllık tecrübemizle tavsiyemiz: **Hibrit yaklaşım**
 - Kritik parçalarda orijinal
 - Bakım malzemelerinde kaliteli yan sanayi
 - Profesyonel danışmanlık alın
 - Fiyat-kalite dengesini doğru kurun
 
-Her iki ürün grubunda da geniş stoğumuz var. Doğru seçim için bizi arayın!`,
+İveco grubu başta olmak üzere tüm ürün gruplarında geniş stok ve **uygun fiyat** sunuyoruz. Tokat merkezliyiz; Türkiye geneline teslimat yapıyoruz. Doğru seçim için bizi arayın!`,
     category: 'Genel',
-    tags: ['Orijinal Parça', 'Yan Sanayi', 'Kalite', 'Fiyat'],
+    tags: ['Orijinal Parça', 'Yan Sanayi', 'İveco Grubu', 'Tokat', 'Uygun Fiyat'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '15 Kasım 2024',
     readTime: '12 dk',
-    image: '/assets/logo.webp',
+    image: staticAsset('/assets/logo.webp'),
     featured: true,
   },
   'ducato-salincak-ve-rotil-degisimi': {
@@ -793,13 +808,13 @@ Fiat Ducato'da ön takım parçaları, hem konfor hem de güvenlik açısından 
 - Sürüş konforunu artırır
 - Güvenli sürüş sağlar
 
-Fiat Ducato ön takım yedek parçaları için Yönel Oto ile iletişime geçin.`,
+Fiat Ducato ön takım yedek parçaları için Yönel Oto ile iletişime geçin — Tokat merkez, uygun fiyat, Türkiye geneli teslimat.`,
     category: 'Fiat Ducato',
     tags: ['Ducato', 'Ön Takım', 'Salıncak', 'Rotil'],
     author: 'Yönel Oto Uzman Ekibi',
     date: '10 Kasım 2024',
     readTime: '7 dk',
-    image: '/assets/d.png',
+    image: staticAsset('/assets/d.png'),
     featured: false,
   },
   'traktor-filtre-bakimi-rehberi': {
@@ -938,7 +953,7 @@ Foton ve Karataş traktör filtreleri için Yönel Oto'nun geniş stoğundan yar
     author: 'Yönel Oto Uzman Ekibi',
     date: '5 Kasım 2024',
     readTime: '9 dk',
-    image: '/assets/foton.png',
+    image: staticAsset('/assets/foton.png'),
     featured: false,
   },
 };
@@ -952,7 +967,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = blogPosts[params.slug];
-  
+
   if (!post) {
     return {
       title: 'Blog Yazısı Bulunamadı',
@@ -962,11 +977,20 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const max = 60;
   const base = ' | Yönel Oto Blog';
   const trimmed = post.title.length > max ? `${post.title.slice(0, max - 1)}…` : post.title;
+  const description =
+    post.excerpt.length > 155 ? `${post.excerpt.slice(0, 152)}…` : post.excerpt;
+  const keywords = [
+    ...post.tags,
+    'İveco yedek parça',
+    'Tokat',
+    'Türkiye geneli',
+    'uygun fiyat',
+  ].join(', ');
 
   return {
     title: `${trimmed}${base}`,
-    description: post.excerpt,
-    keywords: post.tags.join(', '),
+    description,
+    keywords,
     robots: {
       index: true,
       follow: true,
@@ -980,14 +1004,27 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     },
     openGraph: {
       title: trimmed,
-      description: post.excerpt,
+      description,
       type: 'article',
-      publishedTime: post.date,
+      url: `${BLOG_SITE_URL}/blog/${post.slug}`,
+      locale: 'tr_TR',
+      images: [
+        {
+          url: blogImageAbsoluteUrl(post.image),
+          alt: post.title,
+        },
+      ],
       authors: [post.author],
       tags: post.tags,
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: trimmed,
+      description,
+      images: [blogImageAbsoluteUrl(post.image)],
+    },
     alternates: {
-      canonical: `https://www.yonelotoyedekparca.com/blog/${post.slug}`,
+      canonical: `${BLOG_SITE_URL}/blog/${post.slug}`,
     },
   };
 }
@@ -1015,23 +1052,23 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             '@type': 'BlogPosting',
             headline: post.title,
             description: post.excerpt,
-            image: `https://www.yonelotoyedekparca.com${post.image}`,
+            image: blogImageAbsoluteUrl(post.image),
             datePublished: post.date,
-            author: {
-              '@type': 'Organization',
-              name: post.author,
-            },
-            publisher: {
-              '@type': 'Organization',
-              name: 'Yönel Oto Yedek Parça',
-              logo: {
-                '@type': 'ImageObject',
-                url: 'https://www.yonelotoyedekparca.com/assets/logo.webp',
-              },
-            },
+            inLanguage: 'tr-TR',
+            keywords: post.tags.join(', '),
+            author: blogOrganizationSchema(staticAsset('/assets/logo.webp')),
+            publisher: blogOrganizationSchema(staticAsset('/assets/logo.webp')),
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': `https://www.yonelotoyedekparca.com/blog/${post.slug}`,
+              '@id': `${BLOG_SITE_URL}/blog/${post.slug}`,
+            },
+            about: {
+              '@type': 'Thing',
+              name: post.category,
+            },
+            contentLocation: {
+              '@type': 'Place',
+              name: 'Tokat, Türkiye',
             },
           }),
         }}
@@ -1187,7 +1224,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             <div className="mt-12 bg-gradient-to-r from-primary to-red-800 rounded-2xl p-8 text-white">
               <h3 className="text-2xl font-bold mb-4">Yedek Parça İhtiyacınız mı Var?</h3>
               <p className="mb-6 text-red-50">
-                50+ yıllık tecrübemizle İveco Daily, Ducato, Foton ve Karataş Traktör için en kaliteli yedek parçaları sunuyoruz.
+                {BLOG_TRUST_SHORT}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { staticAsset } from '@/lib/cloudinaryAssets';
 
 export const metadata: Metadata = {
   title: 'İletişim | Yönel Oto Yedek Parça - Tokat',
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     locale: 'tr_TR',
     images: [
       {
-        url: '/og-image.jpg',
+        url: staticAsset('/og-image.jpg'),
         width: 1200,
         height: 630,
         alt: 'Yönel Oto Yedek Parça İletişim',
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'İletişim - Yönel Oto',
     description: 'Tel: 0554 259 72 73 | Tokat',
-    images: ['/twitter-image.jpg'],
+    images: [staticAsset('/twitter-image.jpg')],
   },
   alternates: {
     canonical: 'https://www.yonelotoyedekparca.com/iletisim',
@@ -41,7 +42,7 @@ export default function ContactPage() {
             '@context': 'https://schema.org',
             '@type': 'LocalBusiness',
             name: 'Yönel Oto Yedek Parça',
-            image: 'https://www.yonelotoyedekparca.com/og-image.jpg',
+            image: staticAsset('https://www.yonelotoyedekparca.com/og-image.jpg'),
             '@id': 'https://www.yonelotoyedekparca.com',
             url: 'https://www.yonelotoyedekparca.com',
             telephone: '+905542597273',

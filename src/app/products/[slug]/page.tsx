@@ -17,6 +17,7 @@ import { extractIdFromSlug, slugify, generateProductUrl } from '@/lib/utils/slug
 import { Metadata } from 'next';
 import Breadcrumb from '@/components/Breadcrumb';
 import OptimizedImage from '@/components/OptimizedImage';
+import { staticAsset } from '@/lib/cloudinaryAssets';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -101,7 +102,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           ]
         : [
             {
-              url: '/og-image.jpg',
+              url: staticAsset('/og-image.jpg'),
               width: 1200,
               height: 630,
               alt: product.Name,
@@ -112,7 +113,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: 'summary_large_image',
       title,
       description,
-      images: product.ImageUrl ? [product.ImageUrl] : ['/twitter-image.jpg'],
+      images: product.ImageUrl ? [product.ImageUrl] : [staticAsset('/twitter-image.jpg')],
     },
     robots: {
       index: true,
@@ -173,7 +174,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
     '@type': 'Product',
     name: product.Name,
     description: product.Description || `${product.Name} yedek parça`,
-    image: product.ImageUrl || 'https://www.yonelotoyedekparca.com/og-image.jpg',
+    image: product.ImageUrl || staticAsset('https://www.yonelotoyedekparca.com/og-image.jpg'),
     url: canonicalUrl,
     brand: {
       '@type': 'Brand',

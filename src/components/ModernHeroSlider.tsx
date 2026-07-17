@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { HOME_SLIDER_DEFAULTS } from '@/lib/homeSliderDefaults';
 import { getSliderImageUrl } from '@/lib/utils/sliderImage';
+import { resolveHomeSliderCta } from '@/lib/utils/homeSliderLinks';
 import { HERO_SLIDE_SIZES, IMAGE_QUALITY } from '@/lib/imageConfig';
 
 type SlideItem = {
@@ -17,22 +18,29 @@ type SlideItem = {
   buttonLink: string;
 };
 
-const fallbackSlides: SlideItem[] = HOME_SLIDER_DEFAULTS.map((slide, index) => ({
-  id: index + 1,
-  title: slide.title,
-  subtitle: slide.subtitle,
-  description: slide.description,
-  image: slide.image,
-  buttonText: slide.buttonText,
-  buttonLink: slide.buttonLink,
-}));
+const fallbackSlides: SlideItem[] = HOME_SLIDER_DEFAULTS.map((slide, index) => {
+  const cta = resolveHomeSliderCta(slide);
+  return {
+    id: index + 1,
+    title: slide.title,
+    subtitle: slide.subtitle,
+    description: slide.description,
+    image: slide.image,
+    buttonText: cta.buttonText,
+    buttonLink: cta.buttonLink,
+  };
+});
 
 interface Props {
   slides?: SlideItem[];
 }
 
 export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
-  const slides = incomingSlides && incomingSlides.length > 0 ? incomingSlides : fallbackSlides;
+  const raw = incomingSlides && incomingSlides.length > 0 ? incomingSlides : fallbackSlides;
+  const slides = raw.map((slide) => {
+    const cta = resolveHomeSliderCta(slide);
+    return { ...slide, buttonText: cta.buttonText, buttonLink: cta.buttonLink };
+  });
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -114,17 +122,15 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
                                 {slide.description}
                               </p>
                             ) : null}
-                            {slide.buttonText ? (
-                              <Link
-                                href={slide.buttonLink || '/'}
-                                className="brand-cta-btn inline-flex items-center gap-2 mt-4 md:mt-5 px-6 py-3 rounded-xl font-bold"
-                              >
-                                {slide.buttonText}
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </Link>
-                            ) : null}
+                            <Link
+                              href={slide.buttonLink}
+                              className="brand-cta-btn inline-flex items-center gap-2 mt-4 md:mt-5 px-6 py-3 rounded-xl font-bold"
+                            >
+                              {slide.buttonText}
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </Link>
                           </div>
                         </div>
                       </div>
@@ -132,18 +138,22 @@ export default function ModernHeroSlider({ slides: incomingSlides }: Props) {
 
                     <div className="lg:w-[54%] xl:w-[58%] flex lg:justify-end w-full">
                       <div className="hero-slide-media w-full max-w-[350px] sm:max-w-none md:w-[92%] md:mx-auto lg:w-full lg:max-w-[560px] xl:max-w-none xl:w-[700px] 2xl:w-[820px]">
-                        <div className="hero-slide-image-card relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl lg:rounded-[2rem] bg-[#0a1628] shadow-[0_20px_50px_rgba(0,0,0,0.35)] ring-1 ring-white/50">
+                        <Link
+                          href={slide.buttonLink}
+                          className="hero-slide-image-card relative block w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl lg:rounded-[2rem] bg-[#0a1628] shadow-[0_20px_50px_rgba(0,0,0,0.35)] ring-1 ring-white/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c542]"
+                          aria-label={`${slide.title} — ${slide.buttonText}`}
+                        >
                           <Image
                             src={getSliderImageUrl(slide.image)}
                             alt={`${slide.title} - Yönel Oto yedek parça`}
                             fill
-                            className="hero-slide-img object-contain object-center"
+                            className="hero-slide-img object-contain object-center transition-transform duration-500 hover:scale-[1.02]"
                             sizes={HERO_SLIDE_SIZES}
                             quality={IMAGE_QUALITY.hero}
                             priority={index === 0}
                             loading={index === 0 ? 'eager' : 'lazy'}
                           />
-                        </div>
+                        </Link>
                       </div>
                     </div>
                   </div>

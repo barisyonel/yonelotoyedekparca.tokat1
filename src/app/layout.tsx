@@ -4,6 +4,7 @@ import ThemeRegistry from '@/components/ThemeRegistry';
 import ConditionalLayout from '@/components/ConditionalLayout';
 import NavigationProgress from '@/components/NavigationProgress';
 import { Suspense } from 'react';
+import { staticAsset } from '@/lib/cloudinaryAssets';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.yonelotoyedekparca.com'),
@@ -11,9 +12,9 @@ export const metadata: Metadata = {
   description: 'Foton traktör yedek parçaları, Iveco Daily, Karataş traktör, Ducato yedek parça ve Mutlu akü satışında Türkiye\'nin güvenilir adresi.',
   keywords: 'foton yedek parça, iveco daily yedek parça, karataş traktör, mutlu akü, ducato yedek parça',
   icons: {
-    icon: '/assets/logo1.png',
-    shortcut: '/assets/logo1.png',
-    apple: '/apple-touch-icon.png',
+    icon: staticAsset('/assets/logo1.png'),
+    shortcut: staticAsset('/assets/logo1.png'),
+    apple: staticAsset('/apple-touch-icon.png'),
   },
   manifest: '/manifest.json',
   robots: {
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     description: 'Foton, Iveco, Karataş Traktör ve Mutlu Akü - 50+ yıllık tecrübe',
     images: [
       {
-        url: '/og-image.jpg',
+        url: staticAsset('/og-image.jpg'),
         width: 1200,
         height: 630,
         alt: 'Yönel Oto Yedek Parça',
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Yönel Oto Yedek Parça',
     description: 'Foton, Iveco, Karataş Traktör ve Mutlu Akü - 50+ yıllık tecrübe',
-    images: ['/twitter-image.jpg'],
+    images: [staticAsset('/twitter-image.jpg')],
   },
   alternates: {
     canonical: 'https://www.yonelotoyedekparca.com',

@@ -7,6 +7,7 @@ import StarIcon from '@mui/icons-material/Star';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import GroupsIcon from '@mui/icons-material/Groups';
+import { staticAsset } from '@/lib/cloudinaryAssets';
 
 export const metadata: Metadata = {
   title: 'Önerilen İş Ortaklarımız ve Güvenilir Web Siteleri | Yönel Oto',
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     url: 'https://www.yonelotoyedekparca.com/organic-seo',
     images: [
       {
-        url: '/og-image.jpg',
+        url: staticAsset('/og-image.jpg'),
         width: 1200,
         height: 630,
         alt: 'Yönel Oto Yedek Parça - İş Ortaklarımız',
