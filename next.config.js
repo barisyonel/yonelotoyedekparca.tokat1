@@ -46,6 +46,8 @@ const nextConfig = {
   },
   
   images: {
+    // Vercel Image Optimization kapalı — Cloudinary zaten f_auto/q_auto ile optimize ediyor
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
