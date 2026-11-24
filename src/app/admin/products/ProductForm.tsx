@@ -103,6 +103,7 @@ export default function ProductForm({ categories, product }: Props) {
       {/* Cloudinary Upload */}
       <CloudinaryUpload
         currentImageUrl={imageUrl}
+        previewAlt="Ürün görseli önizleme"
         onUploadSuccess={(url, publicId) => {
           setImageUrl(url);
           setCloudinaryPublicId(publicId);

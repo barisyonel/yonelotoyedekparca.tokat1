@@ -60,7 +60,7 @@ export default function ProductsTable({ products }: Props) {
                   <div style={{ position: 'relative', width: 60, height: 60 }}>
                     <Image
                       src={product.ImageUrl}
-                      alt={product.Name}
+                      alt={`${product.Name} - Yönel Oto Yedek Parça`}
                       fill
                       style={{ objectFit: 'contain' }}
                     />

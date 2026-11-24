@@ -11,9 +11,14 @@ import { useState } from 'react';
 interface Props {
   currentImageUrl?: string;
   onUploadSuccess: (url: string, publicId: string) => void;
+  previewAlt?: string;
 }
 
-export default function CloudinaryUpload({ currentImageUrl, onUploadSuccess }: Props) {
+export default function CloudinaryUpload({
+  currentImageUrl,
+  onUploadSuccess,
+  previewAlt = 'Yüklenen görsel önizleme',
+}: Props) {
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(currentImageUrl || '');
   const MAX_FILE_SIZE_MB = 10;
@@ -103,7 +108,7 @@ export default function CloudinaryUpload({ currentImageUrl, onUploadSuccess }: P
           >
             <Image
               src={imageUrl}
-              alt="Product"
+              alt={previewAlt}
               fill
               style={{ objectFit: 'contain' }}
               unoptimized={imageUrl.includes('cloudinary')}

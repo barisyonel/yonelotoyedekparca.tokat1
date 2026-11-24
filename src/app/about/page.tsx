@@ -57,11 +57,6 @@ export default function AboutPage() {
               telephone: '+905542597273',
               email: 'tokatyonelotoyedekparca@gmail.com',
               priceRange: '$$',
-              aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: '4.8',
-                reviewCount: '250',
-              },
             },
           }),
         }}

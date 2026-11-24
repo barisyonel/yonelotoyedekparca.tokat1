@@ -365,13 +365,6 @@ export default async function Home() {
                     closes: '18:00',
                   },
                 ],
-                aggregateRating: {
-                  '@type': 'AggregateRating',
-                  ratingValue: '4.8',
-                  reviewCount: '250',
-                  bestRating: '5',
-                  worstRating: '1',
-                },
               },
               {
                 '@type': 'AutoPartsStore',

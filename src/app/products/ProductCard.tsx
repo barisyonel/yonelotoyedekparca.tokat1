@@ -73,7 +73,7 @@ export default function ProductCard({ product }: Props) {
           >
             <Image
               src={product.ImageUrl}
-              alt={product.Name}
+              alt={`${product.Name} - Yönel Oto Yedek Parça`}
               width={320}
               height={240}
               quality={IMAGE_QUALITY.product}

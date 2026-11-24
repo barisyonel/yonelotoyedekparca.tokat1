@@ -206,7 +206,7 @@ export default function CenterLogoNavbar() {
                   <div className="relative h-20 w-48">
                     <Image
                       src={staticAsset('/assets/logo1.png')}
-                      alt="Yönel Oto"
+                      alt="Yönel Oto Yedek Parça"
                       fill
                       style={{ objectFit: 'contain' }}
                     />

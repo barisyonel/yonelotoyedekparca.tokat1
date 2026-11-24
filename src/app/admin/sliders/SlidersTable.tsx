@@ -176,7 +176,7 @@ export default function SlidersTable({ sliders }: Props) {
                 <Box sx={{ position: 'relative', paddingTop: '56.25%', bgcolor: '#0a1628' }}>
                   <Image
                     src={getSliderImageUrl(slider.ImageUrl)}
-                    alt={`Slider ${slider.Id}`}
+                    alt={`Ürünler sayfası slider görseli #${slider.Id}`}
                     fill
                     style={{ objectFit: 'contain', objectPosition: 'center' }}
                     unoptimized
@@ -228,7 +228,11 @@ export default function SlidersTable({ sliders }: Props) {
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
               Ürünler sayfası slider alanı için görsel yükleyin. Önerilen boyut: 1920x600px
             </Typography>
-            <CloudinaryUpload currentImageUrl={formData.imageUrl} onUploadSuccess={handleImageUpload} />
+            <CloudinaryUpload
+              currentImageUrl={formData.imageUrl}
+              previewAlt="Ürünler slider görseli önizleme"
+              onUploadSuccess={handleImageUpload}
+            />
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: 3 }}>

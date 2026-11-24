@@ -261,7 +261,11 @@ export default function HomeSlidersTable({ sliders }: Props) {
               }
               label="Aktif"
             />
-            <CloudinaryUpload currentImageUrl={formData.imageUrl} onUploadSuccess={handleImageUpload} />
+            <CloudinaryUpload
+              currentImageUrl={formData.imageUrl}
+              previewAlt="Ana sayfa slider görseli önizleme"
+              onUploadSuccess={handleImageUpload}
+            />
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: 3 }}>

@@ -77,7 +77,7 @@ export default function QuickViewModal({ product, open, onClose }: Props) {
               >
                 <Image
                   src={product.ImageUrl}
-                  alt={product.Name}
+                  alt={`${product.Name} - Yönel Oto Yedek Parça`}
                   fill
                   style={{ objectFit: 'contain', padding: '1rem' }}
                 />

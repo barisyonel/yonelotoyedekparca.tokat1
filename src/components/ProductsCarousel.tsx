@@ -69,7 +69,7 @@ export default function ProductsCarousel({ sliders }: Props) {
           <div className="relative w-full h-full products-carousel-frame rounded-2xl md:rounded-3xl overflow-hidden bg-[#0a1628] ring-1 ring-gray-200/80 shadow-[0_16px_48px_rgba(15,39,74,0.14)]">
             <Image
               src={getSliderImageUrl(slider.ImageUrl)}
-              alt={`Yönel Oto Yedek Parça - Slider ${index + 1}`}
+              alt={`Yönel Oto ürünler sayfası banner görseli ${index + 1}`}
               fill
               className="products-carousel-img object-contain object-center"
               priority={index === 0}

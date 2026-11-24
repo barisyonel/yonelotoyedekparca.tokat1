@@ -192,11 +192,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
         url: 'https://www.yonelotoyedekparca.com',
       },
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: '150',
-    },
   };
 
   // Breadcrumb Schema
@@ -318,7 +313,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
               {product.ImageUrl ? (
                 <OptimizedImage
                   src={product.ImageUrl}
-                  alt={product.Name}
+                  alt={`${product.Name} - Yönel Oto Yedek Parça`}
                   width={600}
                   height={600}
                   style={{
