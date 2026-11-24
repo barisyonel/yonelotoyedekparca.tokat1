@@ -11,12 +11,7 @@ export default async function ProductsPageSlider() {
   }
 
   if (sliders.length === 0) {
-    return (
-      <div
-        className="mb-4 rounded-2xl bg-gray-100"
-        style={{ height: 'clamp(280px, 35vh, 400px)' }}
-      />
-    );
+    return null;
   }
 
   return <ProductsCarousel sliders={sliders} />;

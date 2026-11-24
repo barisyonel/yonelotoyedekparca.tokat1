@@ -6,21 +6,17 @@ import { toPlainSliderImage, type PlainSliderImage } from '../serializeDb';
 
 class SliderImagesRepository {
   // GET - All slider images with cache
+  // Not: hata durumunda [] döndürme — unstable_cache boş sonucu 30dk cache'ler (canlıda slider kaybolur)
   static async findAll(): Promise<PlainSliderImage[]> {
     return unstable_cache(
       async () => {
-        try {
-          const pool = await getConnection();
-          const result = await pool
-            .request()
-            .query('SELECT * FROM SliderImages ORDER BY Id DESC');
-          return (result.recordset as SliderImage[]).map(toPlainSliderImage);
-        } catch (error) {
-          console.error('SliderImages findAll error:', error);
-          return [];
-        }
+        const pool = await getConnection();
+        const result = await pool
+          .request()
+          .query('SELECT * FROM SliderImages ORDER BY Id DESC');
+        return (result.recordset as SliderImage[]).map(toPlainSliderImage);
       },
-      ['sliders-all'],
+      ['sliders-all-v2'],
       {
         tags: [CACHE_TAGS.SLIDERS],
         revalidate: CACHE_REVALIDATE.SLIDERS,

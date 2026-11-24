@@ -64,19 +64,14 @@ class HomeSlidersRepository {
   static async findAll(): Promise<PlainHomeSlider[]> {
     return unstable_cache(
       async () => {
-        try {
-          await this.ensureTable();
-          const pool = await getConnection();
-          const result = await pool
-            .request()
-            .query('SELECT * FROM HomeSliders ORDER BY SortOrder ASC, Id DESC');
-          return (result.recordset as HomeSlider[]).map(toPlainHomeSlider);
-        } catch (error) {
-          console.error('HomeSliders findAll error:', error);
-          return [];
-        }
+        await this.ensureTable();
+        const pool = await getConnection();
+        const result = await pool
+          .request()
+          .query('SELECT * FROM HomeSliders ORDER BY SortOrder ASC, Id DESC');
+        return (result.recordset as HomeSlider[]).map(toPlainHomeSlider);
       },
-      ['home-sliders-all'],
+      ['home-sliders-all-v2'],
       { tags: [CACHE_TAGS.HOME_SLIDERS], revalidate: CACHE_REVALIDATE.SLIDERS },
     )();
   }
@@ -87,21 +82,16 @@ class HomeSlidersRepository {
         if (process.env.NEXT_PHASE === 'phase-production-build') {
           return [];
         }
-        try {
-          await this.ensureTable();
-          const pool = await getConnection();
-          const result = await pool
-            .request()
-            .query(
-              'SELECT * FROM HomeSliders WHERE IsActive = 1 ORDER BY SortOrder ASC, Id DESC',
-            );
-          return (result.recordset as HomeSlider[]).map(toPlainHomeSlider);
-        } catch (error) {
-          console.error('HomeSliders findActive error:', error);
-          return [];
-        }
+        await this.ensureTable();
+        const pool = await getConnection();
+        const result = await pool
+          .request()
+          .query(
+            'SELECT * FROM HomeSliders WHERE IsActive = 1 ORDER BY SortOrder ASC, Id DESC',
+          );
+        return (result.recordset as HomeSlider[]).map(toPlainHomeSlider);
       },
-      ['home-sliders-active'],
+      ['home-sliders-active-v2'],
       { tags: [CACHE_TAGS.HOME_SLIDERS], revalidate: CACHE_REVALIDATE.SLIDERS },
     )();
   }
