@@ -62,6 +62,10 @@ const dbPort = explicitPort ? parseInt(explicitPort, 10) : 1433;
 const useDirectTcpPort = Boolean(explicitPort);
 const dbInstance = useDirectTcpPort ? undefined : parsedInstance;
 
+/** Node 22+/Vercel: TLS SNI olarak IP yasak; IP ile bağlanırken placeholder serverName gerekir */
+const dbHostIsIp = /^\d{1,3}(?:\.\d{1,3}){3}$/.test(dbHost);
+const tlsServerName = process.env.DB_TLS_SERVERNAME?.trim() || (dbHostIsIp ? 'mssql' : undefined);
+
 const config: sql.config = {
   server: dbHost,
   database: process.env.DB_NAME || '',
@@ -74,6 +78,7 @@ const config: sql.config = {
     enableArithAbort: true,
     connectTimeout: connectTimeoutMs,
     requestTimeout: requestTimeoutMs,
+    ...(tlsServerName ? { serverName: tlsServerName } : {}),
     ...(dbInstance ? { instanceName: dbInstance } : {}),
   },
   pool: {
